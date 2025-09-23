@@ -1,0 +1,153 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body,
+html,
+#root {
+    --color-principal: #f5e6d3;
+    --color-principal-oscuro: #c4b2bc;
+    --color-secundario: #a29587;
+    --color-terciario: #915636;
+    --color-fondo: #14131ad9;
+    --color-fondo-claro: #292734f5;
+    --color-negro: #000000;
+    --color-blanco: #ffffff;
+    --font-titulares: "Playfair Display", Georgia, serif;
+    margin: 0;
+    height: 100%;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: url("../assets/barberia.jpg") no-repeat center center fixed;
+    background-size: cover;
+    filter: blur(0);
+    position: relative;
+    color: var(--color-blanco);
+}
+
+.login-container {
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--color-fondo);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+/* 
+.navbar {
+    width: 100vw;
+    height: 3.75rem;
+    background-color: var(--color-fondo-claro);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.875rem;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.2);
+    position: fixed;
+} */
+
+.logo img {
+    stroke: white;
+    cursor: default;
+    height: 18rem;
+    width: 18rem;
+    border-radius: 100%;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 1.5625rem;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-links a:hover {
+    color: #ffa500;
+    text-decoration: underline;
+}
+
+.login-box {
+    margin-top: 4vh;
+    margin-bottom: 12vh;
+    background-color: #3b354e;
+    padding: 2.25rem 3rem;
+    border-radius: 0.6rem;
+    width: 24rem;
+    box-shadow: 0 0.6rem 1.8rem rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.login-box label {
+    font-weight: 600;
+    margin-bottom: 0.45rem;
+    font-size: 1.05rem;
+}
+
+.login-box input {
+    padding: 0.75rem 0.9rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.45rem;
+    border: 1px solid var(--color-negro);
+    background-color: var(--color-blanco);
+    color: var(--color-negro);
+    font-size: 1.05rem;
+    transition: all 0.2s ease;
+}
+
+.login-box input::placeholder {
+    color: var(--color-fondo);
+}
+
+.login-box input:focus {
+    outline: none;
+    border-color: #ffa500;
+    background-color: var(--color-fondo);
+    color: var(--color-blanco);
+}
+
+.login-box input:focus::placeholder {
+    color: var(--color-blanco);
+}
+
+.login-box button {
+    padding: 0.9rem;
+    font-weight: 700;
+    background-color: #333050;
+    color: #eee;
+    border: none;
+    border-radius: 0.45rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-box button:disabled {
+    background-color: #5b576b;
+    cursor: not-allowed;
+    color: #999;
+}
+
+.login-box button:not(:disabled):hover {
+    background-color: #ffa500;
+    color: #3b2f0b;
+}
+
+.forgot-password {
+    margin-top: 0.9rem;
+    font-size: 0.975rem;
+    color: #ddd;
+    text-decoration: underline;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #ffa500;
+}
