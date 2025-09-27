@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles/App.css";
 import logo from "./assets/logo.jpg";
-import loginService from "./services/login"
+import loginService from "./services/login";
 const App = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -9,24 +9,22 @@ const App = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Acá agregar la lógica para el login
-        try{
+        try {
             const user = await loginService.login({
-                email, password
-            })
-            window.localStorage.setItem(
-                "loggedUser", JSON.stringify(user)
-            )
+                email,
+                password,
+            });
+            window.localStorage.setItem("loggedUser", JSON.stringify(user));
             setUser(user);
             setEmail("");
             setPassword("");
         } catch (exeption) {
-            setErrorMessage("Usuario o contraseña invalidas")
+            setErrorMessage("Usuario o contraseña invalidas");
             setTimeout(() => {
-                setErrorMessage(null)
+                setErrorMessage(null);
             }, 5000);
         }
     };
-
 
     return (
         <>
