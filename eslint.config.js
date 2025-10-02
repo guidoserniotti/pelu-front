@@ -1,8 +1,8 @@
 import js from "@eslint/js";
-import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
+import globals from "globals";
 
 export default defineConfig([
     globalIgnores(["dist"]),
@@ -12,6 +12,9 @@ export default defineConfig([
             js.configs.recommended,
             reactHooks.configs["recommended-latest"],
             reactRefresh.configs.vite,
+            "eslint:recommended",
+            "plugin:react/recommended",
+            "plugin:react-hooks/recommended",
         ],
         languageOptions: {
             ecmaVersion: 2020,
@@ -22,8 +25,14 @@ export default defineConfig([
                 sourceType: "module",
             },
         },
+        plugins: ["import"],
         rules: {
-            "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+            "import/no-unresolved": "error",
+            "import/named": "error",
+            "import/default": "error",
+            "import/namespace": "error",
+            "no-unused-vars": "warn",
+            "no-undef": "error",
         },
     },
 ]);
