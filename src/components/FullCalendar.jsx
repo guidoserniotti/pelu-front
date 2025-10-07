@@ -1,6 +1,7 @@
 import esLocale from "@fullcalendar/core/locales/es";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useState } from "react";
@@ -48,7 +49,6 @@ const Calendar = () => {
         "Viernes",
         "Sábado",
     ];
-    const dayNamesShort = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
     // Locale español personalizado
     const customEsLocale = {
@@ -65,30 +65,55 @@ const Calendar = () => {
         <div className="calendar-container">
             <FullCalendar
                 locale={customEsLocale}
+                plugins={[
+                    dayGridPlugin,
+                    interactionPlugin,
+                    timeGridPlugin,
+                    momentTimezonePlugin,
+                ]}
+                timeZone="America/Argentina/Buenos_Aires"
                 views={{
                     dayGridMonth: {
-                        titleFormat: (date) =>
-                            `${monthNames[date.date.month]} ${date.date.year}`,
+                        titleFormat: (date) => {
+                            return `${monthNames[date.date.month]} ${
+                                date.date.year
+                            }`;
+                        },
+                        fixedWeekCount: false,
                     },
                     timeGridWeek: {
-                        titleFormat: (date) =>
-                            `Semana ${date.start.day} de ${
-                                shortMonthNames[date.start.month]
-                            } - ${date.end.day} de ${
-                                shortMonthNames[date.end.month]
-                            } ${date.start.year}`,
+                        titleFormat: (date) => {
+                            const startDay = date.start.day;
+                            const endDay = date.end.day;
+                            const startMonth = date.start.month;
+                            const endMonth = date.end.month;
+                            const year = date.start.year;
+
+                            return `Semana ${startDay} de ${shortMonthNames[startMonth]} - ${endDay} de ${shortMonthNames[endMonth]} ${year}`;
+                        },
                         allDaySlot: false,
                     },
                     timeGridDay: {
-                        titleFormat: (date) =>
-                            `${dayNames[date.date.day]} ${date.date.day} de ${
-                                monthNames[date.date.month]
-                            } ${date.date.year}`,
+                        titleFormat: (date) => {
+                            const year = date.date.year;
+                            const month = date.date.month;
+                            const dayOfMonth = date.date.day;
+
+                            const correctDate = new Date(
+                                year,
+                                month,
+                                dayOfMonth
+                            );
+                            const dayOfWeekIndex = correctDate.getDay();
+
+                            return `${dayNames[dayOfWeekIndex]} ${dayOfMonth} de ${monthNames[month]} ${year}`;
+                        },
                         allDaySlot: false,
                     },
                 }}
-                dateClick={(e) => {}}
-                plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+                dateClick={(e) => {
+                    /* TO-DO: Manejar clic en fecha */
+                }}
                 initialView="timeGridWeek"
                 headerToolbar={{
                     left: "today prev,next",
@@ -96,9 +121,6 @@ const Calendar = () => {
                     end: "dayGridMonth,timeGridWeek,timeGridDay",
                 }}
                 height={"95vh"}
-                dayHeaderFormat={(date) =>
-                    dayNamesShort[date.date.marker.getDay()]
-                }
                 slotLabelFormat={{
                     hour: "2-digit",
                     minute: "2-digit",
@@ -112,22 +134,12 @@ const Calendar = () => {
                 slotMinTime="06:00:00"
                 slotMaxTime="22:00:00"
                 expandRows={true}
-                events={[
-                    { title: "event 1", date: "2025-10-01" },
-                    { title: "event 2", date: "2025-10-02" },
-                ]}
+                events={[]} // Aquí se debe agregar la lógica para cargar eventos dinámicamente
                 editable={true}
-                selectable={true}
-                selectMirror={true}
-                dayMaxEvents={false}
-                selectLongPressDelay={250}
-                selectMinDistance={5}
-                unselectAuto={true}
-                unselectCancel=".custom-button"
-                select={(selectInfo) => {
-                    console.log("Rango seleccionado:", selectInfo);
-                }}
-                unselect={() => console.log("Selección cancelada")}
+                dayMaxEvents={true}
+                eventLongPressDelay={500}
+                // unselectAuto={true}
+                // unselectCancel=".custom-button"     debería funcionar con eventos de forma similar
                 eventResizeStart={(info) => {
                     if (currentView === "dayGridMonth") {
                         info.revert();

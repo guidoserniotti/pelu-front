@@ -10,6 +10,20 @@ const App = () => {
     const [user, setUser] = useState(null);
     const [isLogin, setIsLogin] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [client, setClient] = useState([
+        {
+            title: "Cliente 1",
+            start: "2023-10-05T10:00:00",
+            end: "2023-10-05T12:00:00",
+            editable: true,
+        },
+        {
+            title: "Cliente 2",
+            start: "2023-10-06T10:00:00",
+            end: "2023-10-06T12:00:00",
+            editable: true,
+        },
+    ]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,7 +59,7 @@ const App = () => {
         return (
             <>
                 <div className="main-calendar-container">
-                    <Clients />
+                    <Clients client={client} setClient={setClient} />
                     <Calendar />
                 </div>
             </>

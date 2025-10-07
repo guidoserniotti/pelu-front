@@ -58,6 +58,13 @@
     cursor: grabbing;
 }
 
+/* Hacer que el enlace "+X más" ocupe todo el ancho de la celda */
+.fc-daygrid-more-link {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
 .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 0.5rem;
 }
@@ -229,8 +236,13 @@ html,
     border-radius: 0.5rem;
     box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     flex: 1.5;
     font-size: 1.5rem;
     font-weight: 600;
+}
+
+.client-title {
+    cursor: pointer;
 }
