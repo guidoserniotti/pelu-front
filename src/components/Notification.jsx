@@ -1,13 +1,8 @@
-const Notification = ({ messageSuccess, messageError }) => {
-    if (messageSuccess === "" && messageError === "") {
-        return null;
-    }
+const Notification = ({ message }) => {
+  // Render nothing when there's no message
+  if (!message) return null;
 
-    return messageError === "" ? (
-        <div className="success">{messageSuccess}</div>
-    ) : (
-        <div className="error">{messageError}</div>
-    );
+  return <div className="error">{message}</div>;
 };
 
 export default Notification;

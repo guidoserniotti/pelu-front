@@ -12,6 +12,9 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const [client, setClient] = useState([
     {
       title: "Cliente 1",
@@ -41,8 +44,9 @@ const App = () => {
       console.log("Login exitoso");
       setEmail("");
       setPassword("");
-    } catch (exeption) {
-      setErrorMessage("Usuario o contraseña invalidas");
+    } catch (exception) {
+      console.log(exception);
+      setErrorMessage(exception.response.data.message);
       setTimeout(() => {
         setErrorMessage("");
       }, 5000);
@@ -69,6 +73,10 @@ const App = () => {
             password={password}
             setEmail={setEmail}
             setPassword={setPassword}
+            mailError={emailError}
+            passwordError={passwordError}
+            setEmailError={setEmailError}
+            setPasswordError={setPasswordError}
           />
         </div>
       </>
