@@ -5,6 +5,70 @@
     margin: 0;
 }
 
+:root {
+    --fc-small-font-size: 0.85em;
+    --fc-page-bg-color: #fff;
+    --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
+    --fc-neutral-text-color: #808080;
+    --fc-border-color: #ddd;
+}
+
+/* Personalización del selectMirror */
+.fc-highlight {
+    background-color: rgba(
+        255,
+        165,
+        0,
+        0.3
+    ) !important; /* Naranja semitransparente */
+    border: 2px dashed #ffa500 !important; /* Borde punteado naranja */
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(255, 165, 0, 0.2) !important;
+}
+
+/* Personalización adicional para diferentes estados */
+.fc-day-today .fc-highlight {
+    background-color: rgba(
+        0,
+        123,
+        255,
+        0.3
+    ) !important; /* Azul para el día actual */
+    border-color: #007bff !important;
+}
+
+/* Ocultar controles de redimensionamiento en vista de mes */
+.fc-dayGridMonth-view .fc-event-resizer {
+    display: none !important;
+}
+
+/* Cambiar cursor en vista de mes para indicar que no es redimensionable */
+.fc-dayGridMonth-view .fc-event {
+    cursor: pointer !important;
+}
+
+/* Mantener cursor de redimensionamiento en vistas de tiempo */
+.fc-timeGridWeek-view .fc-event,
+.fc-timeGridDay-view .fc-event {
+    cursor: grab;
+}
+
+.fc-timeGridWeek-view .fc-event:hover,
+.fc-timeGridDay-view .fc-event:hover {
+    cursor: grabbing;
+}
+
+/* Hacer que el enlace "+X más" ocupe todo el ancho de la celda */
+.fc-daygrid-more-link {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0.5rem;
+}
+
 body,
 html,
 #root {
@@ -24,7 +88,7 @@ html,
     background-size: cover;
     filter: blur(0);
     position: relative;
-    color: var(--color-blanco);
+    /* color: var(--color-blanco); */
 }
 
 .main-container {
@@ -150,4 +214,35 @@ html,
 
 .forgot-password:hover {
     color: #ffa500;
+}
+
+.main-calendar-container {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.calendar-container {
+    background-color: var(--color-blanco);
+    margin: 1rem;
+    width: 87.5rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.client-container {
+    background-color: var(--color-blanco);
+    margin: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex: 1.5;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.client-title {
+    cursor: pointer;
 }

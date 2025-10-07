@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import "./styles/App.css";
+import { useState } from "react";
+import Clients from "./components/Clients";
+import Calendar from "./components/FullCalendar";
 import loginService from "./services/login";
-import LoginForm from "./components/LoginForm";
+import "./styles/App.css";
 
 const App = () => {
     const [email, setEmail] = useState("");
@@ -9,6 +10,20 @@ const App = () => {
     const [user, setUser] = useState(null);
     const [isLogin, setIsLogin] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [client, setClient] = useState([
+        {
+            title: "Cliente 1",
+            start: "2023-10-05T10:00:00",
+            end: "2023-10-05T12:00:00",
+            editable: true,
+        },
+        {
+            title: "Cliente 2",
+            start: "2023-10-06T10:00:00",
+            end: "2023-10-06T12:00:00",
+            editable: true,
+        },
+    ]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,15 +58,10 @@ const App = () => {
     if (!isLogin) {
         return (
             <>
-                <LoginForm
-                    handleInvalidInput={handleInvalidInput}
-                    handleSubmit={handleSubmit}
-                    errorMessage={errorMessage}
-                    email={email}
-                    password={password}
-                    setEmail={setEmail}
-                    setPassword={setPassword}
-                />
+                <div className="main-calendar-container">
+                    <Clients client={client} setClient={setClient} />
+                    <Calendar />
+                </div>
             </>
         );
     }
