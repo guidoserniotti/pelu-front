@@ -23,6 +23,15 @@ function Clients({ client, setClient }) {
         setClientPhoneNumber("");
     };
 
+    const handleEditClient = (e) => {
+        /* TO-DO:
+        0. Cerrar el formulario de agregar cliente si está abierto.
+        1. Obtener el cliente a editar utilizando el ID o algún identificador único.
+        2. Actualizar el estado del cliente con los nuevos valores.
+        3. Cerrar el formulario de edición.
+        */
+    };
+
     return (
         <div className="client-container">
             <ButtonClientsList

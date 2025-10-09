@@ -1,5 +1,6 @@
 import { Draggable } from "@fullcalendar/interaction";
 import { useEffect, useRef } from "react";
+import ButtonClientsList from "./ButtonClientsList";
 
 function ClientList({ client, setClient }) {
     const draggableInstanceRef = useRef(null);
@@ -44,6 +45,13 @@ function ClientList({ client, setClient }) {
                     >
                         <h3 className="client-title">{c.title}</h3>
                         <p className="client-phone">{c.phoneNumber}</p>
+                    </div>
+                    <div>
+                        <ButtonClientsList
+                            text={"Editar Cliente"}
+                            functionOnClick={() => {}}
+                            imgSource={"../../../../assets/img/editClient.png"}
+                        />
                     </div>
                 </>
             ))}
