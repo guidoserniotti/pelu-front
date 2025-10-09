@@ -1,5 +1,4 @@
 import { Draggable } from "@fullcalendar/interaction";
-
 import { useEffect, useRef } from "react";
 
 function ClientList({ client, setClient }) {
@@ -12,8 +11,11 @@ function ClientList({ client, setClient }) {
             draggableInstanceRef.current = new Draggable(draggableEl, {
                 itemSelector: ".fc-draggable",
                 eventData: (eventEl) => {
+                    // Extraer el título del cliente desde el elemento
+                    const title = eventEl.getAttribute("data-title");
                     return {
-                        title: eventEl.innerText,
+                        title: title,
+                        duration: "00:30", // 30 minutos de duración
                         editable: true,
                     };
                 },
@@ -26,7 +28,6 @@ function ClientList({ client, setClient }) {
                 draggableInstanceRef.current = null;
             }
         };
-        // }, []);
     }, [client]);
 
     if (!client || client.length === 0) {
@@ -34,14 +35,17 @@ function ClientList({ client, setClient }) {
     }
     return (
         <div id="client-list">
-            {client.map((c, index) => (
-                <div
-                    key={c.title}
-                    className="fc-draggable"
-                    data-title={c.title}
-                >
-                    <h3 className="client-title">{c.title}</h3>
-                </div>
+            {client.map((c) => (
+                <>
+                    <div
+                        key={c.phoneNumber}
+                        className="fc-draggable"
+                        data-title={c.title}
+                    >
+                        <h3 className="client-title">{c.title}</h3>
+                        <p className="client-phone">{c.phoneNumber}</p>
+                    </div>
+                </>
             ))}
         </div>
     );
