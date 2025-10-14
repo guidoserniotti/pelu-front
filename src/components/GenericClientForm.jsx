@@ -4,11 +4,14 @@ const GenericClientForm = ({
     setClientName,
     clientPhoneNumber,
     setClientPhoneNumber,
+    formTitle,
 }) => {
+    const buttonText = formTitle.includes("Agregar") ? "Agregar" : "Guardar";
+
     return (
         <div className="client-form">
             <form className="client-form-box" onSubmit={handleSubmitClient}>
-                <h2>Agregar Cliente</h2>
+                <h2>{formTitle}</h2>
                 <label>Nombre</label>
                 <input
                     type="text"
@@ -33,7 +36,7 @@ const GenericClientForm = ({
                     type="submit"
                     disabled={!clientName || !clientPhoneNumber}
                 >
-                    Agregar
+                    {buttonText}
                 </button>
             </form>
         </div>
