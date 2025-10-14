@@ -1,6 +1,4 @@
 const ButtonClientsList = ({ text, functionOnClick, imgSource }) => {
-    // TO-DO: Hacer que el botón sea una imágen clickeable
-
     return (
         <div>
             <button onClick={functionOnClick}>

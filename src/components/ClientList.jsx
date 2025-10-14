@@ -2,7 +2,7 @@ import { Draggable } from "@fullcalendar/interaction";
 import { useEffect, useRef } from "react";
 import ButtonClientsList from "./ButtonClientsList";
 
-function ClientList({ client, setClient }) {
+function ClientList({ client, handleEditClient, handleDeleteClient }) {
     const draggableInstanceRef = useRef(null);
 
     useEffect(() => {
@@ -34,26 +34,32 @@ function ClientList({ client, setClient }) {
     if (!client || client.length === 0) {
         return <div className="client-list">No hay clientes disponibles</div>;
     }
+
     return (
         <div id="client-list">
             {client.map((c) => (
-                <>
-                    <div
-                        key={c.phoneNumber}
-                        className="fc-draggable"
-                        data-title={c.title}
-                    >
+                <div key={c.phoneNumber}>
+                    <div className="fc-draggable" data-title={c.title}>
                         <h3 className="client-title">{c.title}</h3>
                         <p className="client-phone">{c.phoneNumber}</p>
                     </div>
                     <div>
                         <ButtonClientsList
                             text={"Editar Cliente"}
-                            functionOnClick={() => {}}
+                            functionOnClick={() => handleEditClient(c)}
                             imgSource={"../../../../assets/img/editClient.png"}
                         />
                     </div>
-                </>
+                    <div>
+                        <ButtonClientsList
+                            text={"Eliminar Cliente"}
+                            functionOnClick={() => handleDeleteClient(c)}
+                            imgSource={
+                                "../../../../assets/img/deleteClient.png"
+                            }
+                        />
+                    </div>
+                </div>
             ))}
         </div>
     );
