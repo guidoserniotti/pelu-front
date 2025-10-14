@@ -83,6 +83,14 @@ function Clients({ client, setClient }) {
         }
     };
 
+    // Filtrar clientes según el término de búsqueda
+    const filteredClients = client.filter((c) =>
+        c.title.toLowerCase().includes(filter.toLowerCase())
+    );
+    const handleSearch = (e) => {
+        setFilter(e.target.value);
+    };
+
     return (
         <div className="client-container">
             <ButtonClientsList
@@ -120,6 +128,14 @@ function Clients({ client, setClient }) {
                 </div>
             )}
             <h2>Clientes</h2>
+            <div className="client-search">
+                <input
+                    type="text"
+                    value={filter}
+                    placeholder="Buscar cliente..."
+                    onChange={handleSearch}
+                />
+            </div>
             <ClientList
                 client={filteredClients}
                 handleEditClient={handleEditClient}
