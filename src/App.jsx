@@ -7,14 +7,15 @@ import LoginForm from "./components/LoginForm";
 import "./styles/App.css";
 
 const App = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+    errors: {
+      email: [],
+      password: [],
+    },
+  });
   const [client, setClient] = useState([
     {
       title: "Cliente 1",
@@ -34,30 +35,79 @@ const App = () => {
     e.preventDefault();
     try {
       const user = await loginService.login({
-        email,
-        contrasena: password,
+        email: loginData.email,
+        contrasena: loginData.password,
       });
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
-      setUser(user);
+      // limpiar errores al loguear correctamente
+      setLoginData((prev) => ({
+        ...prev,
+        errors: { email: [], password: [] },
+      }));
       setIsLogin(true);
-      console.log(user);
-      console.log("Login exitoso");
-      setEmail("");
-      setPassword("");
     } catch (exception) {
-      console.log(exception);
-      setErrorMessage(exception.response.data.message);
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 5000);
+      // Mapear mensajes de validación del backend a los inputs correspondientes
+      const backendMessages = exception?.response?.data?.message;
+      const messagesArray = Array.isArray(backendMessages)
+        ? backendMessages
+        : backendMessages
+        ? [backendMessages]
+        : [];
+
+      const emailErrors = [];
+      const passwordErrors = [];
+      if (messagesArray.length === 0) {
+        emailErrors.push("Error desconocido. Por favor, intente nuevamente.");
+      }
+      const singleMsgLower =
+        messagesArray.length === 1 ? String(messagesArray[0]) : "";
+      if (
+        messagesArray.length === 1 &&
+        singleMsgLower.includes("Email o contrasena invalidos.")
+      ) {
+        emailErrors.push(messagesArray[0]);
+      } else {
+        messagesArray.forEach((msg) => {
+          const lower = String(msg).toLowerCase();
+
+          if (lower.includes("email")) emailErrors.push(msg);
+          if (lower.includes("contrase") || lower.includes("password"))
+            passwordErrors.push(msg);
+        });
+      }
+      setLoginData((prev) => ({
+        ...prev,
+        errors: {
+          email: emailErrors,
+          password: passwordErrors,
+        },
+      }));
     }
   };
 
-  const handleInvalidInput = (e) => {
-    if (e.target.validity.valueMissing) {
-      e.target.setCustomValidity("Este campo es obligatorio");
-    } else if (e.target.validity.typeMismatch) {
-      e.target.setCustomValidity("Por favor, ingrese un email válido");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    if (name === "email" && loginData.errors.email?.length) {
+      setLoginData((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          email: [],
+        },
+      }));
+    }
+    if (name === "password" && loginData.errors.password?.length) {
+      setLoginData((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          password: [],
+        },
+      }));
     }
   };
 
@@ -66,17 +116,9 @@ const App = () => {
       <>
         <div className="main-calendar-container">
           <LoginForm
-            handleInvalidInput={handleInvalidInput}
             handleSubmit={handleSubmit}
-            errorMessage={errorMessage}
-            email={email}
-            password={password}
-            setEmail={setEmail}
-            setPassword={setPassword}
-            mailError={emailError}
-            passwordError={passwordError}
-            setEmailError={setEmailError}
-            setPasswordError={setPasswordError}
+            loginData={loginData}
+            handleChange={handleChange}
           />
         </div>
       </>
