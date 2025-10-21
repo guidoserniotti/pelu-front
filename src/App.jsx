@@ -35,57 +35,96 @@ import "./styles/App.css";
 */
 
 const App = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isLogin, setIsLogin] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [emailError, setEmailError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+    errors: {
+      email: [],
+      password: [],
+    },
+  });
+  const [client, setClient] = useState([]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const user = await loginService.login({
-                email,
-                contrasena: password,
-            });
-            // Guardar con estructura consistente
-            window.localStorage.setItem(
-                "loggedUser",
-                JSON.stringify({
-                    email: email,
-                    token: user.data, // user.data es el token
-                })
-            );
-            authService.setToken(user.data);
-            setIsLogin(true);
-            setEmail("");
-            setPassword("");
-        } catch (exception) {
-            console.log(exception);
-            setErrorMessage(exception.response.data.message);
-            setTimeout(() => {
-                setErrorMessage("");
-            }, 5000);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const user = await loginService.login({
+        email: loginData.email,
+        contrasena: loginData.password,
+      });
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
+      // limpiar errores al loguear correctamente
+      setLoginData((prev) => ({
+        ...prev,
+        errors: { email: [], password: [] },
+      }));
+      setIsLogin(true);
+    } catch (exception) {
+      // Mapear mensajes de validación del backend a los inputs correspondientes
+      const backendMessages = exception?.response?.data?.message;
+      const messagesArray = Array.isArray(backendMessages)
+        ? backendMessages
+        : backendMessages
+        ? [backendMessages]
+        : [];
 
-    const handleInvalidInput = (e) => {
-        if (e.target.validity.valueMissing) {
-            e.target.setCustomValidity("Este campo es obligatorio");
-        } else if (e.target.validity.typeMismatch) {
-            e.target.setCustomValidity("Por favor, ingrese un email válido");
-        }
-    };
+      const emailErrors = [];
+      const passwordErrors = [];
+      if (messagesArray.length === 0) {
+        emailErrors.push("Error desconocido. Por favor, intente nuevamente.");
+      }
+      const singleMsgLower =
+        messagesArray.length === 1 ? String(messagesArray[0]) : "";
+      if (
+        messagesArray.length === 1 &&
+        singleMsgLower.includes("Email o contrasena invalidos.")
+      ) {
+        emailErrors.push(messagesArray[0]);
+      } else {
+        messagesArray.forEach((msg) => {
+          const lower = String(msg).toLowerCase();
 
-    const handleLogOut = () => {
-        const confirmLogOut = window.confirm(
-            `¿Estás seguro de que deseas cerrar sesión?`
-        );
-        if (!confirmLogOut) return;
-        window.localStorage.removeItem("loggedUser");
-        window.location.reload();
-    };
+          if (lower.includes("email")) emailErrors.push(msg);
+          if (lower.includes("contrase") || lower.includes("password"))
+            passwordErrors.push(msg);
+        });
+      }
+      setLoginData((prev) => ({
+        ...prev,
+        errors: {
+          email: emailErrors,
+          password: passwordErrors,
+        },
+      }));
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    if (name === "email" && loginData.errors.email?.length) {
+      setLoginData((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          email: [],
+        },
+      }));
+    }
+    if (name === "password" && loginData.errors.password?.length) {
+      setLoginData((prevState) => ({
+        ...prevState,
+        errors: {
+          ...prevState.errors,
+          password: [],
+        },
+      }));
+    }
+  };
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedUser");
@@ -118,12 +157,15 @@ const App = () => {
         );
     }
     return (
-        <>
-            <div className="main-calendar-container">
-                <Clients handleLogOut={handleLogOut} />
-                <Calendar />
-            </div>
-        </>
+      <>
+        <div className="main-calendar-container">
+          <LoginForm
+            handleSubmit={handleSubmit}
+            loginData={loginData}
+            handleChange={handleChange}
+          />
+        </div>
+      </>
     );
 };
 
