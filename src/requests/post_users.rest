@@ -1,0 +1,269 @@
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+  "nombre_completo": "Juan Perez",
+  "telefono": "555-1234"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "María Gómez",
+    "telefono": "600-1001"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Carlos Ramírez",
+    "telefono": "600-1002"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Ana Torres",
+    "telefono": "600-1003"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Luis Fernández",
+    "telefono": "600-1004"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Rosa Martínez",
+    "telefono": "600-1005"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Javier López",
+    "telefono": "600-1006"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Elena Sánchez",
+    "telefono": "600-1007"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Pedro Díaz",
+    "telefono": "600-1008"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Marta Ruiz",
+    "telefono": "600-1009"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Alberto Moreno",
+    "telefono": "600-1010"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Lucía Ortega",
+    "telefono": "600-1011"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Diego Cruz",
+    "telefono": "600-1012"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Sandra Vega",
+    "telefono": "600-1013"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Francisco Herrera",
+    "telefono": "600-1014"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Natalia Castillo",
+    "telefono": "600-1015"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Ricardo Ramos",
+    "telefono": "600-1016"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Verónica Blanco",
+    "telefono": "600-1017"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Óscar Navarro",
+    "telefono": "600-1018"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Patricia Molina",
+    "telefono": "600-1019"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Miguel Paredes",
+    "telefono": "600-1020"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Isabel Ríos",
+    "telefono": "600-1021"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Fernando Camacho",
+    "telefono": "600-1022"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Paula Fuentes",
+    "telefono": "600-1023"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Sergio León",
+    "telefono": "600-1024"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Carolina Peña",
+    "telefono": "600-1025"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Andrés Salas",
+    "telefono": "600-1026"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Claudia Duarte",
+    "telefono": "600-1027"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Tomás Ibarra",
+    "telefono": "600-1028"
+}
+###
+POST http://localhost:3000/api/cliente/registrar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkM2U4YzIxLTUyNWEtNDFiOS1iZmNiLTQxMWMyNjhjZTE5YSIsInJvbCI6IkFETUlOIiwiaWF0IjoxNzYwODEyMjg3LCJleHAiOjE3NjA4NTU0ODd9.Djsy1c8qtxKoflfgv1XnKBD9xbH_jQw1MAYW0xaZqYg
+Content-Type: application/json
+
+{
+    "nombre_completo": "Beatriz Aguilar",
+    "telefono": "600-1029"
+}

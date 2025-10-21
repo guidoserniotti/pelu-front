@@ -1,10 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import authService from "../utils/config";
 import Clients from "./components/Clients";
 import Calendar from "./components/FullCalendar";
-import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
-
+import loginService from "./services/login";
 import "./styles/App.css";
+
+/* TO-DO:
+- Persistencia de sesión (localStorage)
+- LOGOUT:
+  * Limpiar token
+  * Set isLogin to false
+- Manejo de clientes:
+  * Editar cliente (FALTA CONEXIÓN CON BACK)
+  * Eliminar cliente (FALTA CONEXIÓN CON BACK)
+- Conexión con backend:
+  * Autenticación
+  * CRUD clientes
+    ~ Formatear clientData para utilizar "nombre_completo" del backend
+- Manejo de eventos:
+  * CRUD eventos
+  * Crear evento al arrastrar cliente al calendario
+- Estilo y UX:
+  * Mejorar diseño
+  * Feedback al usuario (notificaciones, loaders, etc.)
+  * Responsividad
+  * IMPLEMENTAR PAGINACIÓN
+    ~ Estado para página actual
+    ~ Petición de backend para calculo de páginas.
+    ~ La última página pregunta a la siguiente si tiene datos.
+    ~ Scroll de máximos clientes
+- Validaciones:
+  * Manejo de errores (login fallido, errores de red, etc.)
+*/
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -16,20 +44,7 @@ const App = () => {
       password: [],
     },
   });
-  const [client, setClient] = useState([
-    {
-      title: "Cliente 1",
-      start: "2023-10-05T10:00:00",
-      end: "2023-10-05T12:00:00",
-      editable: true,
-    },
-    {
-      title: "Cliente 2",
-      start: "2023-10-06T10:00:00",
-      end: "2023-10-06T12:00:00",
-      editable: true,
-    },
-  ]);
+  const [client, setClient] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,7 +126,36 @@ const App = () => {
     }
   };
 
-  if (!isLogin) {
+    useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem("loggedUser");
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON);
+            authService.setToken(user.token);
+            setIsLogin(true);
+        }
+    }, []);
+
+    if (!isLogin) {
+        return (
+            <>
+                <div className="main-calendar-container">
+                    <LoginForm
+                        handleInvalidInput={handleInvalidInput}
+                        handleSubmit={handleSubmit}
+                        errorMessage={errorMessage}
+                        email={email}
+                        password={password}
+                        setEmail={setEmail}
+                        setPassword={setPassword}
+                        mailError={emailError}
+                        passwordError={passwordError}
+                        setEmailError={setEmailError}
+                        setPasswordError={setPasswordError}
+                    />
+                </div>
+            </>
+        );
+    }
     return (
       <>
         <div className="main-calendar-container">
@@ -123,15 +167,6 @@ const App = () => {
         </div>
       </>
     );
-  }
-  return (
-    <>
-      <div className="main-calendar-container">
-        <Clients client={client} setClient={setClient} />
-        <Calendar />
-      </div>
-    </>
-  );
 };
 
 export default App;

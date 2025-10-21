@@ -1,16 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import clientsService from "../services/clients";
 import ButtonClientsList from "./ButtonClientsList";
 import ClientList from "./ClientList";
 import GenericClientForm from "./GenericClientForm";
 
-function Clients({ client, setClient }) {
+const Clients = ({ handleLogOut }) => {
     // Estado para controlar qué formulario está abierto: null, "add" o "edit"
     const [activeForm, setActiveForm] = useState(null);
+
+    // Estado para manejar la lista de clientes
+    const [client, setClient] = useState([]);
 
     const [clientName, setClientName] = useState("");
     const [clientPhoneNumber, setClientPhoneNumber] = useState("");
     const [clientToEdit, setClientToEdit] = useState(null);
     const [filter, setFilter] = useState("");
+
+    useEffect(() => {
+        const fetchClients = async () => {
+            try {
+                const clientsData = await clientsService.getClients();
+                const formattedClients = clientsData.listado_clientes.map(
+                    (client) => {
+                        return {
+                            id: client.id,
+                            title: client.nombre_completo,
+                            phoneNumber: client.telefono,
+                            editable: true,
+                        };
+                    }
+                );
+                setClient(formattedClients);
+            } catch (error) {
+                console.error("Error fetching clients:", error);
+            }
+        };
+        fetchClients();
+    }, []); // ← Solo se ejecuta al montar el componente
 
     const handleAddClient = (e) => {
         e.preventDefault();
@@ -18,6 +44,7 @@ function Clients({ client, setClient }) {
             title: clientName,
             phoneNumber: clientPhoneNumber,
         };
+        clientsService.createClient(newClient);
         setClient([...client, newClient]);
         setClientName("");
         setClientPhoneNumber("");
@@ -43,18 +70,36 @@ function Clients({ client, setClient }) {
         }
     };
 
-    const handleSubmitEdit = (e) => {
+    const handleSubmitEdit = async (e) => {
         e.preventDefault();
-        const updatedClients = client.map((c) =>
-            c.phoneNumber === clientToEdit.phoneNumber
-                ? { ...c, title: clientName, phoneNumber: clientPhoneNumber }
-                : c
-        );
-        setClient(updatedClients);
-        setClientName("");
-        setClientPhoneNumber("");
-        setClientToEdit(null);
-        setActiveForm(null); // Cerrar el formulario después de editar
+        try {
+            const updatedClient = await clientsService.updateClient(
+                clientToEdit.id,
+                {
+                    nombre_completo: clientName,
+                    telefono: clientPhoneNumber,
+                }
+            );
+
+            // Actualizar el estado usando el ID en lugar del phoneNumber
+            const updatedClients = client.map((c) =>
+                c.id === clientToEdit.id
+                    ? {
+                          ...c,
+                          title: clientName,
+                          phoneNumber: clientPhoneNumber,
+                      }
+                    : c
+            );
+
+            setClient(updatedClients);
+            setClientName("");
+            setClientPhoneNumber("");
+            setClientToEdit(null);
+            setActiveForm(null);
+        } catch (error) {
+            alert(`Error: ${error.response?.data?.message || error.message}`);
+        }
     };
 
     const handleDeleteClient = (clientData) => {
@@ -101,7 +146,7 @@ function Clients({ client, setClient }) {
             <ButtonClientsList
                 text={"LogOut"}
                 imgSource={"../../assets/img/logout.png"}
-                functionOnClick={() => console.log("Cerrar sesión")}
+                functionOnClick={handleLogOut}
             />
             {activeForm === "add" && (
                 <div className="client-overlay">
@@ -143,6 +188,6 @@ function Clients({ client, setClient }) {
             />
         </div>
     );
-}
+};
 
 export default Clients;
