@@ -44,7 +44,6 @@ const App = () => {
       password: [],
     },
   });
-  const [client, setClient] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,6 +99,15 @@ const App = () => {
     }
   };
 
+  const handleLogOut = () => {
+    const confirmLogOut = window.confirm(
+      `¿Estás seguro de que deseas cerrar sesión?`
+    );
+    if (!confirmLogOut) return;
+    window.localStorage.removeItem("loggedUser");
+    window.location.reload();
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prevState) => ({
@@ -126,36 +134,16 @@ const App = () => {
     }
   };
 
-    useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem("loggedUser");
-        if (loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON);
-            authService.setToken(user.token);
-            setIsLogin(true);
-        }
-    }, []);
-
-    if (!isLogin) {
-        return (
-            <>
-                <div className="main-calendar-container">
-                    <LoginForm
-                        handleInvalidInput={handleInvalidInput}
-                        handleSubmit={handleSubmit}
-                        errorMessage={errorMessage}
-                        email={email}
-                        password={password}
-                        setEmail={setEmail}
-                        setPassword={setPassword}
-                        mailError={emailError}
-                        passwordError={passwordError}
-                        setEmailError={setEmailError}
-                        setPasswordError={setPasswordError}
-                    />
-                </div>
-            </>
-        );
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      authService.setToken(user.token);
+      setIsLogin(true);
     }
+  }, []);
+
+  if (!isLogin) {
     return (
       <>
         <div className="main-calendar-container">
@@ -167,6 +155,17 @@ const App = () => {
         </div>
       </>
     );
+  }
+  return (
+    <>
+      <div className="main-calendar-container">
+        <div className="main-calendar-container">
+          <Clients handleLogOut={handleLogOut} />
+          <Calendar />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default App;
