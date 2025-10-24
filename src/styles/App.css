@@ -246,3 +246,7 @@ html,
 .client-title {
     cursor: pointer;
 }
+
+#client-list {
+    overflow-y: scroll;
+}
