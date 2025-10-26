@@ -6,13 +6,13 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import authService from "../utils/config";
+import authService from "./utils/config";
 import Clients from "./pages/Clients";
 import LoginForm from "./pages/LoginForm";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import loginService from "./services/login";
 import "./styles/App.css";
-
+import windowLogOut from "./utils/NotificationWindows/ConfirmLogOut";
 /* TO-DO:
 - LOGOUT:
   * Limpiar token con timeout
@@ -110,11 +110,11 @@ const App = () => {
     }
   };
 
-  const handleLogOut = () => {
-    const confirmLogOut = window.confirm(
+  const handleLogOut = async () => {
+    const LogOut = await windowLogOut(
       `¿Estás seguro de que deseas cerrar sesión?`
     );
-    if (!confirmLogOut) return;
+    if (!LogOut) return;
     window.localStorage.removeItem("loggedUser");
     setIsLogin(false);
     navigate("/login", { replace: true });

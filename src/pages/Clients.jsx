@@ -4,6 +4,7 @@ import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
 import GenericClientForm from "../components/GenericClientForm";
 import Calendar from "../components/FullCalendar";
+import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 
 const Clients = ({ handleLogOut }) => {
   // Estado para controlar qué formulario está abierto: null, "add" o "edit"
@@ -120,9 +121,8 @@ const Clients = ({ handleLogOut }) => {
   };
 
   const handleDeleteClient = async (clientData) => {
-    const confirmDelete = window.confirm(
-      `¿Estás seguro de que deseas eliminar al cliente ${clientData.title}?`
-    );
+    const confirmDelete = await windowDelete(clientData.title);
+    console.log(confirmDelete);
     if (!confirmDelete) return;
     const response = await clientsService.deleteClient(clientData.id);
     console.log(response);
