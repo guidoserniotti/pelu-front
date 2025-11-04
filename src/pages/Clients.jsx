@@ -4,19 +4,16 @@ import clientsService from "../services/clients";
 import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
 import Calendar from "../components/FullCalendar";
-import GenericClientForm from "../components/GenericClientForm";
-import clientsService from "../services/clients";
+import AlertError from "../utils/NotificationWindows/AlertError";
+// Reemplazamos formularios flotantes por SweetAlert2 temado
+import {
+    promptAddClient,
+    promptEditClient,
+} from "../utils/NotificationWindows/ClientFormPrompt";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 const Clients = ({ handleLogOut }) => {
-    // Estado para controlar qué formulario está abierto: null, "add" o "edit"
-    const [activeForm, setActiveForm] = useState(null);
-
     // Estado para manejar la lista de clientes
     const [client, setClient] = useState([]);
-
-    const [clientName, setClientName] = useState("");
-    const [clientPhoneNumber, setClientPhoneNumber] = useState("");
-    const [clientToEdit, setClientToEdit] = useState(null);
     const [filter, setFilter] = useState("");
     const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
 
@@ -43,19 +40,11 @@ const Clients = ({ handleLogOut }) => {
         fetchClients();
     }, []); // ← Solo se ejecuta al montar el componente
 
-    const handleAddClient = async (e) => {
-        e.preventDefault();
+    const handleAddClient = async () => {
+        const values = await promptAddClient();
+        if (!values) return; // cancelado
         try {
-            // Enviar el cuerpo con los nombres que espera el backend
-            const body = {
-                nombre_completo: clientName,
-                telefono: clientPhoneNumber,
-            };
-            // Esperar respuesta del backend
-            const created = await clientsService.createClient(body);
-            const data = created.data; // { id, nombre_completo, telefono, esta_eliminado }
-
-            // Actualizar el estado al formato usado en el frontend
+            const data = await clientsService.createClient(values);
             setClient((prev) => [
                 ...prev,
                 {
@@ -66,65 +55,40 @@ const Clients = ({ handleLogOut }) => {
                     esta_eliminado: data.esta_eliminado,
                 },
             ]);
-            setClientName("");
-            setClientPhoneNumber("");
-            setActiveForm(null); // Cerrar el formulario después de agregar
         } catch (error) {
             console.error("Error al crear cliente:", error);
-            alert(`Error: ${error.response?.data?.message || error.message}`);
-        }
-    };
-
-    const handleEditClientForm = (clientData) => {
-        // Si el formulario de editar ya está abierto con el mismo cliente, lo cierra
-        if (
-            activeForm === "edit" &&
-            clientToEdit?.phoneNumber === clientData.phoneNumber
-        ) {
-            setActiveForm(null);
-            setClientName("");
-            setClientPhoneNumber("");
-            setClientToEdit(null);
-        } else {
-            // Abre o alterna al formulario de editar
-            setActiveForm("edit");
-            setClientName(clientData.title);
-            setClientPhoneNumber(clientData.phoneNumber);
-            setClientToEdit(clientData);
-        }
-    };
-
-    const handleSubmitEdit = async (e) => {
-        e.preventDefault();
-        try {
-            const updatedClient = await clientsService.updateClient(
-                clientToEdit.id,
-                {
-                    nombre_completo: clientName,
-                    telefono: clientPhoneNumber,
-                }
+            AlertError(
+                `Error: ${error.response?.data?.message || error.message}`
             );
+        }
+    };
 
-            // Actualizar el estado usando el ID
+    const handleEditClientForm = async (clientData) => {
+        const values = await promptEditClient(clientData);
+        if (!values) return; // cancelado o sin cambios
+        try {
+            const updated = await clientsService.updateClient(
+                clientData.id,
+                values
+            );
             const updatedClients = client.map((c) =>
-                c.id === clientToEdit.id
+                c.id === clientData.id
                     ? {
                           ...c,
-                          title: updatedClient.data.nombre_completo,
-                          phoneNumber: updatedClient.data.telefono,
+                          title: updated.nombre_completo,
+                          phoneNumber: updated.telefono,
                       }
                     : c
             );
-
             setClient(updatedClients);
-            setClientName("");
-            setClientPhoneNumber("");
-            setClientToEdit(null);
-            setActiveForm(null);
         } catch (error) {
-            alert(`Error: ${error.response?.data?.message || error.message}`);
+            AlertError(
+                `Error: ${error.response?.data?.message || error.message}`
+            );
         }
     };
+
+    // Eliminado: handleSubmitEdit ya no es necesario con SweetAlert
 
     const handleDeleteClient = async (clientData) => {
         const confirmDelete = await windowDelete(clientData.title);
@@ -138,18 +102,8 @@ const Clients = ({ handleLogOut }) => {
     };
 
     const toggleAddForm = () => {
-        if (activeForm === "add") {
-            // Si ya está abierto, lo cierra
-            setActiveForm(null);
-            setClientName("");
-            setClientPhoneNumber("");
-        } else {
-            // Abre el formulario de agregar (y cierra el de editar si estaba abierto)
-            setActiveForm("add");
-            setClientName("");
-            setClientPhoneNumber("");
-            setClientToEdit(null);
-        }
+        // Ahora abre el prompt de creación
+        handleAddClient();
     };
 
     // Filtrar clientes según el término de búsqueda
@@ -192,30 +146,6 @@ const Clients = ({ handleLogOut }) => {
                         functionOnClick={handleLogOut}
                         className="btn-logout"
                     />
-                    {activeForm === "add" && (
-                        <div className="client-overlay">
-                            <GenericClientForm
-                                handleSubmitClient={handleAddClient}
-                                clientName={clientName}
-                                clientPhoneNumber={clientPhoneNumber}
-                                setClientName={setClientName}
-                                setClientPhoneNumber={setClientPhoneNumber}
-                                formTitle="Agregar Cliente"
-                            />
-                        </div>
-                    )}
-                    {activeForm === "edit" && (
-                        <div className="client-overlay">
-                            <GenericClientForm
-                                handleSubmitClient={handleSubmitEdit}
-                                clientName={clientName}
-                                clientPhoneNumber={clientPhoneNumber}
-                                setClientName={setClientName}
-                                setClientPhoneNumber={setClientPhoneNumber}
-                                formTitle="Editar Cliente"
-                            />
-                        </div>
-                    )}
                 </div>
                 <h2>Clientes</h2>
                 <div className="client-search">
