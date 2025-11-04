@@ -38,25 +38,28 @@ function ClientList({ client, handleEditClientForm, handleDeleteClient }) {
     return (
         <div id="client-list">
             {client.map((c) => (
-                <div key={c.phoneNumber}>
-                    <div className="fc-draggable" data-title={c.title}>
+                <div className="client-item" key={c.phoneNumber}>
+                    <div
+                        className="client-info fc-draggable"
+                        data-title={c.title}
+                    >
                         <h3 className="client-title">{c.title}</h3>
                         <p className="client-phone">{c.phoneNumber}</p>
                     </div>
-                    <div>
+                    <div className="client-item-actions">
                         <ButtonClientsList
                             text={"Editar Cliente"}
                             functionOnClick={() => handleEditClientForm(c)}
                             imgSource={"../../../../assets/img/editClient.png"}
+                            className="btn-edit"
                         />
-                    </div>
-                    <div>
                         <ButtonClientsList
                             text={"Eliminar Cliente"}
                             functionOnClick={() => handleDeleteClient(c)}
                             imgSource={
                                 "../../../../assets/img/deleteClient.png"
                             }
+                            className="btn-delete"
                         />
                     </div>
                 </div>
