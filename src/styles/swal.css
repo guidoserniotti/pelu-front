@@ -1,0 +1,92 @@
+@import url("./variables.css");
+
+/* Popup base */
+.swal-theme-popup {
+    background: var(--surface-2) !important;
+    color: var(--text-inverse) !important;
+    border: 1px solid var(--border-muted-dark) !important;
+    box-shadow: var(--shadow-strong) !important;
+    border-radius: 12px !important;
+}
+
+/* Title and text */
+.swal-theme-title {
+    font-family: var(--font-family-title) !important;
+    font-weight: var(--font-weight-bold) !important;
+    color: var(--text-inverse) !important;
+}
+.swal-theme-text {
+    font-family: var(--font-family-base) !important;
+    color: var(--text-inverse) !important;
+    opacity: 0.9;
+}
+
+/* Actions layout */
+.swal-theme-actions {
+    gap: 10px !important;
+}
+
+/* Buttons (custom styling; buttonsStyling=false) */
+.swal-theme-confirm,
+.swal-theme-cancel {
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 16px !important;
+    font-family: var(--font-family-base) !important;
+    font-weight: var(--font-weight-medium) !important;
+}
+
+.swal-theme-confirm {
+    background-color: var(--login-accent) !important;
+    color: var(--surface-1) !important;
+}
+.swal-theme-confirm:hover {
+    background-color: #b89b31 !important;
+}
+
+.swal-theme-cancel {
+    background-color: var(--error-bg) !important;
+    color: var(--error-text) !important;
+}
+.swal-theme-cancel:hover {
+    background-color: #c62828 !important;
+}
+
+/* Icons */
+.swal2-icon.swal2-warning {
+    border-color: var(--login-accent) !important;
+    color: var(--login-accent) !important;
+}
+.swal2-icon.swal2-error {
+    border-color: var(--error-bg) !important;
+    color: var(--error-bg) !important;
+}
+
+/* Optional animations */
+.swal-theme-show {
+    animation: swalThemeFadeIn 180ms ease-out;
+}
+.swal-theme-hide {
+    animation: swalThemeFadeOut 140ms ease-in forwards;
+}
+
+@keyframes swalThemeFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes swalThemeFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+}
