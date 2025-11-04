@@ -24,3 +24,46 @@ body {
         url("../../assets/img/backGround.png") center / cover fixed no-repeat;
     color: var(--text-inverse);
 }
+
+@media (max-width: 768px), (max-height: 800px) {
+    #client-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    #client-list {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+}
+
+.client-form {
+    background-color: var(--color-secundario);
+    border-radius: 0.5rem;
+    box-shadow: 1rem 1rem 1.5rem rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Overlay que oscurece la aplicación cuando se muestra el formulario */
+.client-overlay {
+    position: fixed;
+    inset: 0; /* top:0; right:0; bottom:0; left:0 */
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999; /* Debajo del modal (.client-form z-index:1000) */
+}
+
+/* Asegurar que el formulario interno mantenga su z-index por encima de la overlay */
+.client-overlay .client-form {
+    z-index: 1000;
+}

@@ -3,8 +3,9 @@ import "../styles/clients.css";
 import clientsService from "../services/clients";
 import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
-import GenericClientForm from "../components/GenericClientForm";
 import Calendar from "../components/FullCalendar";
+import GenericClientForm from "../components/GenericClientForm";
+import clientsService from "../services/clients";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 const Clients = ({ handleLogOut }) => {
     // Estado para controlar qué formulario está abierto: null, "add" o "edit"
