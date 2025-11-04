@@ -1,0 +1,136 @@
+/* Variables compartidas */
+@import url("./variables.css");
+
+/*
+=======================
+CALENDAR (HIGH CONTRAST DARK)
+=======================
+*/
+.calendar-container {
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: var(--shadow-strong);
+    color: var(--text-inverse);
+}
+
+/* Toolbar y títulos */
+.calendar-container .fc .fc-toolbar-title {
+    color: var(--text-inverse);
+}
+.calendar-container .fc .fc-button-primary {
+    background: var(--surface-3);
+    border: 1px solid var(--border-muted-dark);
+}
+.calendar-container .fc .fc-button-primary:hover {
+    background: var(--accent-primary, #d4af37);
+    border-color: var(--accent-primary, #d4af37);
+    color: #000;
+}
+
+/* Bordes y grillas */
+.calendar-container .fc-theme-standard td,
+.calendar-container .fc-theme-standard th {
+    border-color: var(--border-muted-dark);
+}
+.calendar-container .fc .fc-scrollgrid,
+.calendar-container .fc .fc-view-harness,
+.calendar-container .fc .fc-timegrid,
+.calendar-container .fc .fc-daygrid {
+    background: var(--surface-1);
+}
+
+/* Etiquetas de horas y columnas */
+.calendar-container .fc .fc-timegrid-axis-cushion,
+.calendar-container .fc .fc-timegrid-slot-label-cushion,
+.calendar-container .fc .fc-col-header-cell-cushion {
+    color: var(--text-inverse);
+}
+
+/* Hover/selecciones suaves en oscuro */
+.calendar-container .fc .fc-daygrid-day:hover,
+.calendar-container .fc .fc-timegrid-slot:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Eventos (cuando se agreguen) */
+.calendar-container .fc .fc-event {
+    border-radius: 8px;
+    border: 1px solid var(--border-muted-dark);
+}
+
+/*
+    Eventos: ocultar hora y priorizar el título con elipsis
+    Si prefieres mostrar la hora más chica en lugar de ocultarla,
+    comenta la regla 'display: none' y deja el font-size reducido.
+*/
+.calendar-container .fc .fc-event-time {
+    /* Oculta la hora
+    */
+    display: none;
+    /* Alternativa (mostrar más chico):
+    font-weight: 100;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    */
+}
+
+.calendar-container .fc .fc-event-title {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 800;
+}
+
+.calendar-container .fc .fc-timegrid-event .fc-event-main,
+.calendar-container .fc .fc-daygrid-event .fc-event-main {
+    padding: 2px 8px;
+}
+
+/* Estilos para el contenido personalizado del evento */
+.calendar-container .fc-custom-event {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.calendar-container .fc-custom-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    opacity: 0.95;
+}
+
+.calendar-container .fc-custom-time-divider {
+    color: var(--text-inverse);
+    opacity: 0.8;
+}
+
+.calendar-container .fc-custom-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+}
+
+/*
+        Scrollbars invisibles en los contenedores con scroll del calendario
+        Mantiene el scroll funcional pero oculta las barras en todos los navegadores.
+    */
+.calendar-container .fc .fc-scroller,
+.calendar-container .fc .fc-view-harness,
+.calendar-container .fc .fc-scrollgrid {
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE/Edge legacy */
+    -ms-overflow-style: none;
+}
+
+.calendar-container .fc .fc-scroller::-webkit-scrollbar,
+.calendar-container .fc .fc-view-harness::-webkit-scrollbar,
+.calendar-container .fc .fc-scrollgrid::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}

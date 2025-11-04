@@ -1,0 +1,55 @@
+/* Import de fuentes modernas */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap");
+
+:root {
+    /* FullCalendar defaults (existentes) */
+    --fc-small-font-size: 0.85em;
+    --fc-page-bg-color: #fff;
+    --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
+    --fc-neutral-text-color: #808080;
+    --fc-border-color: #ddd;
+
+    /* === Colores para el Login === */
+    --login-bg-dark: #1a1a1a;
+    --login-bg-light: #2e2e2e;
+    --login-text-primary: #ffffff;
+    --login-text-secondary: #a0a0a0;
+    --login-accent: #d4af37; /* Dorado de acento */
+
+    /* === Tipografías globales === */
+    --font-family-base: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+        Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+    --font-family-title: "Poppins", var(--font-family-base);
+    --font-weight-regular: 400;
+    --font-weight-medium: 600;
+    --font-weight-bold: 700;
+
+    /* === Notificaciones de error === */
+    --error-bg: #e53935; /* Bright red */
+    --error-bg-alt: #ff3b30; /* Alternate bright red */
+    --error-text: #ffffff; /* White text */
+    --error-border: #c62828; /* Slightly darker border */
+    --error-shadow: rgba(229, 57, 53, 0.5); /* Pronounced red shadow */
+
+    /* === Paleta de alto contraste (general) === */
+    /* Superficies oscuras para calendario y fondos */
+    --surface-0: #0e0f12; /* Negro azulado muy oscuro */
+    --surface-1: #15171b; /* Fondo principal oscuro */
+    --surface-2: #1e2127; /* Panel/controles oscuros */
+    --surface-3: #2a2f37; /* Resaltados/hover en oscuro */
+
+    /* Superficies claras para panel de clientes */
+    --surface-contrast: #f7f8fa; /* Panel claro */
+    --surface-contrast-2: #ffffff; /* Elementos dentro del panel claro */
+
+    /* Textos */
+    --text-strong: #0e0f12; /* Casi negro para superficies claras */
+    --text-muted: #6b7280; /* Gris medio para secundarios en claro */
+    --text-inverse: #e8eaed; /* Texto claro para fondo oscuro */
+
+    /* Bordes y sombras */
+    --border-contrast: rgba(0, 0, 0, 0.08); /* Borde sutil en claro */
+    --border-muted-dark: rgba(255, 255, 255, 0.08); /* Borde sutil en oscuro */
+    --shadow-strong: 0 10px 30px rgba(0, 0, 0, 0.55);
+}

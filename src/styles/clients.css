@@ -1,0 +1,212 @@
+/* Variables compartidas */
+@import url("./variables.css");
+
+/*
+=======================
+CLIENTS PAGE
+=======================
+*/
+
+/* Layout principal: lista (izquierda) + calendario (derecha) */
+.main-calendar-container {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 16px;
+    height: 100vh;
+    padding: 12px;
+    /* Deja ver el fondo global con imagen
+    background: var(
+        --surface-1
+    ); /* fondo general oscuro para separar del panel claro
+    */
+    background: transparent;
+}
+
+/* Panel lateral de clientes */
+.client-container {
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* para que flex hijo con overflow funcione */
+    box-shadow: var(--shadow-strong);
+    color: var(--text-inverse);
+    border: 1px solid var(--border-muted-dark);
+}
+
+.client-container h2 {
+    font-family: var(--font-family-title);
+    font-weight: var(--font-weight-bold);
+    margin: 8px 0 12px;
+    text-align: center;
+    color: var(--text-inverse);
+}
+
+/* Botones superiores: Agregar / Logout */
+.client-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    background: var(--surface-2);
+    padding-bottom: 8px;
+    z-index: 2;
+    border-bottom: 1px solid var(--border-muted-dark);
+}
+
+/* Búsqueda */
+.client-search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.client-search input[type="text"] {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-muted-dark);
+    background: var(--surface-3);
+    color: var(--text-inverse);
+    font-family: var(--font-family-base);
+}
+.client-search input[type="text"]::placeholder {
+    color: var(--text-inverse);
+    opacity: 0.6;
+}
+.client-search input[type="text"]:focus {
+    outline: none;
+    border-color: var(--login-accent);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+
+.client-search button {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-muted-dark);
+    background: var(--surface-3);
+    color: var(--text-inverse);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.client-search button:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Lista scrollable sin mostrar la barra */
+#client-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+    /* Firefox */
+    scrollbar-width: none;
+}
+
+/* Chrome, Safari, Edge (WebKit) */
+#client-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+#client-list::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+#client-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* IE/Edge legacy */
+#client-list {
+    -ms-overflow-style: none;
+}
+
+/* Ítems de la lista */
+.client-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border-contrast);
+    border-radius: 8px;
+}
+
+.client-item:last-child {
+    border-bottom: none;
+}
+
+.client-item:hover {
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.client-info {
+    flex: 1;
+    cursor: grab;
+}
+.client-info:active {
+    cursor: grabbing;
+}
+
+.client-title {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-inverse);
+}
+
+.client-phone {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.client-item-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* Botón reutilizable (refactorizado) */
+.client-action-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.client-action-button img {
+    width: 24px;
+    height: 24px;
+    opacity: 0.9;
+}
+.client-action-button:hover img {
+    opacity: 1;
+}
+.client-action-button:active {
+    transform: scale(0.96);
+}
+
+/* Hover amarillo suave por defecto (editar, etc.) */
+.client-action-button:hover {
+    background-color: rgba(212, 175, 55, 0.22);
+}
+
+/* Hover específico eliminar (rojo muy suave) */
+.client-action-button.btn-delete:hover {
+    background-color: rgba(229, 57, 53, 0.14);
+}
+
+/* Botones de cabecera (add / logout) reusan el mismo patrón */
+.client-header-actions .client-action-button {
+    width: 40px;
+    height: 40px;
+}

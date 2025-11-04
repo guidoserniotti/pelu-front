@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import "../styles/clients.css";
+import clientsService from "../services/clients";
 import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
 import Calendar from "../components/FullCalendar";
 import GenericClientForm from "../components/GenericClientForm";
 import clientsService from "../services/clients";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
-
 const Clients = ({ handleLogOut }) => {
     // Estado para controlar qué formulario está abierto: null, "add" o "edit"
     const [activeForm, setActiveForm] = useState(null);
@@ -75,10 +76,22 @@ const Clients = ({ handleLogOut }) => {
     };
 
     const handleEditClientForm = (clientData) => {
-        setActiveForm("edit");
-        setClientName(clientData.title);
-        setClientPhoneNumber(clientData.phoneNumber);
-        setClientToEdit(clientData);
+        // Si el formulario de editar ya está abierto con el mismo cliente, lo cierra
+        if (
+            activeForm === "edit" &&
+            clientToEdit?.phoneNumber === clientData.phoneNumber
+        ) {
+            setActiveForm(null);
+            setClientName("");
+            setClientPhoneNumber("");
+            setClientToEdit(null);
+        } else {
+            // Abre o alterna al formulario de editar
+            setActiveForm("edit");
+            setClientName(clientData.title);
+            setClientPhoneNumber(clientData.phoneNumber);
+            setClientToEdit(clientData);
+        }
     };
 
     const handleSubmitEdit = async (e) => {
@@ -124,19 +137,19 @@ const Clients = ({ handleLogOut }) => {
         setClient(updatedClients);
     };
 
-    // Abrir siempre el formulario de agregar (no hacer toggle)
     const toggleAddForm = () => {
-        setActiveForm("add");
-        setClientName("");
-        setClientPhoneNumber("");
-        setClientToEdit(null);
-    };
-
-    const handleCancelForm = () => {
-        setActiveForm(null);
-        setClientName("");
-        setClientPhoneNumber("");
-        setClientToEdit(null);
+        if (activeForm === "add") {
+            // Si ya está abierto, lo cierra
+            setActiveForm(null);
+            setClientName("");
+            setClientPhoneNumber("");
+        } else {
+            // Abre el formulario de agregar (y cierra el de editar si estaba abierto)
+            setActiveForm("add");
+            setClientName("");
+            setClientPhoneNumber("");
+            setClientToEdit(null);
+        }
     };
 
     // Filtrar clientes según el término de búsqueda
@@ -166,38 +179,44 @@ const Clients = ({ handleLogOut }) => {
     return (
         <div className="main-calendar-container">
             <div className="client-container">
-                <ButtonClientsList
-                    text={"Agregar Cliente"}
-                    imgSource={"../../assets/img/addClient.png"}
-                    functionOnClick={toggleAddForm}
-                />
-                <ButtonClientsList
-                    text={"LogOut"}
-                    imgSource={"../../assets/img/logout.png"}
-                    functionOnClick={handleLogOut}
-                />
-                {activeForm === "add" && (
-                    <GenericClientForm
-                        handleSubmitClient={handleAddClient}
-                        clientName={clientName}
-                        clientPhoneNumber={clientPhoneNumber}
-                        setClientName={setClientName}
-                        setClientPhoneNumber={setClientPhoneNumber}
-                        formTitle="Agregar Cliente"
-                        onCancel={handleCancelForm}
+                <div className="client-header-actions">
+                    <ButtonClientsList
+                        text={"Agregar Cliente"}
+                        imgSource={"../../assets/img/addClient.png"}
+                        functionOnClick={toggleAddForm}
+                        className="btn-add"
                     />
-                )}
-                {activeForm === "edit" && (
-                    <GenericClientForm
-                        handleSubmitClient={handleSubmitEdit}
-                        clientName={clientName}
-                        clientPhoneNumber={clientPhoneNumber}
-                        setClientName={setClientName}
-                        setClientPhoneNumber={setClientPhoneNumber}
-                        formTitle="Editar Cliente"
-                        onCancel={handleCancelForm}
+                    <ButtonClientsList
+                        text={"LogOut"}
+                        imgSource={"../../assets/img/logout.png"}
+                        functionOnClick={handleLogOut}
+                        className="btn-logout"
                     />
-                )}
+                    {activeForm === "add" && (
+                        <div className="client-overlay">
+                            <GenericClientForm
+                                handleSubmitClient={handleAddClient}
+                                clientName={clientName}
+                                clientPhoneNumber={clientPhoneNumber}
+                                setClientName={setClientName}
+                                setClientPhoneNumber={setClientPhoneNumber}
+                                formTitle="Agregar Cliente"
+                            />
+                        </div>
+                    )}
+                    {activeForm === "edit" && (
+                        <div className="client-overlay">
+                            <GenericClientForm
+                                handleSubmitClient={handleSubmitEdit}
+                                clientName={clientName}
+                                clientPhoneNumber={clientPhoneNumber}
+                                setClientName={setClientName}
+                                setClientPhoneNumber={setClientPhoneNumber}
+                                formTitle="Editar Cliente"
+                            />
+                        </div>
+                    )}
+                </div>
                 <h2>Clientes</h2>
                 <div className="client-search">
                     <input

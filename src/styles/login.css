@@ -1,0 +1,133 @@
+/* Variables compartidas */
+@import url("./variables.css");
+
+/*
+=======================
+LOGIN
+=======================
+*/
+.login-page-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    /* Deja ver el fondo global con imagen 
+    background-color: var(--login-bg-dark)
+    ; /* fondo general oscuro para separar del panel claro */
+    background: transparent;
+    color: var(--login-text-primary);
+}
+
+.login-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Deja ver el fondo global con imagen */
+    background: transparent;
+}
+
+.login-left .login-logo {
+    max-width: 18rem;
+    border-radius: 50%;
+}
+
+.login-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Deja ver el fondo global con imagen */
+    background: transparent;
+}
+
+.login-box {
+    background-color: var(--login-bg-light);
+    padding: 40px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.login-title {
+    font-family: var(--font-family-title);
+    font-weight: var(--font-weight-bold);
+    color: var(--login-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.login-data {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-data-label {
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-medium);
+    font-size: 0.85rem;
+    color: var(--login-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.login-data-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--login-text-secondary);
+    background-color: var(--login-bg-dark);
+    color: var(--login-text-primary);
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: var(--font-family-base);
+}
+
+.login-data-input::placeholder {
+    color: var(--login-text-secondary);
+}
+
+.login-data-input:focus {
+    outline: none;
+    border-color: var(--login-accent);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.login-data-btn[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--login-accent);
+    color: var(--login-bg-dark);
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    font-family: var(--font-family-title);
+}
+
+.login-data-btn[type="submit"]:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+.login-data-btn[type="submit"]:hover:not(:disabled) {
+    background-color: #b89b31; /* Un dorado más oscuro para el hover */
+}
+
+.forgot-password {
+    text-align: center;
+    color: var(--login-text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
