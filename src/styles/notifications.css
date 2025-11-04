@@ -1,0 +1,67 @@
+/* Variables compartidas */
+@import url("./variables.css");
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/*
+=======================
+NOTIFICATIONS LOGIN
+=======================
+*/
+/* Animación de entrada */
+@keyframes notif-enter {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Accesibilidad: desactivar animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+    .login-data-notification {
+        animation: none !important;
+    }
+}
+
+/* Contenedor genérico cuando viene una lista */
+.error.login-data-notification {
+    margin: 6px 0;
+}
+
+/* Lista dentro del contenedor */
+.error-list.login-data-notification {
+    margin: 0;
+}
+
+/* Ítem de error (funciona para lista y para mensaje único) */
+.error-item.login-data-notification {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: 0 8px 20px var(--error-shadow);
+    line-height: 1.35;
+    animation: notif-enter 260ms ease-out both;
+}
+
+/* Espaciado vertical cuando aparecen varios errores en lista */
+.error-list.login-data-notification
+    .error-item.login-data-notification
+    + .error-item.login-data-notification {
+    margin-top: 8px;
+}
+
+/* Variante opcional por si se usa className="error-notification" además */
+.error-notification.login-data-notification,
+.error-item.login-data-notification.error-notification {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+}

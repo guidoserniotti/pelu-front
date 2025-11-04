@@ -1,20 +1,25 @@
-const Notification = ({ message }) => {
-  // Render nothing when there's no message
-  if (!message || (Array.isArray(message) && message.length === 0)) return null;
+import "../styles/notifications.css";
 
-  if (Array.isArray(message)) {
-    return (
-      <div className="error">
-        <ul style={{ margin: 0, paddingLeft: "1.1rem" }}>
-          {message.map((m, idx) => (
-            <li key={idx}>{m}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
+const Notification = ({ message, className }) => {
+    // Render nothing when there's no message
+    if (!message || (Array.isArray(message) && message.length === 0))
+        return null;
 
-  return <div className="error">{message}</div>;
+    if (Array.isArray(message)) {
+        return (
+            <div className={`error ${className}`}>
+                <ul className={`error-list ${className}`}>
+                    {message.map((m, idx) => (
+                        <li className={`error-item ${className}`} key={idx}>
+                            {m}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    }
+
+    return <div className={`error-item ${className}`}>{message}</div>;
 };
 
 export default Notification;
