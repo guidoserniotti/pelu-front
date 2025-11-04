@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "../styles/clients.css";
 import clientsService from "../services/clients";
 import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
