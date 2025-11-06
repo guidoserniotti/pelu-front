@@ -8,7 +8,7 @@ const Toast = Swal.mixin({
         popup: "colored-toast",
     },
     showConfirmButton: false,
-    timer: 1500,
+    timer: 1800,
     timerProgressBar: true,
 });
 export default Toast;

@@ -12,6 +12,11 @@ Estructura ordenada por secciones para facilitar mantenimiento.
 ==================================================
 */
 
+/* Aseguramos que los contenedores de SweetAlert2 estén siempre por encima */
+.swal2-container {
+    z-index: 10000 !important;
+}
+
 /*
 ------------------------------
 1) POPUPS & FORMS
@@ -102,6 +107,37 @@ Estructura ordenada por secciones para facilitar mantenimiento.
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18) !important;
 }
 
+/* Contenido de error (AlertError) */
+.swal-error-msg {
+    margin: 0 0 6px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+.swal-error-help {
+    margin: 6px 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+.swal-footer-error-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+    text-align: left;
+}
+.swal-footer-error-list li {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    box-shadow: 0 6px 16px var(--error-shadow);
+}
+.swal-footer-error-list li + li {
+    margin-top: 6px;
+}
+
 /*
 ------------------------------
 2) ICONS
@@ -141,6 +177,13 @@ Estructura ordenada por secciones para facilitar mantenimiento.
     background-color: var(--error-bg) !important;
     border-color: var(--error-border) !important;
     box-shadow: 0 10px 26px var(--error-shadow) !important;
+}
+
+/* Info neon */
+.colored-toast.swal2-icon-info {
+    background-color: var(--info-bg) !important;
+    border-color: var(--info-border) !important;
+    box-shadow: 0 10px 26px var(--info-shadow) !important;
 }
 
 /* Texto con leve contraste para legibilidad */

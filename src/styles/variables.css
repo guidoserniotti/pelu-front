@@ -39,6 +39,11 @@
     --success-border: #00c853; /* Darker green border */
     --success-shadow: rgba(0, 230, 118, 0.45); /* Pronounced green shadow */
 
+    /* === Info (toasts neón azul) === */
+    --info-bg: #00b2ff; /* Neon blue */
+    --info-border: #008ae6; /* Slightly darker blue border */
+    --info-shadow: rgba(0, 178, 255, 0.45); /* Pronounced blue shadow */
+
     /* === Paleta de alto contraste (general) === */
     /* Superficies oscuras para calendario y fondos */
     --surface-0: #0e0f12; /* Negro azulado muy oscuro */

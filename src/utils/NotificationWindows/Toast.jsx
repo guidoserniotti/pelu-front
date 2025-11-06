@@ -1,10 +1,18 @@
 import ThemeToast from "../swalThemeToast";
 
-const Toast = async (icon, title, timer = 3000) => {
+// Flexible Toast: accepts (icon, title, timer) or (icon, title, options)
+const Toast = async (icon, title, thirdArg) => {
+    const options =
+        typeof thirdArg === "number"
+            ? { timer: thirdArg }
+            : typeof thirdArg === "object" && thirdArg !== null
+            ? thirdArg
+            : { timer: 3000 };
+
     await ThemeToast.fire({
         icon,
         title,
-        timer,
+        ...options,
     });
 };
 
