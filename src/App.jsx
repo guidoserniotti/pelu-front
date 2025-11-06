@@ -122,7 +122,15 @@ const App = () => {
         if (!LogOut) return;
         window.localStorage.removeItem("loggedUser");
         setIsLogin(false);
-        navigate("/login", { replace: true });
+        navigate("/login", {
+            replace: true,
+            state: {
+                toast: {
+                    icon: "success",
+                    title: "Sesión cerrada correctamente",
+                },
+            },
+        });
     };
 
     const handleChange = (e) => {

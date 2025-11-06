@@ -1,5 +1,8 @@
 import logo from "../../assets/img/logo.jpg";
 import Notification from "../components/Notification";
+import Toast from "../utils/NotificationWindows/Toast";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../styles/login.css";
 
 const LoginForm = ({
@@ -7,6 +10,19 @@ const LoginForm = ({
     loginData: { email, password, errors },
     handleChange,
 }) => {
+    const location = useLocation();
+
+    // Mostrar toast (si viene del logout) apenas se monta/entra
+    useEffect(() => {
+        const notificationLogOut = () => {
+            Toast("success", "Sesión cerrada correctamente");
+        };
+        console.log(location.state);
+        const toastPayload = location.state?.toast;
+        if (toastPayload?.icon && toastPayload?.title) {
+            notificationLogOut();
+        }
+    }, [location.state]);
     return (
         <div className="login-page-container">
             <div className="login-left">
