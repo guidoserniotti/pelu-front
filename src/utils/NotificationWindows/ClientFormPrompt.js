@@ -8,7 +8,7 @@ const buildHtml = (name = "", phone = "") => `
   <input type="tel" id="client-phone" class="swal2-input" placeholder="Teléfono" value="${phone.replace(
       /"/g,
       "&quot;"
-  )}">
+  )}"><br>
 `;
 
 const isValidPhone = (value) => {
@@ -58,10 +58,10 @@ export async function promptEditClient(initial) {
     const result = await ThemedSwal.fire({
         title: "Editar Cliente",
         html: buildHtml(initial?.title || "", initial?.phoneNumber || ""),
-        confirmButtonText: "Guardar",
+        confirmButtonText: "Actualizar",
         cancelButtonText: "Cancelar",
         showCancelButton: true,
-        focusConfirm: false,
+        focusConfirm: true,
         didOpen: () => {
             const popup = ThemedSwal.getPopup();
             nameInput = popup.querySelector("#client-name");
