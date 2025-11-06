@@ -5,6 +5,7 @@ import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
 import Calendar from "../components/FullCalendar";
 import AlertError from "../utils/NotificationWindows/AlertError";
+import Toast from "../utils/NotificationWindows/Toast";
 // Reemplazamos formularios flotantes por SweetAlert2 temado
 import {
     promptAddClient,
@@ -35,29 +36,38 @@ const Clients = ({ handleLogOut }) => {
                 setClient(formattedClients);
             } catch (error) {
                 console.error("Error fetching clients:", error);
+                AlertError(
+                    `Error al cargar clientes: ${
+                        error.response?.data?.message || error.message
+                    }`
+                );
             }
         };
         fetchClients();
+        Toast("info", "Clientes cargados correctamente");
     }, []); // ← Solo se ejecuta al montar el componente
 
     const handleAddClient = async () => {
         const values = await promptAddClient();
         if (!values) return; // cancelado
         try {
-            const data = await clientsService.createClient(values);
+            const created = await clientsService.createClient(values);
+            console.log("Cliente creado:", created);
             setClient((prev) => [
                 ...prev,
                 {
-                    id: data.id,
-                    title: data.nombre_completo,
-                    phoneNumber: data.telefono,
+                    id: created.data.id,
+                    title: created.data.nombre_completo,
+                    phoneNumber: created.data.telefono,
                     editable: true,
-                    esta_eliminado: data.esta_eliminado,
+                    esta_eliminado: created.data.esta_eliminado,
                 },
             ]);
+            Toast("success", `Cliente creado: ${created.data.nombre_completo}`);
         } catch (error) {
             console.error("Error al crear cliente:", error);
-            AlertError(
+            Toast(
+                "error",
                 `Error: ${error.response?.data?.message || error.message}`
             );
         }
@@ -75,14 +85,19 @@ const Clients = ({ handleLogOut }) => {
                 c.id === clientData.id
                     ? {
                           ...c,
-                          title: updated.nombre_completo,
-                          phoneNumber: updated.telefono,
+                          title: updated.data.nombre_completo,
+                          phoneNumber: updated.data.telefono,
                       }
                     : c
             );
             setClient(updatedClients);
+            Toast(
+                "success",
+                `Cliente actualizado: ${updated.data.nombre_completo}`
+            );
         } catch (error) {
-            AlertError(
+            Toast(
+                "error",
                 `Error: ${error.response?.data?.message || error.message}`
             );
         }
@@ -99,6 +114,7 @@ const Clients = ({ handleLogOut }) => {
 
         const updatedClients = client.filter((c) => c.id !== clientData.id);
         setClient(updatedClients);
+        Toast("success", `Cliente eliminado: ${clientData.title}`);
     };
 
     const toggleAddForm = () => {
