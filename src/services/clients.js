@@ -1,17 +1,18 @@
 import axios from "axios";
-import config from "../utils/config.js";
+import authService from "../utils/config";
+
 const baseUrl = "/api/cliente";
 
 const getClients = async () => {
     const response = await axios.get(`${baseUrl}?pagina=1&limite=100`, {
-        headers: config.getAuthHeader(),
+        headers: authService.getAuthHeader(),
     });
     return response.data;
 };
 
 const createClient = async (clientData) => {
     const response = await axios.post(`${baseUrl}/registrar`, clientData, {
-        headers: config.getAuthHeader(),
+        headers: authService.getAuthHeader(),
     });
     return response.data;
 };
@@ -23,7 +24,7 @@ const updateClient = async (clientId, clientData) => {
         `${baseUrl}/editar/${clientId}`,
         clientData,
         {
-            headers: config.getAuthHeader(),
+            headers: authService.getAuthHeader(),
         }
     );
     console.log("Respuesta de updateClient:", response.data);
@@ -32,7 +33,7 @@ const updateClient = async (clientId, clientData) => {
 
 const deleteClient = async (clientId) => {
     const response = await axios.delete(`${baseUrl}/eliminar/${clientId}`, {
-        headers: config.getAuthHeader(),
+        headers: authService.getAuthHeader(),
     });
     return response.data;
 };

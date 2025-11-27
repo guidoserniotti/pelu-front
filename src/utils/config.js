@@ -1,19 +1,15 @@
-let token = null;
-const setToken = (newToken) => {
-    token = `Bearer ${newToken}`;
-};
 // Función helper para obtener el token del localStorage
 const getAuthHeader = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
     if (loggedUserJSON) {
+        const userData = JSON.parse(loggedUserJSON);
         return {
-            Authorization: token,
+            Authorization: `Bearer ${userData.token}`,
         };
     }
     return {};
 };
 
 export default {
-    setToken,
     getAuthHeader,
 };
