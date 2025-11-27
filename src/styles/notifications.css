@@ -23,11 +23,30 @@ NOTIFICATIONS LOGIN
     }
 }
 
+/* Animación de desvanecimiento para errores del servidor */
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
 /* Accesibilidad: desactivar animaciones si el usuario lo prefiere */
 @media (prefers-reduced-motion: reduce) {
     .login-data-notification {
         animation: none !important;
     }
+}
+
+/* Error del servidor con desvanecimiento automático */
+.error-item.login-data-notification.server-error {
+    animation: notif-enter 260ms ease-out both, fade-out 4s ease-in-out forwards;
 }
 
 /* Contenedor genérico cuando viene una lista */
