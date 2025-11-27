@@ -6,13 +6,16 @@ import ClientList from "../components/ClientList";
 import Calendar from "../components/FullCalendar";
 import AlertError from "../utils/NotificationWindows/AlertError";
 import Toast from "../utils/NotificationWindows/Toast";
+import { useAuth } from "../auth/AuthContext";
 // Reemplazamos formularios flotantes por SweetAlert2 temado
 import {
     promptAddClient,
     promptEditClient,
 } from "../utils/NotificationWindows/ClientFormPrompt";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
-const Clients = ({ handleLogOut }) => {
+import windowLogOut from "../utils/NotificationWindows/ConfirmLogOut";
+const Clients = () => {
+    const { logout } = useAuth();
     // Estado para manejar la lista de clientes
     const [client, setClient] = useState([]);
     const [filter, setFilter] = useState("");
@@ -115,6 +118,15 @@ const Clients = ({ handleLogOut }) => {
         const updatedClients = client.filter((c) => c.id !== clientData.id);
         setClient(updatedClients);
         Toast("success", `Cliente eliminado: ${clientData.title}`);
+    };
+
+    const handleLogOut = async () => {
+        const confirmLogout = await windowLogOut({
+            title: "¿Estás seguro de que deseas cerrar sesión?",
+        });
+        if (!confirmLogout) return;
+        // AuthProvider.logout already navigates to /login and passes the toast state
+        logout();
     };
 
     const toggleAddForm = () => {
