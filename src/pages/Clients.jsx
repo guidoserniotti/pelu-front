@@ -4,6 +4,7 @@ import clientsService from "../services/clients";
 import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
 import Calendar from "../components/FullCalendar";
+import DeleteZone from "../components/DeleteZone";
 import AlertError from "../utils/NotificationWindows/AlertError";
 import Toast from "../utils/NotificationWindows/Toast";
 import { useAuth } from "../auth/AuthContext";
@@ -20,6 +21,7 @@ const Clients = () => {
     const [client, setClient] = useState([]);
     const [filter, setFilter] = useState("");
     const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
+    const [isDraggingEvent, setIsDraggingEvent] = useState(false);
 
     useEffect(() => {
         const fetchClients = async () => {
@@ -158,44 +160,53 @@ const Clients = () => {
     return (
         <div className="main-calendar-container">
             <div className="client-container">
-                <div className="client-header-actions">
-                    <ButtonClientsList
-                        text={"Agregar Cliente"}
-                        imgSource={"../../assets/img/addClient.png"}
-                        functionOnClick={toggleAddForm}
-                        className="btn-add"
-                    />
-                    <ButtonClientsList
-                        text={"LogOut"}
-                        imgSource={"../../assets/img/logout.png"}
-                        functionOnClick={handleLogOut}
-                        className="btn-logout"
-                    />
-                </div>
-                <h2>Clientes</h2>
-                <div className="client-search">
-                    <input
-                        type="text"
-                        value={filter}
-                        placeholder="Buscar cliente..."
-                        onChange={handleSearch}
-                    />
-                    <button
-                        type="button"
-                        onClick={toggleSortOrder}
-                        style={{ marginLeft: "8px" }}
-                    >
-                        {sortOrder === "asc" ? "A → Z" : "Z → A"}
-                    </button>
-                </div>
-                <ClientList
-                    client={filteredClients}
-                    handleEditClientForm={handleEditClientForm}
-                    handleDeleteClient={handleDeleteClient}
-                />
+                {isDraggingEvent ? (
+                    <DeleteZone isVisible={isDraggingEvent} />
+                ) : (
+                    <>
+                        <div className="client-header-actions">
+                            <ButtonClientsList
+                                text={"Agregar Cliente"}
+                                imgSource={"../../assets/img/addClient.png"}
+                                functionOnClick={toggleAddForm}
+                                className="btn-add"
+                            />
+                            <ButtonClientsList
+                                text={"LogOut"}
+                                imgSource={"../../assets/img/logout.png"}
+                                functionOnClick={handleLogOut}
+                                className="btn-logout"
+                            />
+                        </div>
+                        <h2>Clientes</h2>
+                        <div className="client-search">
+                            <input
+                                type="text"
+                                value={filter}
+                                placeholder="Buscar cliente..."
+                                onChange={handleSearch}
+                            />
+                            <button
+                                type="button"
+                                onClick={toggleSortOrder}
+                                style={{ marginLeft: "8px" }}
+                            >
+                                {sortOrder === "asc" ? "A → Z" : "Z → A"}
+                            </button>
+                        </div>
+                        <ClientList
+                            client={filteredClients}
+                            handleEditClientForm={handleEditClientForm}
+                            handleDeleteClient={handleDeleteClient}
+                        />
+                    </>
+                )}
             </div>
             <div>
-                <Calendar clientList={client} />
+                <Calendar
+                    clientList={client}
+                    setIsDraggingEvent={setIsDraggingEvent}
+                />
             </div>
         </div>
     );

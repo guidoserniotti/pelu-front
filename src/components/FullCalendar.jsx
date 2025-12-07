@@ -11,9 +11,10 @@ import { promptCreateShift } from "../utils/NotificationWindows/ShiftFormPrompt"
 import Toast from "../utils/NotificationWindows/Toast";
 import AlertError from "../utils/NotificationWindows/AlertError";
 
-const Calendar = ({ clientList = [] }) => {
+const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
     const calendarRef = useRef(null);
+    const draggedEventRef = useRef(null);
 
     // Filtrar clientes activos del prop recibido
     const clientes = clientList.filter((client) => !client.esta_eliminado);
@@ -240,6 +241,58 @@ const Calendar = ({ clientList = [] }) => {
         selectInfo.view.calendar.unselect();
     };
 
+    // Manejar inicio de arrastre de evento
+    const handleEventDragStart = (info) => {
+        draggedEventRef.current = info.event;
+        setIsDraggingEvent(true);
+    };
+
+    // Manejar fin de arrastre de evento
+    const handleEventDragStop = async (info) => {
+        setIsDraggingEvent(false);
+
+        // Verificar si el evento fue soltado sobre la zona de eliminación
+        const deleteZone = document.getElementById("delete-zone");
+        if (deleteZone) {
+            const rect = deleteZone.getBoundingClientRect();
+            const mouseX = info.jsEvent.clientX;
+            const mouseY = info.jsEvent.clientY;
+
+            const isOverDeleteZone =
+                mouseX >= rect.left &&
+                mouseX <= rect.right &&
+                mouseY >= rect.top &&
+                mouseY <= rect.bottom;
+
+            if (isOverDeleteZone) {
+                const turnoId = info.event.id;
+                const turnoTitle = info.event.title;
+
+                try {
+                    // Eliminar del backend
+                    await shiftsService.eliminarTurno(turnoId);
+
+                    // Remover el evento del calendario
+                    info.event.remove();
+
+                    Toast("success", `Turno eliminado: ${turnoTitle}`);
+                } catch (error) {
+                    console.error("Error eliminando turno:", error);
+                    Toast(
+                        "error",
+                        `Error: ${
+                            error.response?.data?.message || error.message
+                        }`
+                    );
+                    // Revertir el cambio visual si hubo error
+                    info.revert();
+                }
+            }
+        }
+
+        draggedEventRef.current = null;
+    };
+
     return (
         <div className="calendar-container">
             <FullCalendar
@@ -319,6 +372,8 @@ const Calendar = ({ clientList = [] }) => {
                 editable={true}
                 dayMaxEvents={true}
                 eventLongPressDelay={500}
+                eventDragStart={handleEventDragStart}
+                eventDragStop={handleEventDragStop}
                 // unselectAuto={true}
                 // unselectCancel=".custom-button"     debería funcionar con eventos de forma similar
                 eventResizeStart={(info) => {

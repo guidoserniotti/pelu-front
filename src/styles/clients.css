@@ -24,6 +24,7 @@ CLIENTS PAGE
 
 /* Panel lateral de clientes */
 .client-container {
+    position: relative;
     background: var(--surface-2);
     border-radius: 12px;
     padding: 12px;
@@ -209,4 +210,78 @@ CLIENTS PAGE
 .client-header-actions .client-action-button {
     width: 40px;
     height: 40px;
+}
+
+/*
+=======================
+DELETE ZONE
+=======================
+*/
+
+.delete-zone-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(229, 57, 53, 0.92) 0%,
+        rgba(198, 40, 40, 0.95) 100%
+    );
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 0 40px rgba(229, 57, 53, 0.6),
+        inset 0 0 60px rgba(0, 0, 0, 0.3);
+    border: 2px dashed rgba(255, 255, 255, 0.4);
+    animation: pulse-delete 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-delete {
+    0%,
+    100% {
+        box-shadow: 0 0 40px rgba(229, 57, 53, 0.6),
+            inset 0 0 60px rgba(0, 0, 0, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 60px rgba(229, 57, 53, 0.8),
+            inset 0 0 80px rgba(0, 0, 0, 0.4);
+        transform: scale(1.02);
+    }
+}
+
+.delete-zone-content {
+    text-align: center;
+    color: white;
+    pointer-events: none;
+}
+
+.delete-zone-icon {
+    font-size: 80px;
+    margin-bottom: 16px;
+    animation: bounce-icon 0.8s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+@keyframes bounce-icon {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.delete-zone-text {
+    font-family: var(--font-family-title);
+    font-size: 24px;
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
 }

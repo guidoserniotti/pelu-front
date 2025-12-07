@@ -45,7 +45,13 @@ const listarTurnos = async (fecha_inicio, fecha_fin) => {
     return response.data;
 };
 
+const eliminarTurno = async (turnoId) => {
+    const response = await axios.delete(`${baseUrl}/eliminar/${turnoId}`);
+    return response.data;
+};
+
 export default {
     registrarTurno,
     listarTurnos,
+    eliminarTurno,
 };
