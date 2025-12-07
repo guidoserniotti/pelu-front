@@ -82,7 +82,8 @@ export function AuthProvider({ children }) {
                 setToken(userData.token);
                 setUser(userData);
             } catch (error) {
-                console.error("Token almacenado inválido:", error);
+                console.error("Token almacenado inválido o expirado:", error);
+                // Si el token expiró, limpiar pero no mostrar toast (aún está cargando)
                 clearSession();
             }
         }

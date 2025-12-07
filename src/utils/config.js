@@ -34,8 +34,8 @@ const getAuthHeader = () => {
     if (userData?.token) {
         // Verificar si el token ha expirado
         if (isTokenExpired(userData.token)) {
-            console.warn("Token expirado detectado");
-            window.localStorage.removeItem("loggedUser");
+            console.warn("Token expirado detectado en getAuthHeader");
+            // NO eliminamos aquí, dejar que el interceptor 401 lo maneje
             return {};
         }
 
@@ -53,8 +53,8 @@ const getUserId = () => {
     if (userData?.token) {
         // Verificar si el token ha expirado
         if (isTokenExpired(userData.token)) {
-            console.warn("Token expirado detectado");
-            window.localStorage.removeItem("loggedUser");
+            console.warn("Token expirado detectado en getUserId");
+            // NO eliminamos aquí, dejar que AuthProvider lo maneje
             return null;
         }
 
@@ -71,8 +71,8 @@ const getTokenPayload = () => {
     if (userData?.token) {
         // Verificar si el token ha expirado
         if (isTokenExpired(userData.token)) {
-            console.warn("Token expirado detectado");
-            window.localStorage.removeItem("loggedUser");
+            console.warn("Token expirado detectado en getTokenPayload");
+            // NO eliminamos aquí, dejar que AuthProvider lo maneje
             return null;
         }
 

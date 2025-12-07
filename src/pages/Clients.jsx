@@ -37,6 +37,7 @@ const Clients = () => {
                     }
                 );
                 setClient(formattedClients);
+                Toast("info", "Clientes cargados correctamente");
             } catch (error) {
                 console.error("Error fetching clients:", error);
                 AlertError(
@@ -47,7 +48,6 @@ const Clients = () => {
             }
         };
         fetchClients();
-        Toast("info", "Clientes cargados correctamente");
     }, []); // ← Solo se ejecuta al montar el componente
 
     const handleAddClient = async () => {
@@ -55,7 +55,6 @@ const Clients = () => {
         if (!values) return; // cancelado
         try {
             const created = await clientsService.createClient(values);
-            console.log("Cliente creado:", created);
             setClient((prev) => [
                 ...prev,
                 {
@@ -110,10 +109,8 @@ const Clients = () => {
 
     const handleDeleteClient = async (clientData) => {
         const confirmDelete = await windowDelete(clientData.title);
-        console.log(confirmDelete);
         if (!confirmDelete) return;
         const response = await clientsService.deleteClient(clientData.id);
-        console.log(response);
 
         const updatedClients = client.filter((c) => c.id !== clientData.id);
         setClient(updatedClients);

@@ -1,8 +1,11 @@
 import axios from "axios";
 import authService from "./config";
 
+// Crear una instancia única de axios
+const axiosInstance = axios.create();
+
 // Configurar interceptor de solicitudes para agregar el token automáticamente
-axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
     (config) => {
         const headers = authService.getAuthHeader();
         if (headers.Authorization) {
@@ -16,7 +19,7 @@ axios.interceptors.request.use(
 );
 
 // Configurar interceptor de respuestas para manejar errores de autenticación
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (response) => {
         return response;
     },
@@ -38,4 +41,4 @@ axios.interceptors.response.use(
     }
 );
 
-export default axios;
+export default axiosInstance;

@@ -13,13 +13,10 @@ const createClient = async (clientData) => {
 };
 
 const updateClient = async (clientId, clientData) => {
-    console.log(clientId);
-    console.log("Datos del cliente a actualizar:", clientData);
     const response = await axios.patch(
         `${baseUrl}/editar/${clientId}`,
         clientData
     );
-    console.log("Respuesta de updateClient:", response.data);
     return response.data;
 };
 

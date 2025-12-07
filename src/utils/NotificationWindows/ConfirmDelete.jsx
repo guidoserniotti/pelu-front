@@ -23,7 +23,6 @@ const confirmDelete = async (title) => {
             icon: "error",
         });
     }
-    console.log(result);
     return result.isConfirmed;
 };
 

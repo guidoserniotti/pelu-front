@@ -71,12 +71,6 @@ const LoginForm = () => {
     const { toastPayload: ctxToast, clearToast } = useAuth();
     useEffect(() => {
         const locToast = location?.state?.toast;
-        console.log(
-            "LoginForm: location.state=",
-            location?.state,
-            " | ctxToast=",
-            ctxToast
-        );
 
         // Priorizar el toast del contexto (AuthProvider), si existe
         if (ctxToast?.icon && ctxToast?.title) {
