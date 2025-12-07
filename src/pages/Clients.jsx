@@ -195,7 +195,7 @@ const Clients = () => {
                 />
             </div>
             <div>
-                <Calendar />
+                <Calendar clientList={client} />
             </div>
         </div>
     );

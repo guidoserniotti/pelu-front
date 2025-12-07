@@ -5,10 +5,74 @@ import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import "../styles/calendar.css";
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
+import shiftsService from "../services/shifts";
+import { promptCreateShift } from "../utils/NotificationWindows/ShiftFormPrompt";
+import Toast from "../utils/NotificationWindows/Toast";
+import AlertError from "../utils/NotificationWindows/AlertError";
 
-const Calendar = () => {
+const Calendar = ({ clientList = [] }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
+    const calendarRef = useRef(null);
+
+    // Filtrar clientes activos del prop recibido
+    const clientes = clientList.filter((client) => !client.esta_eliminado);
+
+    // Función para cargar turnos del backend
+    const loadShifts = useCallback(async (fetchInfo) => {
+        try {
+            // Calcular rango: 1 mes antes de hoy hasta 11 meses después (1 año total)
+            const today = new Date();
+            const oneMonthAgo = new Date(today);
+            oneMonthAgo.setMonth(today.getMonth() - 1);
+
+            const elevenMonthsLater = new Date(today);
+            elevenMonthsLater.setMonth(today.getMonth() + 11);
+
+            // Formatear fechas a YYYY-MM-DD
+            const formatDate = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, "0");
+                const day = String(date.getDate()).padStart(2, "0");
+                return `${year}-${month}-${day}`;
+            };
+
+            const fecha_inicio = formatDate(oneMonthAgo);
+            const fecha_fin = formatDate(elevenMonthsLater);
+
+            const response = await shiftsService.listarTurnos(
+                fecha_inicio,
+                fecha_fin
+            );
+
+            // Convertir turnos del backend al formato de FullCalendar
+            const formattedEvents = response.listado_turnos.map((turno) => ({
+                id: turno.id,
+                title: turno.cliente.nombre_completo,
+                start: turno.fecha_hora_inicio_turno,
+                end: turno.fecha_hora_fin_turno,
+                extendedProps: {
+                    turnoId: turno.id,
+                    nro_turno: turno.nro_turno,
+                    observaciones: turno.observaciones,
+                    es_sobreturno: turno.es_sobreturno,
+                    telefono: turno.cliente.telefono,
+                    tomadoPor: turno.tomadoPor.nombre_completo,
+                },
+                editable: true,
+            }));
+
+            return formattedEvents;
+        } catch (error) {
+            console.error("Error cargando turnos:", error);
+            AlertError(
+                `Error al cargar turnos: ${
+                    error.response?.data?.message || error.message
+                }`
+            );
+            return [];
+        }
+    }, []);
 
     // Nombres de meses y días capitalizados
     const monthNames = [
@@ -62,9 +126,124 @@ const Calendar = () => {
         },
     };
 
+    // Manejar cuando se suelta un cliente (drag & drop)
+    const handleEventReceive = async (info) => {
+        const clienteTitle = info.event.title;
+        const clienteId = info.event.id;
+        const startDate = info.event.start;
+        const endDate = info.event.end;
+
+        // Buscar el cliente por ID (más confiable que por título)
+        let cliente = clientes.find((c) => c.id === clienteId);
+
+        // Si no se encuentra por ID, intentar buscar por título como fallback
+        if (!cliente) {
+            cliente = clientes.find((c) => c.title === clienteTitle);
+        }
+
+        if (!cliente) {
+            AlertError(
+                "No se pudo identificar el cliente. Por favor, recargue la página."
+            );
+            info.revert();
+            return;
+        }
+
+        // Mostrar formulario para confirmar/editar el turno
+        const turnoData = await promptCreateShift(
+            clientes,
+            startDate,
+            endDate,
+            cliente.id
+        );
+
+        if (turnoData) {
+            try {
+                const response = await shiftsService.registrarTurno(
+                    turnoData.fecha_hora_inicio,
+                    turnoData.fecha_hora_fin,
+                    turnoData.observaciones || "",
+                    turnoData.cliente_id,
+                    false
+                );
+
+                Toast("success", "Turno creado exitosamente");
+
+                // Recargar turnos desde el backend
+                if (calendarRef.current) {
+                    const calendarApi = calendarRef.current.getApi();
+                    calendarApi.refetchEvents();
+                }
+            } catch (error) {
+                console.error("Error al crear turno:", error);
+                console.error("Response data:", error.response?.data);
+                console.error("Request data:", error.config?.data);
+                AlertError(
+                    `Error al crear turno: ${
+                        error.response?.data?.message || error.message
+                    }`
+                );
+                // Revertir el evento si falla
+                info.revert();
+            }
+        } else {
+            // Usuario canceló, revertir el evento
+            info.revert();
+        }
+    };
+
+    // Manejar selección de rango de fechas (crear turno sin arrastrar)
+    const handleSelect = async (selectInfo) => {
+        const startDate = selectInfo.start;
+        const endDate = selectInfo.end;
+
+        // Verificar que haya clientes cargados
+        if (clientes.length === 0) {
+            AlertError(
+                "No hay clientes disponibles. Por favor, agregue clientes primero."
+            );
+            selectInfo.view.calendar.unselect();
+            return;
+        }
+
+        // Mostrar formulario para crear turno
+        const turnoData = await promptCreateShift(clientes, startDate, endDate);
+
+        if (turnoData) {
+            try {
+                const response = await shiftsService.registrarTurno(
+                    turnoData.fecha_hora_inicio,
+                    turnoData.fecha_hora_fin,
+                    turnoData.observaciones || "",
+                    turnoData.cliente_id,
+                    false
+                );
+
+                Toast("success", "Turno creado exitosamente");
+
+                // Recargar turnos desde el backend
+                if (calendarRef.current) {
+                    const calendarApi = calendarRef.current.getApi();
+                    calendarApi.refetchEvents();
+                }
+            } catch (error) {
+                console.error("Error al crear turno:", error);
+                AlertError(
+                    `Error al crear turno: ${
+                        error.response?.data?.message || error.message
+                    }`
+                );
+            }
+        }
+
+        // Limpiar selección
+        selectInfo.view.calendar.unselect();
+    };
+
     return (
         <div className="calendar-container">
             <FullCalendar
+                ref={calendarRef}
                 locale={customEsLocale}
                 plugins={[
                     dayGridPlugin,
@@ -99,7 +278,6 @@ const Calendar = () => {
                             const year = date.date.year;
                             const month = date.date.month;
                             const dayOfMonth = date.date.day;
-
                             const correctDate = new Date(
                                 year,
                                 month,
@@ -112,9 +290,11 @@ const Calendar = () => {
                         allDaySlot: false,
                     },
                 }}
-                dateClick={(e) => {
-                    /* TO-DO: Manejar clic en fecha */
-                }}
+                select={handleSelect}
+                selectable={true}
+                selectMirror={true}
+                droppable={true}
+                eventReceive={handleEventReceive}
                 initialView="timeGridWeek"
                 headerToolbar={{
                     left: "today prev,next",
@@ -135,7 +315,7 @@ const Calendar = () => {
                 slotMinTime="06:00:00"
                 slotMaxTime="22:00:00"
                 expandRows={true}
-                events={[]} // Aquí se debe agregar la lógica para cargar eventos dinámicamente
+                events={loadShifts}
                 editable={true}
                 dayMaxEvents={true}
                 eventLongPressDelay={500}
