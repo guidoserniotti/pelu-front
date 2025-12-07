@@ -38,7 +38,7 @@ const Calendar = () => {
         "Sep",
         "Oct",
         "Nov",
-        "🎄Dic🎄",
+        "Dic",
     ];
 
     const dayNames = [
