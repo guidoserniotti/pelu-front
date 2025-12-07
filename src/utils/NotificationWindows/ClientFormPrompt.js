@@ -107,6 +107,10 @@ const handlePhoneInput = (phoneInput) => {
     });
 };
 
+/**
+ * Muestra un formulario para agregar un nuevo cliente
+ * @returns {Promise<Object|null>} - Datos del cliente (nombre_completo, telefono) o null si se cancela
+ */
 export async function promptAddClient() {
     let nameInput, phoneInput;
     const result = await ThemedSwal.fire({
@@ -155,6 +159,13 @@ export async function promptAddClient() {
     return null;
 }
 
+/**
+ * Muestra un formulario para editar un cliente existente
+ * @param {Object} initial - Datos iniciales del cliente
+ * @param {string} initial.title - Nombre completo del cliente
+ * @param {string} initial.phoneNumber - Número de teléfono del cliente
+ * @returns {Promise<Object|null>} - Datos actualizados del cliente o null si se cancela/no hay cambios
+ */
 export async function promptEditClient(initial) {
     let nameInput, phoneInput;
     const initialPhone = initial?.phoneNumber || "";
