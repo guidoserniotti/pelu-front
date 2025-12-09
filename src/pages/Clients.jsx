@@ -112,7 +112,7 @@ const Clients = () => {
     const handleDeleteClient = async (clientData) => {
         const confirmDelete = await windowDelete(clientData.title);
         if (!confirmDelete) return;
-        const response = await clientsService.deleteClient(clientData.id);
+        await clientsService.deleteClient(clientData.id);
 
         const updatedClients = client.filter((c) => c.id !== clientData.id);
         setClient(updatedClients);
