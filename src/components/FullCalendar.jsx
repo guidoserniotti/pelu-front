@@ -11,7 +11,7 @@ import { promptCreateShift } from "../utils/NotificationWindows/ShiftFormPrompt"
 import Toast from "../utils/NotificationWindows/Toast";
 import AlertError from "../utils/NotificationWindows/AlertError";
 import showShiftDetails from "../utils/NotificationWindows/ShiftDetailsSidebar";
-
+import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
     const calendarRef = useRef(null);
@@ -312,6 +312,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
             if (isOverDeleteZone) {
                 const turnoId = info.event.id;
                 const turnoTitle = info.event.title;
+                const confirmDelete = await windowDelete("este turno", false);
+                if (!confirmDelete) return;
 
                 try {
                     // Eliminar del backend
@@ -340,7 +342,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
     // Manejar clic en evento (mostrar detalles)
     const handleEventClick = (info) => {
-        showShiftDetails({
+        isDeleted = showShiftDetails({
             title: info.event.title,
             start: info.event.start,
             end: info.event.end,
