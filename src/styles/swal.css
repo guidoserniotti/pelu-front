@@ -363,12 +363,6 @@ SHIFT FORM (Crear Turno)
     font-weight: bold;
 }
 
-.shift-detail-footer {
-    margin-top: 8px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-muted-dark);
-}
-
 .shift-detail-label-small {
     font-size: 0.75rem;
     font-weight: normal;
@@ -385,6 +379,57 @@ SHIFT FORM (Crear Turno)
     padding: 6px 12px;
     background: transparent !important;
     border-radius: 6px;
+}
+
+/* Estilos para el footer con botón de eliminar */
+.shift-details-sidebar .swal2-footer {
+    padding: 16px 0 0 0;
+    margin-top: 8px;
+}
+
+.shift-details-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.shift-btn-delete {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: var(
+        --swal2-deny-button-background-color,
+        var(--error-bg)
+    ) !important;
+    color: var(--swal2-deny-button-color, var(--error-text)) !important;
+    border: 1px solid var(--error-border);
+    border-radius: 8px;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-medium);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.shift-btn-delete:hover {
+    background-color: #c62828 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+.shift-btn-delete:active {
+    transform: scale(0.98);
+}
+
+.shift-btn-icon {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    flex-shrink: 0;
 }
 
 /*

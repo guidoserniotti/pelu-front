@@ -4,14 +4,14 @@ import interactionPlugin from "@fullcalendar/interaction";
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import "../styles/calendar.css";
-import { useState, useRef, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 import shiftsService from "../services/shifts";
+import "../styles/calendar.css";
+import AlertError from "../utils/NotificationWindows/AlertError";
+import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
+import showShiftDetails from "../utils/NotificationWindows/ShiftDetailsSidebar";
 import { promptCreateShift } from "../utils/NotificationWindows/ShiftFormPrompt";
 import Toast from "../utils/NotificationWindows/Toast";
-import AlertError from "../utils/NotificationWindows/AlertError";
-import showShiftDetails from "../utils/NotificationWindows/ShiftDetailsSidebar";
-import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
     const calendarRef = useRef(null);
@@ -342,12 +342,21 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
     // Manejar clic en evento (mostrar detalles)
     const handleEventClick = (info) => {
-        isDeleted = showShiftDetails({
-            title: info.event.title,
-            start: info.event.start,
-            end: info.event.end,
-            extendedProps: info.event.extendedProps,
-        });
+        showShiftDetails(
+            {
+                title: info.event.title,
+                start: info.event.start,
+                end: info.event.end,
+                extendedProps: info.event.extendedProps,
+            },
+            // Callback para refrescar el calendario después de eliminar
+            () => {
+                if (calendarRef.current) {
+                    const calendarApi = calendarRef.current.getApi();
+                    calendarApi.refetchEvents();
+                }
+            }
+        );
     };
 
     return (

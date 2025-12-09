@@ -1,4 +1,7 @@
+import shiftsService from "../../services/shifts";
 import ThemedSwal from "../swalTheme";
+import confirmDelete from "./ConfirmDelete";
+import Toast from "./Toast";
 
 /**
  * Muestra un sidebar lateral izquierdo con los detalles del turno
@@ -7,9 +10,10 @@ import ThemedSwal from "../swalTheme";
  * @param {string} turnoInfo.start - Fecha/hora de inicio
  * @param {string} turnoInfo.end - Fecha/hora de fin
  * @param {Object} turnoInfo.extendedProps - Propiedades extendidas del turno
- * @returns {Promise<void>}
+ * @param {Function} onDelete - Callback opcional para ejecutar después de eliminar
+ * @returns {Promise<boolean>} - Retorna true si se eliminó el turno
  */
-export const showShiftDetails = async (turnoInfo) => {
+export const showShiftDetails = async (turnoInfo, onDelete = null) => {
     const { title, start, end, extendedProps } = turnoInfo;
 
     // Formatear fechas para mostrar
@@ -78,7 +82,7 @@ export const showShiftDetails = async (turnoInfo) => {
                     extendedProps?.es_sobreturno
                         ? `
                     <div class="shift-detail-item">
-                        <span class="shift-detail-badge">⚠️ Sobreturno</span>
+                        <span class="shift-detail-badge">Sobreturno</span>
                     </div>
                 `
                         : ""
@@ -87,7 +91,7 @@ export const showShiftDetails = async (turnoInfo) => {
                 ${
                     extendedProps?.tomadoPor
                         ? `
-                    <div class="shift-detail-item shift-detail-footer">
+                    <div class="shift-detail-item">
                         <label class="shift-detail-label">Registrado por:</label>
                         <p class="shift-detail-value-small">${extendedProps.tomadoPor.toUpperCase()}</p>
                     </div>
@@ -97,6 +101,16 @@ export const showShiftDetails = async (turnoInfo) => {
             </div>
         `,
         position: "top-start",
+        footer: `
+            <div class="shift-details-actions">
+                <button id="btn-delete-shift" class="shift-btn-delete">
+                    <svg class="shift-btn-icon" viewBox="0 0 24 24">
+                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                    </svg>
+                    Eliminar Turno
+                </button>
+            </div>
+        `,
         showClass: {
             popup: `
                 animate__animated
@@ -118,7 +132,50 @@ export const showShiftDetails = async (turnoInfo) => {
         customClass: {
             popup: "shift-details-sidebar",
         },
+        didOpen: () => {
+            const deleteBtn = document.getElementById("btn-delete-shift");
+            if (deleteBtn && extendedProps?.turnoId) {
+                deleteBtn.addEventListener("click", async () => {
+                    // Cerrar el sidebar actual
+                    ThemedSwal.close();
+
+                    // Mostrar confirmación de eliminación
+                    const shouldDelete = await confirmDelete(
+                        `el turno de ${title}`,
+                        false
+                    );
+
+                    if (shouldDelete) {
+                        try {
+                            await shiftsService.eliminarTurno(
+                                extendedProps.turnoId
+                            );
+                            Toast(
+                                "success",
+                                `Turno de ${title} eliminado exitosamente`
+                            );
+
+                            // Ejecutar callback si existe (para refrescar el calendario)
+                            if (onDelete) {
+                                onDelete(extendedProps.turnoId);
+                            }
+                        } catch (error) {
+                            console.error("Error eliminando turno:", error);
+                            Toast(
+                                "error",
+                                `Error al eliminar turno: ${
+                                    error.response?.data?.message ||
+                                    error.message
+                                }`
+                            );
+                        }
+                    }
+                });
+            }
+        },
     });
+
+    return false;
 };
 
 export default showShiftDetails;
