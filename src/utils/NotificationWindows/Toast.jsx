@@ -7,7 +7,7 @@ const Toast = async (icon, title, thirdArg) => {
             ? { timer: thirdArg }
             : typeof thirdArg === "object" && thirdArg !== null
             ? thirdArg
-            : { timer: 3000 };
+            : { timer: 2000 };
 
     await ThemeToast.fire({
         icon,
