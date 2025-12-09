@@ -137,7 +137,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         const now = new Date();
 
         // Validar que la fecha de inicio no sea anterior a la hora actual
-        if (startDate < now) {
+        // SOLO en vistas timeGrid (semana/día), no en vista mensual
+        if (currentView !== "dayGridMonth" && startDate < now) {
             Toast(
                 "error",
                 "No se pueden crear turnos en fechas u horas pasadas"
@@ -215,7 +216,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         const now = new Date();
 
         // Verificar que la fecha de inicio no sea anterior a la hora actual
-        if (startDate < now) {
+        // SOLO en vistas timeGrid (semana/día), no en vista mensual
+        if (currentView !== "dayGridMonth" && startDate < now) {
             Toast(
                 "error",
                 "No se pueden crear turnos en fechas u horas pasadas"
@@ -273,7 +275,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         const now = new Date();
 
         // Prevenir clics en fechas/horas pasadas
-        if (clickedDate < now) {
+        // SOLO en vistas timeGrid (semana/día), no en vista mensual
+        if (currentView !== "dayGridMonth" && clickedDate < now) {
             Toast(
                 "error",
                 "No se pueden crear turnos en fechas u horas pasadas"
@@ -430,8 +433,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 eventLongPressDelay={500}
                 eventDragStart={handleEventDragStart}
                 eventDragStop={handleEventDragStop}
-                // unselectAuto={true}
-                // unselectCancel=".custom-button"     debería funcionar con eventos de forma similar
                 eventResizeStart={(info) => {
                     if (currentView === "dayGridMonth") {
                         info.revert();

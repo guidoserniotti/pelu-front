@@ -79,6 +79,53 @@ export const promptCreateShift = async (
         showCancelButton: true,
         confirmButtonText: "Crear Turno",
         cancelButtonText: "Cancelar",
+        didOpen: () => {
+            const confirmButton = ThemedSwal.getConfirmButton();
+            const fechaInicioInput =
+                document.getElementById("swal-fecha-inicio");
+            const fechaFinInput = document.getElementById("swal-fecha-fin");
+
+            // Función para validar fechas en tiempo real
+            const validateDates = () => {
+                const now = new Date();
+
+                // Parsear las fechas desde los inputs datetime-local
+                const fechaInicioStr = fechaInicioInput.value;
+                const fechaFinStr = fechaFinInput.value;
+
+                if (!fechaInicioStr || !fechaFinStr) {
+                    // Si falta alguna fecha, habilitar botón
+                    confirmButton.disabled = false;
+                    confirmButton.style.opacity = "1";
+                    confirmButton.style.cursor = "pointer";
+                    return;
+                }
+
+                // Convertir strings a Date
+                const fechaInicio = new Date(fechaInicioStr);
+                const fechaFin = new Date(fechaFinStr);
+
+                // Deshabilitar botón si cualquier fecha es anterior a ahora
+                if (fechaInicio < now || fechaFin < now) {
+                    confirmButton.disabled = true;
+                    confirmButton.style.opacity = "0.5";
+                    confirmButton.style.cursor = "not-allowed";
+                } else {
+                    confirmButton.disabled = false;
+                    confirmButton.style.opacity = "1";
+                    confirmButton.style.cursor = "pointer";
+                }
+            };
+
+            // Agregar listeners a los inputs de fecha
+            fechaInicioInput.addEventListener("change", validateDates);
+            fechaInicioInput.addEventListener("input", validateDates);
+            fechaFinInput.addEventListener("change", validateDates);
+            fechaFinInput.addEventListener("input", validateDates);
+
+            // Validar al abrir
+            validateDates();
+        },
         preConfirm: () => {
             const clienteId = document.getElementById("swal-cliente").value;
             const fechaInicio =
@@ -109,6 +156,22 @@ export const promptCreateShift = async (
             // Convertir a formato ISO para el backend
             const fechaInicioISO = new Date(fechaInicio).toISOString();
             const fechaFinISO = new Date(fechaFin).toISOString();
+
+            // Validar que las fechas no sean pasadas
+            const now = new Date();
+            if (new Date(fechaInicio) < now) {
+                ThemedSwal.showValidationMessage(
+                    "La fecha de inicio no puede ser anterior a la fecha actual"
+                );
+                return false;
+            }
+
+            if (new Date(fechaFin) < now) {
+                ThemedSwal.showValidationMessage(
+                    "La fecha de fin no puede ser anterior a la fecha actual"
+                );
+                return false;
+            }
 
             if (new Date(fechaInicio) >= new Date(fechaFin)) {
                 ThemedSwal.showValidationMessage(
