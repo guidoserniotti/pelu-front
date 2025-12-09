@@ -10,6 +10,7 @@ import shiftsService from "../services/shifts";
 import { promptCreateShift } from "../utils/NotificationWindows/ShiftFormPrompt";
 import Toast from "../utils/NotificationWindows/Toast";
 import AlertError from "../utils/NotificationWindows/AlertError";
+import showShiftDetails from "../utils/NotificationWindows/ShiftDetailsSidebar";
 
 const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
@@ -334,6 +335,16 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         draggedEventRef.current = null;
     };
 
+    // Manejar clic en evento (mostrar detalles)
+    const handleEventClick = (info) => {
+        showShiftDetails({
+            title: info.event.title,
+            start: info.event.start,
+            end: info.event.end,
+            extendedProps: info.event.extendedProps,
+        });
+    };
+
     return (
         <div className="calendar-container">
             <FullCalendar
@@ -388,8 +399,11 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 dateClick={handleDateClick}
                 selectable={true}
                 selectMirror={true}
+                navLinks={true}
+                nowIndicator={true}
                 droppable={true}
                 eventReceive={handleEventReceive}
+                eventClick={handleEventClick}
                 initialView="timeGridWeek"
                 headerToolbar={{
                     left: "today prev,next",

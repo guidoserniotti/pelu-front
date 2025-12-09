@@ -301,3 +301,98 @@ SHIFT FORM (Crear Turno)
         transform: translateY(-4px);
     }
 }
+
+/*
+------------------------------
+5) SHIFT DETAILS SIDEBAR
+------------------------------
+*/
+.shift-details-sidebar {
+    text-align: left !important;
+    padding: 20px !important;
+    background: var(--surface-1) !important;
+}
+
+.shift-details-sidebar .swal2-title {
+    color: var(--text-inverse) !important;
+}
+
+.shift-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.shift-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shift-detail-label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--login-accent) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.shift-detail-value {
+    font-size: 1rem;
+    color: var(--text-inverse) !important;
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.shift-detail-observations {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-height: 60px;
+}
+
+.shift-detail-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.shift-detail-footer {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-muted-dark);
+}
+
+.shift-detail-label-small {
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: var(--login-accent) !important;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.shift-detail-value-small {
+    font-size: 0.85rem;
+    color: var(--text-inverse) !important;
+    opacity: 1;
+    margin: 0;
+    padding: 6px 12px;
+    background: transparent !important;
+    border-radius: 6px;
+}
+
+/*
+------------------------------
+6) BLURRED BACKDROP (TODOS LOS MODALES)
+------------------------------
+*/
+body.swal2-shown > [aria-hidden="true"] {
+    transition: 0.1s filter;
+    filter: blur(3px);
+}
