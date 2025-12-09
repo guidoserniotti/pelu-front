@@ -27,11 +27,11 @@ export const promptCreateShift = async (
     const result = await ThemedSwal.fire({
         title: "Crear Turno",
         html: `
-            <div style="text-align: left;">
-                <label style="display: block; margin-bottom: 8px; font-weight: bold;">
+            <div class="shift-form-container">
+                <label class="shift-form-label">
                     Cliente:
                 </label>
-                <select id="swal-cliente" class="swal2-input" style="width: 100%; max-width: 100%;">
+                <select id="swal-cliente" class="swal2-input shift-form-select">
                     <option value="">Seleccione un cliente</option>
                     ${clientes
                         .map(
@@ -45,36 +45,33 @@ export const promptCreateShift = async (
                         .join("")}
                 </select>
 
-                <label style="display: block; margin-top: 16px; margin-bottom: 8px; font-weight: bold;">
+                <label class="shift-form-label">
                     Fecha/Hora Inicio:
                 </label>
                 <input 
                     id="swal-fecha-inicio" 
                     type="datetime-local" 
-                    class="swal2-input" 
-                    style="width: 100%; max-width: 100%;"
+                    class="swal2-input shift-form-datetime"
                     value="${formatDateTimeLocal(startDate)}"
                 />
 
-                <label style="display: block; margin-top: 16px; margin-bottom: 8px; font-weight: bold;">
+                <label class="shift-form-label">
                     Fecha/Hora Fin:
                 </label>
                 <input 
                     id="swal-fecha-fin" 
                     type="datetime-local" 
-                    class="swal2-input" 
-                    style="width: 100%; max-width: 100%;"
+                    class="swal2-input shift-form-datetime"
                     value="${formatDateTimeLocal(endDate)}"
                 />
 
-                <label style="display: block; margin-top: 16px; margin-bottom: 8px; font-weight: bold;">
+                <label class="shift-form-label">
                     Observaciones (opcional):
                 </label>
                 <textarea 
                     id="swal-observaciones" 
-                    class="swal2-textarea" 
+                    class="swal2-textarea shift-form-textarea" 
                     placeholder="Notas adicionales del turno..."
-                    style="width: 100%; max-width: 100%;"
                 ></textarea>
             </div>
         `,

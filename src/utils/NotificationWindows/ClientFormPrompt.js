@@ -70,19 +70,16 @@ const buildHtml = (name = "", phone = "") => {
   <input 
     type="text" 
     id="client-name" 
-    class="swal2-input" 
+    class="swal2-input client-form-input" 
     placeholder="Nombre y apellido" 
     value="${name.replace(/"/g, "&quot;")}">
-  <div style="position: relative; display: inline-block; width: 100%;">
+  <div class="client-form-phone-wrapper">
     <input 
       type="tel" 
       id="client-phone" 
-      class="swal2-input" 
+      class="swal2-input client-form-input client-form-phone" 
       placeholder="+54 11 1234 5678" 
-      value="${phoneNumber.replace(/"/g, "&quot;")}" 
-      style="
-        padding-left: 30px !important;
-      ">
+      value="${phoneNumber.replace(/"/g, "&quot;")}">
   </div>
 `;
 };

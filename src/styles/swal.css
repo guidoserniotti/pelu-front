@@ -92,19 +92,81 @@ Estructura ordenada por secciones para facilitar mantenimiento.
 }
 
 /* Inputs dentro de popup/form */
-.swal-theme-popup .swal2-input {
+.swal-theme-popup .swal2-input,
+.swal-theme-popup .swal2-textarea {
     background: var(--surface-3) !important;
     color: var(--text-inverse) !important;
     border: 1px solid var(--border-muted-dark) !important;
 }
-.swal-theme-popup .swal2-input::placeholder {
+.swal-theme-popup .swal2-input::placeholder,
+.swal-theme-popup .swal2-textarea::placeholder {
     color: var(--text-inverse) !important;
     opacity: 0.6 !important;
 }
-.swal-theme-popup .swal2-input:focus {
+.swal-theme-popup .swal2-input:focus,
+.swal-theme-popup .swal2-textarea:focus {
     outline: none !important;
     border-color: var(--login-accent) !important;
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18) !important;
+}
+
+/*
+------------------------------
+CLIENT FORM (Agregar/Editar Cliente)
+------------------------------
+*/
+.client-form-input {
+    box-sizing: border-box !important;
+}
+
+.client-form-phone-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.client-form-phone {
+    padding-left: 30px !important;
+}
+
+/*
+------------------------------
+SHIFT FORM (Crear Turno)
+------------------------------
+*/
+.shift-form-container {
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.shift-form-label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-inverse);
+}
+
+.shift-form-label:first-child {
+    margin-top: 0;
+}
+
+.shift-form-select,
+.shift-form-datetime,
+.shift-form-textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 10px 12px !important;
+}
+
+.shift-form-textarea {
+    min-height: 80px;
+    resize: vertical;
 }
 
 /* Contenido de error (AlertError) */
