@@ -133,6 +133,17 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         const clienteId = info.event.id;
         const startDate = info.event.start;
         const endDate = info.event.end;
+        const now = new Date();
+
+        // Validar que la fecha de inicio no sea anterior a la hora actual
+        if (startDate < now) {
+            Toast(
+                "error",
+                "No se pueden crear turnos en fechas u horas pasadas"
+            );
+            info.revert();
+            return;
+        }
 
         // Buscar el cliente por ID (más confiable que por título)
         let cliente = clientes.find((c) => c.id === clienteId);
@@ -197,6 +208,17 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
     const handleSelect = async (selectInfo) => {
         const startDate = selectInfo.start;
         const endDate = selectInfo.end;
+        const now = new Date();
+
+        // Verificar que la fecha de inicio no sea anterior a la hora actual
+        if (startDate < now) {
+            Toast(
+                "error",
+                "No se pueden crear turnos en fechas u horas pasadas"
+            );
+            selectInfo.view.calendar.unselect();
+            return;
+        }
 
         // Verificar que haya clientes cargados
         if (clientes.length === 0) {
@@ -239,6 +261,22 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
         // Limpiar selección
         selectInfo.view.calendar.unselect();
+    };
+
+    // Manejar clic en fecha/hora (validación adicional)
+    const handleDateClick = (info) => {
+        const clickedDate = info.date;
+        const now = new Date();
+
+        // Prevenir clics en fechas/horas pasadas
+        if (clickedDate < now) {
+            Toast(
+                "error",
+                "No se pueden crear turnos en fechas u horas pasadas"
+            );
+            return;
+        }
+        // Si la fecha es válida, el evento 'select' se encargará de abrir el formulario
     };
 
     // Manejar inicio de arrastre de evento
@@ -344,6 +382,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                     },
                 }}
                 select={handleSelect}
+                dateClick={handleDateClick}
                 selectable={true}
                 selectMirror={true}
                 droppable={true}
