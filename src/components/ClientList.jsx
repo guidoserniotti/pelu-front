@@ -12,10 +12,12 @@ function ClientList({ client, handleEditClientForm, handleDeleteClient }) {
             draggableInstanceRef.current = new Draggable(draggableEl, {
                 itemSelector: ".fc-draggable",
                 eventData: (eventEl) => {
-                    // Extraer el título del cliente desde el elemento
+                    // Extraer el título y el ID del cliente desde el elemento
                     const title = eventEl.getAttribute("data-title");
+                    const clientId = eventEl.getAttribute("data-client-id");
                     return {
                         title: title,
+                        id: clientId,
                         duration: "00:30", // 30 minutos de duración
                         editable: true,
                     };
@@ -42,6 +44,7 @@ function ClientList({ client, handleEditClientForm, handleDeleteClient }) {
                     <div
                         className="client-info fc-draggable"
                         data-title={c.title}
+                        data-client-id={c.id}
                     >
                         <h3 className="client-title">{c.title}</h3>
                         <p className="client-phone">{c.phoneNumber}</p>

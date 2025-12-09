@@ -1,9 +1,13 @@
 import ThemedSwal from "../swalTheme";
 
-const confirmDelete = async (title) => {
+const confirmDelete = async (title, isClient = true) => {
     const result = await ThemedSwal.fire({
         title: "¿Estás seguro?",
-        text: `¿Deseas eliminar a ${title}?`,
+        text: `${
+            isClient
+                ? "Eliminar un cliente también eliminará todos sus turnos asociados. "
+                : `¿Deseas eliminar ${title}?`
+        }`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Sí, eliminar",
@@ -23,7 +27,6 @@ const confirmDelete = async (title) => {
             icon: "error",
         });
     }
-    console.log(result);
     return result.isConfirmed;
 };
 

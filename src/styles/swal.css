@@ -1,6 +1,27 @@
 @import url("./variables.css");
 
-/* Popup base */
+/*
+==================================================
+SWAL THEME STYLES
+==================================================
+Estructura ordenada por secciones para facilitar mantenimiento.
+1) POPUPS & FORMS (base, títulos, botones, inputs, validación)
+2) ICONS (warning, error, etc.)
+3) TOAST (estilos específicos del modo toast)
+4) ANIMATIONS (show/hide + keyframes)
+==================================================
+*/
+
+/* Aseguramos que los contenedores de SweetAlert2 estén siempre por encima */
+.swal2-container {
+    z-index: 10000 !important;
+}
+
+/*
+------------------------------
+1) POPUPS & FORMS
+------------------------------
+*/
 .swal-theme-popup {
     background: var(--surface-2) !important;
     color: var(--text-inverse) !important;
@@ -9,7 +30,6 @@
     border-radius: 12px !important;
 }
 
-/* Title and text */
 .swal-theme-title {
     font-family: var(--font-family-title) !important;
     font-weight: var(--font-weight-bold) !important;
@@ -21,12 +41,10 @@
     opacity: 0.9;
 }
 
-/* Actions layout */
 .swal-theme-actions {
     gap: 10px !important;
 }
 
-/* Buttons (custom styling; buttonsStyling=false) */
 .swal-theme-confirm,
 .swal-theme-cancel {
     border: none !important;
@@ -52,7 +70,141 @@
     background-color: #c62828 !important;
 }
 
-/* Icons */
+/* Validación (mensajes de error en formularios) */
+.swal-theme-validation {
+    background-color: var(--error-bg) !important;
+    color: var(--error-text) !important;
+    border: 1px solid var(--error-border) !important;
+    border-radius: 8px !important;
+    padding: 10px 12px !important;
+    box-shadow: 0 8px 20px var(--error-shadow) !important;
+    margin: 8px 0 0 0 !important;
+    font-family: var(--font-family-base) !important;
+    font-weight: 1000 !important;
+    animation: swalThemeFadeIn 180ms ease-out both;
+    font-size: 1.125rem !important;
+    -webkit-text-stroke: 0.01px #000 !important;
+    text-shadow: -0.8px -0.8px 0 #000, 0.8px -0.8px 0 #000, -0.8px 0.8px 0 #000,
+        0.8px 0.8px 0 #000, 0px 0px 0.8px #000 !important;
+}
+.swal-theme-validation::before {
+    display: none !important;
+}
+
+/* Inputs dentro de popup/form */
+.swal-theme-popup .swal2-input,
+.swal-theme-popup .swal2-textarea {
+    background: var(--surface-3) !important;
+    color: var(--text-inverse) !important;
+    border: 1px solid var(--border-muted-dark) !important;
+}
+.swal-theme-popup .swal2-input::placeholder,
+.swal-theme-popup .swal2-textarea::placeholder {
+    color: var(--text-inverse) !important;
+    opacity: 0.6 !important;
+}
+.swal-theme-popup .swal2-input:focus,
+.swal-theme-popup .swal2-textarea:focus {
+    outline: none !important;
+    border-color: var(--login-accent) !important;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18) !important;
+}
+
+/*
+------------------------------
+CLIENT FORM (Agregar/Editar Cliente)
+------------------------------
+*/
+.client-form-input {
+    box-sizing: border-box !important;
+}
+
+.client-form-phone-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.client-form-phone {
+    padding-left: 30px !important;
+}
+
+/*
+------------------------------
+SHIFT FORM (Crear Turno)
+------------------------------
+*/
+.shift-form-container {
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.shift-form-label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-inverse);
+}
+
+.shift-form-label:first-child {
+    margin-top: 0;
+}
+
+.shift-form-select,
+.shift-form-datetime,
+.shift-form-textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 10px 12px !important;
+}
+
+.shift-form-textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Contenido de error (AlertError) */
+.swal-error-msg {
+    margin: 0 0 6px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+.swal-error-help {
+    margin: 6px 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+.swal-footer-error-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+    text-align: left;
+}
+.swal-footer-error-list li {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    box-shadow: 0 6px 16px var(--error-shadow);
+}
+.swal-footer-error-list li + li {
+    margin-top: 6px;
+}
+
+/*
+------------------------------
+2) ICONS
+------------------------------
+*/
 .swal2-icon.swal2-warning {
     border-color: var(--login-accent) !important;
     color: var(--login-accent) !important;
@@ -62,7 +214,66 @@
     color: var(--error-bg) !important;
 }
 
-/* Optional animations */
+/*
+------------------------------
+3) TOAST
+------------------------------
+*/
+/* Base del toast */
+.colored-toast {
+    border-radius: 10px !important;
+    border: 1px solid transparent !important;
+    color: #fff !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Success neon */
+.colored-toast.swal2-icon-success {
+    background-color: var(--success-bg) !important;
+    border-color: var(--success-border) !important;
+    box-shadow: 0 10px 26px var(--success-shadow) !important;
+}
+
+/* Error neon */
+.colored-toast.swal2-icon-error {
+    background-color: var(--error-bg) !important;
+    border-color: var(--error-border) !important;
+    box-shadow: 0 10px 26px var(--error-shadow) !important;
+}
+
+/* Info neon */
+.colored-toast.swal2-icon-info {
+    background-color: var(--info-bg) !important;
+    border-color: var(--info-border) !important;
+    box-shadow: 0 10px 26px var(--info-shadow) !important;
+}
+
+/* Texto con leve contraste para legibilidad */
+.colored-toast .swal2-title,
+.colored-toast .swal2-html-container,
+.colored-toast .swal2-close {
+    color: #ffffff !important;
+    text-shadow: 0 0 0.8px #000, 0 0.4px 0.6px rgba(0, 0, 0, 0.6) !important;
+    -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.35) !important;
+}
+.colored-toast.swal2-icon-question {
+    background-color: #87adbd !important;
+}
+.colored-toast .swal2-title {
+    color: white;
+}
+.colored-toast .swal2-close {
+    color: white;
+}
+.colored-toast .swal2-html-container {
+    color: white;
+}
+
+/*
+------------------------------
+4) ANIMATIONS
+------------------------------
+*/
 .swal-theme-show {
     animation: swalThemeFadeIn 180ms ease-out;
 }
@@ -89,4 +300,144 @@
         opacity: 0;
         transform: translateY(-4px);
     }
+}
+
+/*
+------------------------------
+5) SHIFT DETAILS SIDEBAR
+------------------------------
+*/
+.shift-details-sidebar {
+    text-align: left !important;
+    padding: 20px !important;
+    background: var(--surface-1) !important;
+}
+
+.shift-details-sidebar .swal2-title {
+    color: var(--text-inverse) !important;
+}
+
+.shift-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.shift-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shift-detail-label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--login-accent) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.shift-detail-value {
+    font-size: 1rem;
+    color: var(--text-inverse) !important;
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.shift-detail-observations {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-height: 60px;
+}
+
+.shift-detail-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.shift-detail-label-small {
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: var(--login-accent) !important;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.shift-detail-value-small {
+    font-size: 0.85rem;
+    color: var(--text-inverse) !important;
+    opacity: 1;
+    margin: 0;
+    padding: 6px 12px;
+    background: transparent !important;
+    border-radius: 6px;
+}
+
+/* Estilos para el footer con botón de eliminar */
+.shift-details-sidebar .swal2-footer {
+    padding: 16px 0 0 0;
+    margin-top: 8px;
+}
+
+.shift-details-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.shift-btn-delete {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: var(
+        --swal2-deny-button-background-color,
+        var(--error-bg)
+    ) !important;
+    color: var(--swal2-deny-button-color, var(--error-text)) !important;
+    border: 1px solid var(--error-border);
+    border-radius: 8px;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-medium);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.shift-btn-delete:hover {
+    background-color: #c62828 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+.shift-btn-delete:active {
+    transform: scale(0.98);
+}
+
+.shift-btn-icon {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+/*
+------------------------------
+6) BLURRED BACKDROP (TODOS LOS MODALES)
+------------------------------
+*/
+body.swal2-shown > [aria-hidden="true"] {
+    transition: 0.1s filter;
+    filter: blur(3px);
 }

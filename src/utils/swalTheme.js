@@ -10,6 +10,7 @@ const ThemedSwal = Swal.mixin({
         confirmButton: "swal-theme-confirm",
         cancelButton: "swal-theme-cancel",
         actions: "swal-theme-actions",
+        validationMessage: "swal-theme-validation",
     },
     buttonsStyling: false,
     showClass: { popup: "swal-theme-show" },

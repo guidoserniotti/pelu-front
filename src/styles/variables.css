@@ -32,6 +32,18 @@
     --error-border: #c62828; /* Slightly darker border */
     --error-shadow: rgba(229, 57, 53, 0.5); /* Pronounced red shadow */
 
+    /* === Éxito (para toasts/neón) === */
+    --success-bg: #00e676; /* Neon green */
+    --success-text: #0b1a0f; /* Dark greenish text if ever needed on light surfaces */
+    --success-contrast-text: #ffffff; /* Primary text on neon green */
+    --success-border: #00c853; /* Darker green border */
+    --success-shadow: rgba(0, 230, 118, 0.45); /* Pronounced green shadow */
+
+    /* === Info (toasts neón azul) === */
+    --info-bg: #00b2ff; /* Neon blue */
+    --info-border: #008ae6; /* Slightly darker blue border */
+    --info-shadow: rgba(0, 178, 255, 0.45); /* Pronounced blue shadow */
+
     /* === Paleta de alto contraste (general) === */
     /* Superficies oscuras para calendario y fondos */
     --surface-0: #0e0f12; /* Negro azulado muy oscuro */

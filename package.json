@@ -16,13 +16,17 @@
         "@fullcalendar/moment-timezone": "^6.1.19",
         "@fullcalendar/react": "^6.1.19",
         "@fullcalendar/timegrid": "^6.1.19",
+        "@hookform/resolvers": "^5.2.2",
         "axios": "^1.12.2",
         "fullcalendar": "^6.1.19",
+        "jwt-decode": "^4.0.0",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
+        "react-hook-form": "^7.66.1",
         "react-router-dom": "^7.9.4",
         "sweetalert2": "^11.26.3",
-        "sweetalert2-react-content": "^5.1.0"
+        "sweetalert2-react-content": "^5.1.0",
+        "zod": "^4.1.13"
     },
     "devDependencies": {
         "@eslint/js": "^9.36.0",
