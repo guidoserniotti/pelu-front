@@ -171,7 +171,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
         if (turnoData) {
             try {
-                const response = await shiftsService.registrarTurno(
+                await shiftsService.registrarTurno(
                     turnoData.fecha_hora_inicio,
                     turnoData.fecha_hora_fin,
                     turnoData.observaciones || "",
@@ -180,6 +180,9 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 );
 
                 Toast("success", "Turno creado exitosamente");
+
+                // Eliminar el evento temporal del drag & drop
+                info.event.remove();
 
                 // Recargar turnos desde el backend
                 if (calendarRef.current) {
@@ -234,7 +237,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
         if (turnoData) {
             try {
-                const response = await shiftsService.registrarTurno(
+                await shiftsService.registrarTurno(
                     turnoData.fecha_hora_inicio,
                     turnoData.fecha_hora_fin,
                     turnoData.observaciones || "",
