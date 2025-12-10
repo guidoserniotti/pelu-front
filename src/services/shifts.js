@@ -50,8 +50,17 @@ const eliminarTurno = async (turnoId) => {
     return response.data;
 };
 
+const editarTurno = async (turnoId, updatedData) => {
+    const response = await axios.put(
+        `${baseUrl}/editar/${turnoId}`,
+        updatedData
+    );
+    return response.data;
+};
+
 export default {
     registrarTurno,
     listarTurnos,
     eliminarTurno,
+    editarTurno,
 };
