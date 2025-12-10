@@ -1,6 +1,8 @@
 import { Draggable } from "@fullcalendar/interaction";
 import { useEffect, useRef } from "react";
 import ButtonClientsList from "./ButtonClientsList";
+import editClientImg from "../../assets/img/editClient.png";
+import deleteClientImg from "../../assets/img/deleteClient.png";
 
 function ClientList({ client, handleEditClientForm, handleDeleteClient }) {
     const draggableInstanceRef = useRef(null);
@@ -53,15 +55,13 @@ function ClientList({ client, handleEditClientForm, handleDeleteClient }) {
                         <ButtonClientsList
                             text={"Editar Cliente"}
                             functionOnClick={() => handleEditClientForm(c)}
-                            imgSource={"../../../../assets/img/editClient.png"}
+                            imgSource={editClientImg}
                             className="btn-edit"
                         />
                         <ButtonClientsList
                             text={"Eliminar Cliente"}
                             functionOnClick={() => handleDeleteClient(c)}
-                            imgSource={
-                                "../../../../assets/img/deleteClient.png"
-                            }
+                            imgSource={deleteClientImg}
                             className="btn-delete"
                         />
                     </div>

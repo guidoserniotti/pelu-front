@@ -15,6 +15,8 @@ import {
 } from "../utils/NotificationWindows/ClientFormPrompt";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 import windowLogOut from "../utils/NotificationWindows/ConfirmLogOut";
+import addClientImg from "../../assets/img/addClient.png";
+import logoutImg from "../../assets/img/logout.png";
 const Clients = () => {
     const { logout } = useAuth();
     // Estado para manejar la lista de clientes
@@ -167,13 +169,13 @@ const Clients = () => {
                         <div className="client-header-actions">
                             <ButtonClientsList
                                 text={"Agregar Cliente"}
-                                imgSource={"../../assets/img/addClient.png"}
+                                imgSource={addClientImg}
                                 functionOnClick={toggleAddForm}
                                 className="btn-add"
                             />
                             <ButtonClientsList
                                 text={"LogOut"}
-                                imgSource={"../../assets/img/logout.png"}
+                                imgSource={logoutImg}
                                 functionOnClick={handleLogOut}
                                 className="btn-logout"
                             />
