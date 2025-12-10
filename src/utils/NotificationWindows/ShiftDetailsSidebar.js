@@ -2,7 +2,8 @@ import shiftsService from "../../services/shifts";
 import ThemedSwal from "../swalTheme";
 import confirmDelete from "./ConfirmDelete";
 import Toast from "./Toast";
-
+import { promptModifyShift } from "./ModifyShiftFormPrompt";
+import AlertError from "./AlertError";
 /**
  * Muestra un sidebar lateral izquierdo con los detalles del turno
  * @param {Object} turnoInfo - Información del turno
@@ -103,11 +104,18 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
         position: "top-start",
         footer: `
             <div class="shift-details-actions">
+                <button id="btn-modify-shift-details" class="shift-btn-modify">
+                    <svg class="shift-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                    Modificar
+                </button>
                 <button id="btn-delete-shift" class="shift-btn-delete">
-                    <svg class="shift-btn-icon" viewBox="0 0 24 24">
+                    <svg class="shift-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
                     </svg>
-                    Eliminar Turno
+                    Eliminar
                 </button>
             </div>
         `,
@@ -133,6 +141,63 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
             popup: "shift-details-sidebar",
         },
         didOpen: () => {
+            // Manejar botón de modificar turno
+            const modifyBtn = document.getElementById(
+                "btn-modify-shift-details"
+            );
+            if (modifyBtn && extendedProps?.turnoId) {
+                modifyBtn.addEventListener("click", async () => {
+                    // Cerrar el sidebar actual
+                    ThemedSwal.close();
+
+                    // Mostrar formulario de modificación
+                    const turnoDataParaModificar = {
+                        turnoId: extendedProps.turnoId,
+                        clienteNombre: title,
+                        startDate: new Date(start),
+                        endDate: new Date(end),
+                        observaciones: extendedProps.observaciones || "",
+                    };
+
+                    const updatedData = await promptModifyShift(
+                        turnoDataParaModificar
+                    );
+
+                    if (updatedData) {
+                        try {
+                            await shiftsService.editarTurno(
+                                updatedData.turno_id,
+                                {
+                                    fecha_hora_inicio_turno:
+                                        updatedData.fecha_hora_inicio_turno,
+                                    fecha_hora_fin_turno:
+                                        updatedData.fecha_hora_fin_turno,
+                                    observaciones: updatedData.observaciones,
+                                }
+                            );
+                            Toast(
+                                "success",
+                                `Turno de ${title} modificado exitosamente`
+                            );
+
+                            // Ejecutar callback si existe (para refrescar el calendario)
+                            if (onDelete) {
+                                onDelete(extendedProps.turnoId);
+                            }
+                        } catch (error) {
+                            console.error("Error modificando turno:", error);
+                            AlertError(
+                                `Error al modificar turno: ${
+                                    error.response?.data?.message ||
+                                    error.message
+                                }`
+                            );
+                        }
+                    }
+                });
+            }
+
+            // Manejar botón de eliminar turno
             const deleteBtn = document.getElementById("btn-delete-shift");
             if (deleteBtn && extendedProps?.turnoId) {
                 deleteBtn.addEventListener("click", async () => {

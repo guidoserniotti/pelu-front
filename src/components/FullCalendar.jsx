@@ -12,6 +12,7 @@ import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 import showShiftDetails from "../utils/NotificationWindows/ShiftDetailsSidebar";
 import { promptCreateShift } from "../utils/NotificationWindows/ShiftFormPrompt";
 import Toast from "../utils/NotificationWindows/Toast";
+import confirmModify from "../utils/NotificationWindows/ConfirmModify";
 const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
     const calendarRef = useRef(null);
@@ -359,6 +360,73 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         );
     };
 
+    // Manejar cambios en eventos (mover, redimensionar)
+    const handleEventChange = async (info) => {
+        const turnoId = info.event.id;
+        const now = new Date();
+
+        // Validar que la nueva fecha no sea pasada (solo en vistas timeGrid)
+        if (currentView !== "dayGridMonth" && info.event.start < now) {
+            Toast(
+                "error",
+                "No se pueden mover turnos a fechas u horas pasadas"
+            );
+            info.revert();
+            return;
+        }
+
+        const confirm = await confirmModify(info.event.title);
+        if (!confirm) {
+            info.revert();
+            return;
+        }
+        try {
+            // Formatear fechas a ISO
+            const fechaInicioISO = info.event.start.toISOString();
+            const fechaFinISO = info.event.end
+                ? info.event.end.toISOString()
+                : fechaInicioISO;
+
+            await shiftsService.editarTurno(turnoId, {
+                fecha_hora_inicio_turno: fechaInicioISO,
+                fecha_hora_fin_turno: fechaFinISO,
+                observaciones: info.event.extendedProps.observaciones || null,
+            });
+            Toast("success", "Turno actualizado exitosamente");
+        } catch (error) {
+            console.error("Error actualizando turno:", error);
+            AlertError(
+                `Error al actualizar turno: ${
+                    error.response?.data?.message || error.message
+                }`
+            );
+            info.revert();
+        }
+    };
+
+    // Manejar redimensionamiento de eventos
+    const handleEventResize = async (info) => {
+        const now = new Date();
+
+        // Validar que las nuevas fechas no sean pasadas (solo en vistas timeGrid)
+        if (currentView !== "dayGridMonth") {
+            if (
+                info.event.start < now ||
+                (info.event.end && info.event.end < now)
+            ) {
+                Toast(
+                    "error",
+                    "No se pueden redimensionar turnos a fechas u horas pasadas"
+                );
+                info.revert();
+                return;
+            }
+        }
+
+        // El handleEventChange se encargará de guardar los cambios
+        // Este handler es para validaciones adicionales antes del cambio
+    };
+
     return (
         <div className="calendar-container">
             <FullCalendar
@@ -418,6 +486,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 droppable={true}
                 eventReceive={handleEventReceive}
                 eventClick={handleEventClick}
+                eventChange={handleEventChange}
+                eventResize={handleEventResize}
                 initialView="timeGridWeek"
                 headerToolbar={{
                     left: "today prev,next",
