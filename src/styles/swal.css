@@ -389,15 +389,50 @@ SHIFT FORM (Crear Turno)
 
 .shift-details-actions {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 12px;
     width: 100%;
 }
 
+/* Botón Modificar (acento dorado) */
+.shift-btn-modify {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    flex: 1;
+    background-color: var(--login-accent) !important;
+    color: var(--surface-1) !important;
+    border: 1px solid var(--login-accent);
+    border-radius: 8px;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-medium);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.shift-btn-modify:hover {
+    background-color: #e0c050 !important;
+    border-color: #e0c050;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+}
+
+.shift-btn-modify:active {
+    transform: scale(0.98);
+}
+
+/* Botón Eliminar (rojo) */
 .shift-btn-delete {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 10px 20px;
+    flex: 1;
     background-color: var(
         --swal2-deny-button-background-color,
         var(--error-bg)
