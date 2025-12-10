@@ -1,8 +1,10 @@
 import axios from "axios";
 import authService from "./config";
 
-// Crear una instancia única de axios
-const axiosInstance = axios.create();
+// Crear una instancia única de axios con la URL base
+const axiosInstance = axios.create({
+    baseURL: import.meta.env.VITE_URL_BACK || "http://localhost:3000",
+});
 
 // Configurar interceptor de solicitudes para agregar el token automáticamente
 axiosInstance.interceptors.request.use(
