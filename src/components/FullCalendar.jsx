@@ -278,8 +278,23 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         const deleteZone = document.getElementById("delete-zone");
         if (deleteZone) {
             const rect = deleteZone.getBoundingClientRect();
-            const mouseX = info.jsEvent.clientX;
-            const mouseY = info.jsEvent.clientY;
+
+            // Soportar tanto eventos de mouse como touch
+            let mouseX, mouseY;
+
+            if (
+                info.jsEvent.type === "touchend" &&
+                info.jsEvent.changedTouches
+            ) {
+                // Evento táctil
+                const touch = info.jsEvent.changedTouches[0];
+                mouseX = touch.clientX;
+                mouseY = touch.clientY;
+            } else {
+                // Evento de mouse
+                mouseX = info.jsEvent.clientX;
+                mouseY = info.jsEvent.clientY;
+            }
 
             const isOverDeleteZone =
                 mouseX >= rect.left &&
@@ -477,7 +492,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                 events={loadShifts}
                 editable={true}
                 dayMaxEvents={true}
-                eventLongPressDelay={500}
+                eventLongPressDelay={300}
+                longPressDelay={300}
                 eventDragStart={handleEventDragStart}
                 eventDragStop={handleEventDragStop}
                 eventResizeStart={(info) => {

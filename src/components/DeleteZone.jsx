@@ -8,14 +8,25 @@ function DeleteZone({ isVisible }) {
 
         const handleDragOver = (e) => {
             e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
+            if (e.dataTransfer) {
+                e.dataTransfer.dropEffect = "move";
+            }
+        };
+
+        const handleTouchMove = (e) => {
+            // Prevenir scroll mientras se arrastra
+            e.preventDefault();
         };
 
         const deleteZone = deleteZoneRef.current;
         deleteZone.addEventListener("dragover", handleDragOver);
+        deleteZone.addEventListener("touchmove", handleTouchMove, {
+            passive: false,
+        });
 
         return () => {
             deleteZone.removeEventListener("dragover", handleDragOver);
+            deleteZone.removeEventListener("touchmove", handleTouchMove);
         };
     }, []);
 
