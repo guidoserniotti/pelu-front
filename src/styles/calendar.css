@@ -134,3 +134,119 @@ CALENDAR (HIGH CONTRAST DARK)
     width: 0;
     height: 0;
 }
+
+/*
+=======================
+RESPONSIVE CALENDAR
+=======================
+*/
+
+/* Tablets medianas (hasta 1024px) */
+@media (max-width: 1024px) {
+    .calendar-container {
+        padding: 6px;
+    }
+
+    .calendar-container .fc .fc-toolbar-title {
+        font-size: 1.3rem;
+    }
+
+    .calendar-container .fc .fc-button {
+        padding: 0.3em 0.5em;
+        font-size: 0.9rem;
+    }
+
+    .calendar-container .fc .fc-col-header-cell-cushion {
+        padding: 4px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablets pequeñas (hasta 768px) */
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: 4px;
+    }
+
+    .calendar-container .fc .fc-toolbar-title {
+        font-size: 1.1rem;
+    }
+
+    .calendar-container .fc .fc-button {
+        padding: 0.25em 0.4em;
+        font-size: 0.85rem;
+    }
+
+    .calendar-container .fc .fc-col-header-cell-cushion {
+        padding: 3px;
+        font-size: 0.85rem;
+    }
+
+    .calendar-container .fc .fc-timegrid-axis-cushion,
+    .calendar-container .fc .fc-timegrid-slot-label-cushion {
+        font-size: 0.8rem;
+        padding: 2px;
+    }
+
+    .calendar-container .fc .fc-event-title {
+        font-size: 0.85rem;
+    }
+
+    .calendar-container .fc-custom-time {
+        font-size: 0.7rem;
+    }
+}
+
+/* Móviles y tablets muy pequeñas (hasta 640px) */
+@media (max-width: 640px) {
+    .calendar-container {
+        padding: 2px;
+        border-radius: 8px;
+    }
+
+    .calendar-container .fc .fc-toolbar {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .calendar-container .fc .fc-toolbar-title {
+        font-size: 1rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .calendar-container .fc .fc-button {
+        padding: 0.2em 0.3em;
+        font-size: 0.75rem;
+    }
+
+    .calendar-container .fc .fc-col-header-cell-cushion {
+        padding: 2px;
+        font-size: 0.75rem;
+    }
+
+    .calendar-container .fc .fc-timegrid-axis-cushion,
+    .calendar-container .fc .fc-timegrid-slot-label-cushion {
+        font-size: 0.7rem;
+        padding: 1px;
+    }
+
+    .calendar-container .fc .fc-event-title {
+        font-size: 0.75rem;
+    }
+
+    .calendar-container .fc-custom-time {
+        font-size: 0.65rem;
+        gap: 3px;
+    }
+
+    .calendar-container .fc-custom-title {
+        font-size: 0.75rem;
+    }
+
+    /* Reducir el padding de los eventos para que se vean mejor en pantallas pequeñas */
+    .calendar-container .fc .fc-timegrid-event .fc-event-main,
+    .calendar-container .fc .fc-daygrid-event .fc-event-main {
+        padding: 1px 4px;
+    }
+}

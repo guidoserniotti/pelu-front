@@ -10,7 +10,7 @@ CLIENTS PAGE
 /* Layout principal: lista (izquierda) + calendario (derecha) */
 .main-calendar-container {
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 300px 1fr;
     gap: 16px;
     height: 100vh;
     padding: 12px;
@@ -20,6 +20,180 @@ CLIENTS PAGE
     ); /* fondo general oscuro para separar del panel claro
     */
     background: transparent;
+}
+
+/* 
+=======================
+RESPONSIVE DESIGN
+=======================
+*/
+
+/* Tablets grandes (hasta 1200px) */
+@media (max-width: 1200px) {
+    .main-calendar-container {
+        grid-template-columns: 260px 1fr;
+        gap: 12px;
+        padding: 10px;
+    }
+}
+
+/* Tablets medianas (hasta 1024px) */
+@media (max-width: 1024px) {
+    .main-calendar-container {
+        grid-template-columns: 220px 1fr;
+        gap: 10px;
+        padding: 8px;
+    }
+
+    .client-container h2 {
+        font-size: 1.1rem;
+    }
+
+    .client-search input[type="text"] {
+        padding: 6px 8px;
+        font-size: 13px;
+        border-radius: 5px;
+    }
+
+    .client-search button {
+        padding: 6px;
+        font-size: 14px;
+        min-width: 32px;
+        border-radius: 5px;
+    }
+
+    .client-title {
+        font-size: 14px;
+    }
+
+    .client-phone {
+        font-size: 12px;
+    }
+}
+
+/* Tablets pequeñas (hasta 768px) */
+@media (max-width: 768px) {
+    .main-calendar-container {
+        grid-template-columns: 200px 1fr;
+        gap: 8px;
+        padding: 6px;
+    }
+
+    .client-container {
+        padding: 8px;
+    }
+
+    .client-container h2 {
+        font-size: 1rem;
+        margin: 4px 0 8px;
+    }
+
+    .client-search input[type="text"] {
+        padding: 5px 6px;
+        font-size: 12px;
+        border-radius: 4px;
+    }
+
+    .client-search button {
+        padding: 5px;
+        font-size: 14px;
+        min-width: 28px;
+        border-radius: 4px;
+    }
+
+    .client-item {
+        padding: 8px 4px;
+    }
+
+    .client-title {
+        font-size: 13px;
+    }
+
+    .client-phone {
+        font-size: 11px;
+    }
+
+    .client-action-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .client-action-button img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .client-header-actions .client-action-button {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* Móviles y tablets muy pequeñas (hasta 640px) */
+@media (max-width: 640px) {
+    .main-calendar-container {
+        grid-template-columns: 160px 1fr;
+        gap: 6px;
+        padding: 4px;
+    }
+
+    .client-container {
+        padding: 6px;
+    }
+
+    .client-container h2 {
+        font-size: 0.9rem;
+        margin: 2px 0 6px;
+    }
+
+    .client-search {
+        gap: 4px;
+        margin-bottom: 8px;
+    }
+
+    .client-search input[type="text"] {
+        padding: 4px;
+        font-size: 11px;
+        border-radius: 3px;
+    }
+
+    .client-search button {
+        padding: 4px;
+        font-size: 13px;
+        min-width: 24px;
+        border-radius: 3px;
+    }
+
+    .client-item {
+        padding: 6px 2px;
+    }
+
+    .client-title {
+        font-size: 12px;
+    }
+
+    .client-phone {
+        font-size: 10px;
+    }
+
+    .client-action-button {
+        width: 32px;
+        height: 32px;
+    }
+
+    .client-action-button img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .client-header-actions .client-action-button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .client-item-actions {
+        gap: 4px;
+    }
 }
 
 /* Panel lateral de clientes */
@@ -44,6 +218,13 @@ CLIENTS PAGE
     color: var(--text-inverse);
 }
 
+/* Contenedor del header completo */
+.client-header {
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Permite que el contenedor se reduzca */
+}
+
 /* Botones superiores: Agregar / Logout */
 .client-header-actions {
     display: flex;
@@ -63,16 +244,20 @@ CLIENTS PAGE
     display: flex;
     gap: 8px;
     margin-bottom: 12px;
+    min-width: 0; /* Permite que se reduzca dentro del contenedor */
+    width: 100%; /* Ocupa todo el ancho disponible */
 }
 
 .client-search input[type="text"] {
     flex: 1;
-    padding: 10px 12px;
-    border-radius: 8px;
+    min-width: 0; /* Permite que el input se reduzca progresivamente */
+    padding: 8px 10px;
+    border-radius: 6px;
     border: 1px solid var(--border-muted-dark);
     background: var(--surface-3);
     color: var(--text-inverse);
     font-family: var(--font-family-base);
+    font-size: 14px;
 }
 .client-search input[type="text"]::placeholder {
     color: var(--text-inverse);
@@ -85,13 +270,19 @@ CLIENTS PAGE
 }
 
 .client-search button {
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: 8px;
+    border-radius: 6px;
     border: 1px solid var(--border-muted-dark);
     background: var(--surface-3);
     color: var(--text-inverse);
     cursor: pointer;
     transition: background-color 0.2s ease;
+    font-size: 16px;
+    min-width: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .client-search button:hover {
