@@ -7,16 +7,18 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { useCallback, useRef, useState } from "react";
 import shiftsService from "../services/shifts";
 import "../styles/calendar.css";
-import AlertError from "../utils/NotificationWindows/AlertError";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 import showShiftDetails from "../utils/NotificationWindows/ShiftDetailsSidebar";
 import { promptCreateShift } from "../utils/NotificationWindows/ShiftFormPrompt";
-import Toast from "../utils/NotificationWindows/Toast";
 import confirmModify from "../utils/NotificationWindows/ConfirmModify";
-const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
+import AlertError from "../utils/NotificationWindows/AlertError";
+import { promiseToast, showValidation } from "../utils/toastify/toastConfig";
+import { createDynamicMessage } from "../utils/toastify/toastMessages";
+const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
     const calendarRef = useRef(null);
     const draggedEventRef = useRef(null);
+    const hasLoadedOnce = useRef(false);
 
     // Filtrar clientes activos del prop recibido
     const clientes = clientList.filter((client) => !client.esta_eliminado);
@@ -64,6 +66,12 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 },
                 editable: true,
             }));
+
+            // Notificar que los turnos se cargaron (solo la primera vez)
+            if (!hasLoadedOnce.current && onShiftsLoaded) {
+                hasLoadedOnce.current = true;
+                onShiftsLoaded();
+            }
 
             return formattedEvents;
         } catch (error) {
@@ -140,10 +148,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         // Validar que la fecha de inicio no sea anterior a la hora actual
         // SOLO en vistas timeGrid (semana/día), no en vista mensual
         if (currentView !== "dayGridMonth" && startDate < now) {
-            Toast(
-                "error",
-                "No se pueden crear turnos en fechas u horas pasadas"
-            );
+            showValidation("FECHA_PASADA");
             info.revert();
             return;
         }
@@ -157,9 +162,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         }
 
         if (!cliente) {
-            AlertError(
-                "No se pudo identificar el cliente. Por favor, recargue la página."
-            );
+            showValidation("CLIENTE_NO_IDENTIFICADO");
             info.revert();
             return;
         }
@@ -174,15 +177,16 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
         if (turnoData) {
             try {
-                await shiftsService.registrarTurno(
-                    turnoData.fecha_hora_inicio,
-                    turnoData.fecha_hora_fin,
-                    turnoData.observaciones || "",
-                    turnoData.cliente_id,
-                    false
+                await promiseToast(
+                    shiftsService.registrarTurno(
+                        turnoData.fecha_hora_inicio,
+                        turnoData.fecha_hora_fin,
+                        turnoData.observaciones || "",
+                        turnoData.cliente_id,
+                        false
+                    ),
+                    createDynamicMessage.shiftCreate(cliente)
                 );
-
-                Toast("success", "Turno creado exitosamente");
 
                 // Eliminar el evento temporal del drag & drop
                 info.event.remove();
@@ -194,13 +198,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 }
             } catch (error) {
                 console.error("Error al crear turno:", error);
-                console.error("Response data:", error.response?.data);
-                console.error("Request data:", error.config?.data);
-                AlertError(
-                    `Error al crear turno: ${
-                        error.response?.data?.message || error.message
-                    }`
-                );
                 // Revertir el evento si falla
                 info.revert();
             }
@@ -219,19 +216,14 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
         // Verificar que la fecha de inicio no sea anterior a la hora actual
         // SOLO en vistas timeGrid (semana/día), no en vista mensual
         if (currentView !== "dayGridMonth" && startDate < now) {
-            Toast(
-                "error",
-                "No se pueden crear turnos en fechas u horas pasadas"
-            );
+            showValidation("FECHA_PASADA");
             selectInfo.view.calendar.unselect();
             return;
         }
 
         // Verificar que haya clientes cargados
         if (clientes.length === 0) {
-            AlertError(
-                "No hay clientes disponibles. Por favor, agregue clientes primero."
-            );
+            showValidation("NO_CLIENTES");
             selectInfo.view.calendar.unselect();
             return;
         }
@@ -241,15 +233,16 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
         if (turnoData) {
             try {
-                await shiftsService.registrarTurno(
-                    turnoData.fecha_hora_inicio,
-                    turnoData.fecha_hora_fin,
-                    turnoData.observaciones || "",
-                    turnoData.cliente_id,
-                    false
+                await promiseToast(
+                    shiftsService.registrarTurno(
+                        turnoData.fecha_hora_inicio,
+                        turnoData.fecha_hora_fin,
+                        turnoData.observaciones || "",
+                        turnoData.cliente_id,
+                        false
+                    ),
+                    createDynamicMessage.shiftCreate(turnoData.cliente_nombre)
                 );
-
-                Toast("success", "Turno creado exitosamente");
 
                 // Recargar turnos desde el backend
                 if (calendarRef.current) {
@@ -258,11 +251,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 }
             } catch (error) {
                 console.error("Error al crear turno:", error);
-                AlertError(
-                    `Error al crear turno: ${
-                        error.response?.data?.message || error.message
-                    }`
-                );
             }
         }
 
@@ -272,19 +260,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
     // Manejar clic en fecha/hora (validación adicional)
     const handleDateClick = (info) => {
-        const clickedDate = info.date;
-        const now = new Date();
-
-        // Prevenir clics en fechas/horas pasadas
-        // SOLO en vistas timeGrid (semana/día), no en vista mensual
-        if (currentView !== "dayGridMonth" && clickedDate < now) {
-            Toast(
-                "error",
-                "No se pueden crear turnos en fechas u horas pasadas"
-            );
-            return;
-        }
-        // Si la fecha es válida, el evento 'select' se encargará de abrir el formulario
+        // El evento 'select' se encargará de abrir el formulario y validar
+        // No necesitamos validar aquí para evitar notificaciones duplicadas
     };
 
     // Manejar inicio de arrastre de evento
@@ -318,20 +295,15 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
                 try {
                     // Eliminar del backend
-                    await shiftsService.eliminarTurno(turnoId);
+                    await promiseToast(
+                        shiftsService.eliminarTurno(turnoId),
+                        createDynamicMessage.turnoDeleted(turnoTitle)
+                    );
 
                     // Remover el evento del calendario
                     info.event.remove();
-
-                    Toast("success", `Turno eliminado: ${turnoTitle}`);
                 } catch (error) {
                     console.error("Error eliminando turno:", error);
-                    Toast(
-                        "error",
-                        `Error: ${
-                            error.response?.data?.message || error.message
-                        }`
-                    );
                     // Revertir el cambio visual si hubo error
                     info.revert();
                 }
@@ -367,10 +339,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
 
         // Validar que la nueva fecha no sea pasada (solo en vistas timeGrid)
         if (currentView !== "dayGridMonth" && info.event.start < now) {
-            Toast(
-                "error",
-                "No se pueden mover turnos a fechas u horas pasadas"
-            );
+            showValidation("TURNO_MOVER_PASADO");
             info.revert();
             return;
         }
@@ -380,6 +349,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
             info.revert();
             return;
         }
+
         try {
             // Formatear fechas a ISO
             const fechaInicioISO = info.event.start.toISOString();
@@ -387,19 +357,18 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 ? info.event.end.toISOString()
                 : fechaInicioISO;
 
-            await shiftsService.editarTurno(turnoId, {
-                fecha_hora_inicio_turno: fechaInicioISO,
-                fecha_hora_fin_turno: fechaFinISO,
-                observaciones: info.event.extendedProps.observaciones || null,
-            });
-            Toast("success", "Turno actualizado exitosamente");
+            // Usar promiseToast para gestionar los estados de la promesa
+            await promiseToast(
+                shiftsService.editarTurno(turnoId, {
+                    fecha_hora_inicio_turno: fechaInicioISO,
+                    fecha_hora_fin_turno: fechaFinISO,
+                    observaciones:
+                        info.event.extendedProps.observaciones || null,
+                }),
+                createDynamicMessage.shiftUpdate(info.event.title)
+            );
         } catch (error) {
             console.error("Error actualizando turno:", error);
-            AlertError(
-                `Error al actualizar turno: ${
-                    error.response?.data?.message || error.message
-                }`
-            );
             info.revert();
         }
     };
@@ -414,10 +383,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent }) => {
                 info.event.start < now ||
                 (info.event.end && info.event.end < now)
             ) {
-                Toast(
-                    "error",
-                    "No se pueden redimensionar turnos a fechas u horas pasadas"
-                );
+                showValidation("TURNO_REDIMENSIONAR_PASADO");
                 info.revert();
                 return;
             }

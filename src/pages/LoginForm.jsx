@@ -1,14 +1,12 @@
 import logo from "../../assets/img/logo.jpg";
 import Notification from "../components/Notification";
-import Toast from "../utils/NotificationWindows/Toast";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import loginService from "../services/login";
 import { useAuth } from "../auth/AuthContext";
 import "../styles/login.css";
 import { useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { promiseToast } from "../utils/toastify/toastConfig";
 
 // Schema de validación con Zod
 const loginSchema = z.object({
@@ -29,8 +27,6 @@ const loginSchema = z.object({
 
 const LoginForm = () => {
     const { login } = useAuth();
-    const location = useLocation();
-    const [serverError, setServerError] = useState(null);
 
     const {
         register,
@@ -42,12 +38,14 @@ const LoginForm = () => {
     });
 
     const onSubmit = async (data) => {
-        setServerError(null); // Limpiar errores previos
         try {
-            const user = await loginService.login({
-                email: data.email,
-                contrasena: data.password,
-            });
+            const user = await promiseToast(
+                loginService.login({
+                    email: data.email,
+                    contrasena: data.password,
+                }),
+                "AUTH_LOGIN"
+            );
             login(
                 JSON.stringify({
                     id: user.id,
@@ -58,33 +56,9 @@ const LoginForm = () => {
             );
         } catch (exception) {
             console.error("Error de login:", exception);
-            const errorMessage =
-                exception.response?.data?.message || "Error al iniciar sesión";
-            setServerError(errorMessage);
-            setTimeout(() => {
-                setServerError(null);
-            }, 3800);
         }
     };
 
-    // Mostrar toast (si viene del logout) apenas se monta/entra
-    const { toastPayload: ctxToast, clearToast } = useAuth();
-    useEffect(() => {
-        const locToast = location?.state?.toast;
-
-        // Priorizar el toast del contexto (AuthProvider), si existe
-        if (ctxToast?.icon && ctxToast?.title) {
-            Toast(ctxToast.icon, ctxToast.title);
-            // Limpiar para que no se vuelva a mostrar
-            clearToast();
-            return;
-        }
-
-        // Fallback: si viene por location.state
-        if (locToast?.icon && locToast?.title) {
-            Toast(locToast.icon, locToast.title);
-        }
-    }, [location, ctxToast, clearToast]);
     return (
         <div className="login-page-container">
             <div className="login-left">
@@ -93,10 +67,6 @@ const LoginForm = () => {
             <div className="login-right">
                 <form className="login-box" onSubmit={handleSubmit(onSubmit)}>
                     <h2 className="login-title">Iniciar Sesión</h2>
-                    <Notification
-                        message={serverError}
-                        className="login-data-notification server-error"
-                    />
                     <div className="login-data">
                         <label className="login-data-label">Email</label>
                         <Notification

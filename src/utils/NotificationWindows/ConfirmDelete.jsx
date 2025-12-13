@@ -14,19 +14,6 @@ const confirmDelete = async (title, isClient = true) => {
         cancelButtonText: "Cancelar",
         reverseButtons: true,
     });
-    if (result.isConfirmed) {
-        ThemedSwal.fire({
-            title: "¡Eliminado!",
-            text: `${title} ha sido eliminado.`,
-            icon: "success",
-        });
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-        ThemedSwal.fire({
-            title: "Cancelado",
-            text: `${title} está a salvo :)`,
-            icon: "error",
-        });
-    }
     return result.isConfirmed;
 };
 

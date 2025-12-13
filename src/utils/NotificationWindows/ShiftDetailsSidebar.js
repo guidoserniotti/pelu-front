@@ -1,7 +1,8 @@
 import shiftsService from "../../services/shifts";
 import ThemedSwal from "../swalTheme";
 import confirmDelete from "./ConfirmDelete";
-import Toast from "./Toast";
+import { promiseToast } from "../toastify/toastConfig";
+import { createDynamicMessage } from "../toastify/toastMessages";
 import { promptModifyShift } from "./ModifyShiftFormPrompt";
 import AlertError from "./AlertError";
 /**
@@ -165,19 +166,19 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
 
                     if (updatedData) {
                         try {
-                            await shiftsService.editarTurno(
-                                updatedData.turno_id,
-                                {
-                                    fecha_hora_inicio_turno:
-                                        updatedData.fecha_hora_inicio_turno,
-                                    fecha_hora_fin_turno:
-                                        updatedData.fecha_hora_fin_turno,
-                                    observaciones: updatedData.observaciones,
-                                }
-                            );
-                            Toast(
-                                "success",
-                                `Turno de ${title} modificado exitosamente`
+                            await promiseToast(
+                                shiftsService.editarTurno(
+                                    updatedData.turno_id,
+                                    {
+                                        fecha_hora_inicio_turno:
+                                            updatedData.fecha_hora_inicio_turno,
+                                        fecha_hora_fin_turno:
+                                            updatedData.fecha_hora_fin_turno,
+                                        observaciones:
+                                            updatedData.observaciones,
+                                    }
+                                ),
+                                "TURNO_UPDATE"
                             );
 
                             // Ejecutar callback si existe (para refrescar el calendario)
@@ -212,12 +213,11 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
 
                     if (shouldDelete) {
                         try {
-                            await shiftsService.eliminarTurno(
-                                extendedProps.turnoId
-                            );
-                            Toast(
-                                "success",
-                                `Turno de ${title} eliminado exitosamente`
+                            await promiseToast(
+                                shiftsService.eliminarTurno(
+                                    extendedProps.turnoId
+                                ),
+                                createDynamicMessage.turnoDeleted(title)
                             );
 
                             // Ejecutar callback si existe (para refrescar el calendario)
@@ -226,13 +226,6 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
                             }
                         } catch (error) {
                             console.error("Error eliminando turno:", error);
-                            Toast(
-                                "error",
-                                `Error al eliminar turno: ${
-                                    error.response?.data?.message ||
-                                    error.message
-                                }`
-                            );
                         }
                     }
                 });

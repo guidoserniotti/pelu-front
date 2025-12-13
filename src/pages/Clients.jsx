@@ -5,8 +5,8 @@ import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
 import Calendar from "../components/FullCalendar";
 import DeleteZone from "../components/DeleteZone";
-import AlertError from "../utils/NotificationWindows/AlertError";
-import Toast from "../utils/NotificationWindows/Toast";
+import { createDynamicMessage } from "../utils/toastify/toastMessages";
+import { promiseToast, showToast } from "../utils/toastify/toastConfig";
 import { useAuth } from "../auth/AuthContext";
 // Reemplazamos formularios flotantes por SweetAlert2 temado
 import {
@@ -18,15 +18,21 @@ import windowLogOut from "../utils/NotificationWindows/ConfirmLogOut";
 import addClientImg from "../../assets/img/addClient.png";
 import logoutImg from "../../assets/img/logout.png";
 const Clients = () => {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     // Estado para manejar la lista de clientes
     const [client, setClient] = useState([]);
     const [filter, setFilter] = useState("");
     const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
     const [isDraggingEvent, setIsDraggingEvent] = useState(false);
+    const [isLoadingData, setIsLoadingData] = useState(true);
+    const [dataLoaded, setDataLoaded] = useState({
+        clients: false,
+        shifts: false,
+    });
 
     useEffect(() => {
         const fetchClients = async () => {
+            setIsLoadingData(true);
             try {
                 const clientsData = await clientsService.getClients();
                 const formattedClients = clientsData.listado_clientes.map(
@@ -41,24 +47,41 @@ const Clients = () => {
                     }
                 );
                 setClient(formattedClients);
-                Toast("info", "Clientes cargados correctamente");
+                setIsLoadingData(false);
+                setDataLoaded((prev) => ({ ...prev, clients: true }));
             } catch (error) {
                 console.error("Error fetching clients:", error);
-                AlertError(
-                    `Error al cargar clientes: ${
-                        error.response?.data?.message || error.message
-                    }`
-                );
+                setIsLoadingData(false);
             }
         };
         fetchClients();
     }, []); // ← Solo se ejecuta al montar el componente
 
+    // useEffect para mostrar bienvenida cuando todos los datos estén cargados
+    useEffect(() => {
+        if (dataLoaded.clients && dataLoaded.shifts) {
+            const timer = setTimeout(() => {
+                showToast(
+                    "success",
+                    `¡Bienvenido usuario! Datos cargados correctamente`,
+                    {
+                        autoClose: 3000,
+                        toastId: "welcome-message",
+                    }
+                );
+            }, 300);
+            return () => clearTimeout(timer);
+        }
+    }, [dataLoaded, user]);
+
     const handleAddClient = async () => {
         const values = await promptAddClient();
         if (!values) return; // cancelado
         try {
-            const created = await clientsService.createClient(values);
+            const created = await promiseToast(
+                clientsService.createClient(values),
+                createDynamicMessage.clientAdd(values.nombre_completo)
+            );
             setClient((prev) => [
                 ...prev,
                 {
@@ -69,13 +92,8 @@ const Clients = () => {
                     esta_eliminado: created.data.esta_eliminado,
                 },
             ]);
-            Toast("success", `Cliente creado: ${created.data.nombre_completo}`);
         } catch (error) {
             console.error("Error al crear cliente:", error);
-            Toast(
-                "error",
-                `Error: ${error.response?.data?.message || error.message}`
-            );
         }
     };
 
@@ -83,9 +101,9 @@ const Clients = () => {
         const values = await promptEditClient(clientData);
         if (!values) return; // cancelado o sin cambios
         try {
-            const updated = await clientsService.updateClient(
-                clientData.id,
-                values
+            const updated = await promiseToast(
+                clientsService.updateClient(clientData.id, values),
+                createDynamicMessage.clientEdit(clientData.title)
             );
             const updatedClients = client.map((c) =>
                 c.id === clientData.id
@@ -97,15 +115,8 @@ const Clients = () => {
                     : c
             );
             setClient(updatedClients);
-            Toast(
-                "success",
-                `Cliente actualizado: ${updated.data.nombre_completo}`
-            );
         } catch (error) {
-            Toast(
-                "error",
-                `Error: ${error.response?.data?.message || error.message}`
-            );
+            console.error("Error al actualizar cliente:", error);
         }
     };
 
@@ -114,11 +125,17 @@ const Clients = () => {
     const handleDeleteClient = async (clientData) => {
         const confirmDelete = await windowDelete(clientData.title);
         if (!confirmDelete) return;
-        await clientsService.deleteClient(clientData.id);
 
-        const updatedClients = client.filter((c) => c.id !== clientData.id);
-        setClient(updatedClients);
-        Toast("success", `Cliente eliminado: ${clientData.title}`);
+        try {
+            await promiseToast(
+                clientsService.deleteClient(clientData.id),
+                createDynamicMessage.clientDeleted(clientData.title)
+            );
+            const updatedClients = client.filter((c) => c.id !== clientData.id);
+            setClient(updatedClients);
+        } catch (error) {
+            console.error("Error al eliminar cliente:", error);
+        }
     };
 
     const handleLogOut = async () => {
@@ -208,6 +225,9 @@ const Clients = () => {
                 <Calendar
                     clientList={client}
                     setIsDraggingEvent={setIsDraggingEvent}
+                    onShiftsLoaded={() =>
+                        setDataLoaded((prev) => ({ ...prev, shifts: true }))
+                    }
                 />
             </div>
         </div>

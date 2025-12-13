@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import authService from "../utils/config";
 import { AuthContext } from "./AuthContext";
+import { showInstantMessage } from "../utils/toastify/toastConfig";
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
-    const [toastPayload, setToastPayload] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -21,14 +21,14 @@ export function AuthProvider({ children }) {
     // Maneja el logout del usuario
     const logout = (isExpired = false) => {
         clearSession();
-        const payload = {
-            icon: isExpired ? "warning" : "success",
-            title: isExpired
-                ? "Sesión expirada"
-                : "Sesión cerrada correctamente",
-        };
-        setToastPayload(payload);
         navigate("/login", { replace: true });
+
+        // Mostrar el toast después de navegar
+        setTimeout(() => {
+            showInstantMessage(
+                isExpired ? "SESION_EXPIRADA" : "SESION_CERRADA"
+            );
+        }, 100);
     };
 
     // Verificar el token y hacer logout si expiró
@@ -114,8 +114,6 @@ export function AuthProvider({ children }) {
         navigate("/clients");
     };
 
-    const clearToast = () => setToastPayload(null);
-
     // Chequea si el usuario está autenticado
     const isAuthenticated = () => {
         return !!token;
@@ -126,8 +124,6 @@ export function AuthProvider({ children }) {
             value={{
                 user,
                 token,
-                toastPayload,
-                clearToast,
                 isAuthenticated,
                 loading,
                 login,
