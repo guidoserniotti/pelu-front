@@ -183,41 +183,39 @@ const Clients = () => {
                     <DeleteZone isVisible={isDraggingEvent} />
                 ) : (
                     <>
-                        <div className="client-header-actions">
-                            <ButtonClientsList
-                                text={"Agregar Cliente"}
-                                imgSource={addClientImg}
-                                functionOnClick={toggleAddForm}
-                                className="btn-add"
-                            />
-                            <ButtonClientsList
-                                text={"LogOut"}
-                                imgSource={logoutImg}
-                                functionOnClick={handleLogOut}
-                                className="btn-logout"
+                        <div className="client-header">
+                            <div className="client-header-actions">
+                                <ButtonClientsList
+                                    text={"Agregar Cliente"}
+                                    imgSource={addClientImg}
+                                    functionOnClick={toggleAddForm}
+                                    className="btn-add"
+                                />
+                                <ButtonClientsList
+                                    text={"LogOut"}
+                                    imgSource={logoutImg}
+                                    functionOnClick={handleLogOut}
+                                    className="btn-logout"
+                                />
+                            </div>
+                            <h2>Clientes</h2>
+                            <div className="client-search">
+                                <input
+                                    type="text"
+                                    value={filter}
+                                    placeholder="Buscar cliente..."
+                                    onChange={handleSearch}
+                                />
+                                <button type="button" onClick={toggleSortOrder}>
+                                    {sortOrder === "asc" ? "↑" : "↓"}
+                                </button>
+                            </div>
+                            <ClientList
+                                client={filteredClients}
+                                handleEditClientForm={handleEditClientForm}
+                                handleDeleteClient={handleDeleteClient}
                             />
                         </div>
-                        <h2>Clientes</h2>
-                        <div className="client-search">
-                            <input
-                                type="text"
-                                value={filter}
-                                placeholder="Buscar cliente..."
-                                onChange={handleSearch}
-                            />
-                            <button
-                                type="button"
-                                onClick={toggleSortOrder}
-                                style={{ marginLeft: "8px" }}
-                            >
-                                {sortOrder === "asc" ? "A → Z" : "Z → A"}
-                            </button>
-                        </div>
-                        <ClientList
-                            client={filteredClients}
-                            handleEditClientForm={handleEditClientForm}
-                            handleDeleteClient={handleDeleteClient}
-                        />
                     </>
                 )}
             </div>
