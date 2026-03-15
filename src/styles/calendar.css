@@ -1,78 +1,104 @@
-/* Variables compartidas */
-@import url("./variables.css");
-
 /*
 =======================
-CALENDAR (HIGH CONTRAST DARK)
+CALENDAR - FullCalendar overrides
+Solo los estilos que necesitan sobreescribir el CSS interno del plugin.
+Los tokens vienen del theme de Tailwind (App.css).
 =======================
 */
 .calendar-container {
-    background: var(--surface-2);
-    border-radius: 12px;
+    background: var(--color-surface-2);
+    border-radius: var(--radius-lg);
     padding: 8px;
     box-shadow: var(--shadow-strong);
-    color: var(--text-inverse);
+    color: var(--color-text-inverse);
 }
 
-/* Toolbar y títulos */
+/* Toolbar y titulos */
 .calendar-container .fc .fc-toolbar-title {
-    color: var(--text-inverse);
+    color: var(--color-text-inverse);
 }
 .calendar-container .fc .fc-button-primary {
-    background: var(--surface-3);
-    border: 1px solid var(--border-muted-dark);
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border-dark);
 }
 .calendar-container .fc .fc-button-primary:hover {
-    background: var(--accent-primary, #d4af37);
-    border-color: var(--accent-primary, #d4af37);
-    color: #000;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-surface-0);
+}
+.calendar-container .fc .fc-button-primary:not(:disabled).fc-button-active,
+.calendar-container .fc .fc-button-primary:not(:disabled):active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-surface-0);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
+.calendar-container .fc .fc-button-primary:focus {
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
+.calendar-container .fc .fc-button-primary:disabled {
+    opacity: 0.4;
+}
+
+/* Today button activo */
+.calendar-container .fc .fc-today-button:not(:disabled) {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-surface-0);
+    font-weight: 600;
+}
+.calendar-container .fc .fc-today-button:not(:disabled):hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+}
+
+/* Dia actual resaltado */
+.calendar-container .fc .fc-day-today {
+    background: rgba(212, 175, 55, 0.06) !important;
+}
+
+/* Now indicator */
+.calendar-container .fc .fc-timegrid-now-indicator-line {
+    border-color: var(--color-accent);
+}
+.calendar-container .fc .fc-timegrid-now-indicator-arrow {
+    border-top-color: var(--color-accent);
 }
 
 /* Bordes y grillas */
 .calendar-container .fc-theme-standard td,
 .calendar-container .fc-theme-standard th {
-    border-color: var(--border-muted-dark);
+    border-color: var(--color-border-dark);
 }
 .calendar-container .fc .fc-scrollgrid,
 .calendar-container .fc .fc-view-harness,
 .calendar-container .fc .fc-timegrid,
 .calendar-container .fc .fc-daygrid {
-    background: var(--surface-1);
+    background: var(--color-surface-1);
 }
 
 /* Etiquetas de horas y columnas */
 .calendar-container .fc .fc-timegrid-axis-cushion,
 .calendar-container .fc .fc-timegrid-slot-label-cushion,
 .calendar-container .fc .fc-col-header-cell-cushion {
-    color: var(--text-inverse);
+    color: var(--color-text-inverse);
 }
 
-/* Hover/selecciones suaves en oscuro */
+/* Hover/selecciones suaves */
 .calendar-container .fc .fc-daygrid-day:hover,
 .calendar-container .fc .fc-timegrid-slot:hover {
     background: rgba(255, 255, 255, 0.03);
 }
 
-/* Eventos (cuando se agreguen) */
+/* Eventos */
 .calendar-container .fc .fc-event {
-    border-radius: 8px;
-    border: 1px solid var(--border-muted-dark);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-dark);
 }
 
-/*
-    Eventos: ocultar hora y priorizar el título con elipsis
-    Si prefieres mostrar la hora más chica en lugar de ocultarla,
-    comenta la regla 'display: none' y deja el font-size reducido.
-*/
+/* Ocultar hora del evento */
 .calendar-container .fc .fc-event-time {
-    /* Oculta la hora
-    */
     display: none;
-    /* Alternativa (mostrar más chico):
-    font-weight: 100;
-    font-size: 0.75rem;
-    opacity: 0.6;
-    */
 }
 
 .calendar-container .fc .fc-event-title {
@@ -88,7 +114,7 @@ CALENDAR (HIGH CONTRAST DARK)
     padding: 2px 8px;
 }
 
-/* Estilos para el contenido personalizado del evento */
+/* Evento personalizado */
 .calendar-container .fc-custom-event {
     display: flex;
     flex-direction: column;
@@ -104,7 +130,7 @@ CALENDAR (HIGH CONTRAST DARK)
 }
 
 .calendar-container .fc-custom-time-divider {
-    color: var(--text-inverse);
+    color: var(--color-text-inverse);
     opacity: 0.8;
 }
 
@@ -115,16 +141,11 @@ CALENDAR (HIGH CONTRAST DARK)
     font-weight: 600;
 }
 
-/*
-        Scrollbars invisibles en los contenedores con scroll del calendario
-        Mantiene el scroll funcional pero oculta las barras en todos los navegadores.
-    */
+/* Scrollbars invisibles del calendario */
 .calendar-container .fc .fc-scroller,
 .calendar-container .fc .fc-view-harness,
 .calendar-container .fc .fc-scrollgrid {
-    /* Firefox */
     scrollbar-width: none;
-    /* IE/Edge legacy */
     -ms-overflow-style: none;
 }
 
@@ -140,111 +161,88 @@ CALENDAR (HIGH CONTRAST DARK)
 RESPONSIVE CALENDAR
 =======================
 */
-
-/* Tablets medianas (hasta 1024px) */
 @media (max-width: 1024px) {
     .calendar-container {
         padding: 6px;
     }
-
     .calendar-container .fc .fc-toolbar-title {
         font-size: 1.3rem;
     }
-
     .calendar-container .fc .fc-button {
         padding: 0.3em 0.5em;
         font-size: 0.9rem;
     }
-
     .calendar-container .fc .fc-col-header-cell-cushion {
         padding: 4px;
         font-size: 0.9rem;
     }
 }
 
-/* Tablets pequeñas (hasta 768px) */
 @media (max-width: 768px) {
     .calendar-container {
         padding: 4px;
     }
-
     .calendar-container .fc .fc-toolbar-title {
         font-size: 1.1rem;
     }
-
     .calendar-container .fc .fc-button {
         padding: 0.25em 0.4em;
         font-size: 0.85rem;
     }
-
     .calendar-container .fc .fc-col-header-cell-cushion {
         padding: 3px;
         font-size: 0.85rem;
     }
-
     .calendar-container .fc .fc-timegrid-axis-cushion,
     .calendar-container .fc .fc-timegrid-slot-label-cushion {
         font-size: 0.8rem;
         padding: 2px;
     }
-
     .calendar-container .fc .fc-event-title {
         font-size: 0.85rem;
     }
-
     .calendar-container .fc-custom-time {
         font-size: 0.7rem;
     }
 }
 
-/* Móviles y tablets muy pequeñas (hasta 640px) */
 @media (max-width: 640px) {
     .calendar-container {
         padding: 2px;
-        border-radius: 8px;
+        border-radius: var(--radius-md);
     }
-
     .calendar-container .fc .fc-toolbar {
         flex-wrap: wrap;
         gap: 4px;
     }
-
     .calendar-container .fc .fc-toolbar-title {
         font-size: 1rem;
         width: 100%;
         text-align: center;
     }
-
     .calendar-container .fc .fc-button {
         padding: 0.2em 0.3em;
         font-size: 0.75rem;
     }
-
     .calendar-container .fc .fc-col-header-cell-cushion {
         padding: 2px;
         font-size: 0.75rem;
     }
-
     .calendar-container .fc .fc-timegrid-axis-cushion,
     .calendar-container .fc .fc-timegrid-slot-label-cushion {
         font-size: 0.7rem;
         padding: 1px;
     }
-
     .calendar-container .fc .fc-event-title {
         font-size: 0.75rem;
     }
-
     .calendar-container .fc-custom-time {
         font-size: 0.65rem;
         gap: 3px;
     }
-
     .calendar-container .fc-custom-title {
         font-size: 0.75rem;
     }
-
-    /* Reducir el padding de los eventos para que se vean mejor en pantallas pequeñas */
     .calendar-container .fc .fc-timegrid-event .fc-event-main,
     .calendar-container .fc .fc-daygrid-event .fc-event-main {
         padding: 1px 4px;

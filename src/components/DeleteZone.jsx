@@ -14,7 +14,6 @@ function DeleteZone({ isVisible }) {
         };
 
         const handleTouchMove = (e) => {
-            // Prevenir scroll mientras se arrastra
             e.preventDefault();
         };
 
@@ -36,11 +35,15 @@ function DeleteZone({ isVisible }) {
         <div
             ref={deleteZoneRef}
             id="delete-zone"
-            className="delete-zone-overlay"
+            className="absolute inset-0 z-10 flex animate-[pulse-delete_1.5s_ease-in-out_infinite] items-center justify-center rounded-lg border-2 border-dashed border-white/40 bg-gradient-to-br from-error/92 to-error-dark/95 shadow-[0_0_40px_rgba(229,57,53,0.6),inset_0_0_60px_rgba(0,0,0,0.3)]"
         >
-            <div className="delete-zone-content">
-                <div className="delete-zone-icon">🗑️</div>
-                <p className="delete-zone-text">Suelta aquí para eliminar</p>
+            <div className="pointer-events-none text-center text-white">
+                <div className="mb-4 animate-bounce text-7xl drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]">
+                    🗑️
+                </div>
+                <p className="m-0 font-title text-2xl font-bold tracking-wide [text-shadow:0_2px_8px_rgba(0,0,0,0.5)]">
+                    Suelta aqui para eliminar
+                </p>
             </div>
         </div>
     );

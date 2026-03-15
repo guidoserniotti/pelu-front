@@ -1,69 +1,151 @@
-/* Variables y fuentes globales */
-@import url("./variables.css");
-/* Reset */
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+/* Import de fuentes */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap");
+
+@import "tailwindcss";
+
+/*
+=======================
+DESIGN TOKENS (Tailwind v4 theme)
+=======================
+*/
+@theme {
+    /* Colores - Superficies */
+    --color-surface-0: #0e0f12;
+    --color-surface-1: #15171b;
+    --color-surface-2: #1e2127;
+    --color-surface-3: #2a2f37;
+    --color-surface-contrast: #f7f8fa;
+    --color-surface-contrast-2: #ffffff;
+
+    /* Colores - Texto */
+    --color-text-strong: #0e0f12;
+    --color-text-muted: #6b7280;
+    --color-text-inverse: #e8eaed;
+
+    /* Colores - Acento */
+    --color-accent: #d4af37;
+    --color-accent-hover: #b89b31;
+
+    /* Colores - Error */
+    --color-error: #e53935;
+    --color-error-dark: #c62828;
+    --color-error-text: #ffffff;
+
+    /* Colores - Success */
+    --color-success: #00e676;
+    --color-success-dark: #00c853;
+
+    /* Colores - Info */
+    --color-info: #00b2ff;
+    --color-info-dark: #008ae6;
+
+    /* Colores - Bordes */
+    --color-border-light: rgba(0, 0, 0, 0.08);
+    --color-border-dark: rgba(255, 255, 255, 0.08);
+
+    /* Tipografia */
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+        Helvetica, Arial, "Noto Sans", sans-serif;
+    --font-title: "Poppins", "Inter", system-ui, sans-serif;
+
+    /* Border Radius */
+    --radius-sm: 5px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* Sombras */
+    --shadow-strong: 0 10px 30px rgba(0, 0, 0, 0.55);
+    --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
-/* Las variables viven ahora en variables.css */
+/*
+=======================
+GLOBAL BASE STYLES
+=======================
+*/
+@layer base {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
 
-/* Fuente base global */
-html,
-body,
-#root {
-    min-height: 100vh;
+    html,
+    body,
+    #root {
+        min-height: 100vh;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        background: linear-gradient(
+                rgba(0, 0, 0, 0.55),
+                rgba(0, 0, 0, 0.55)
+            ),
+            url("../../assets/img/backGround.png") center / cover fixed
+                no-repeat;
+        color: var(--color-text-inverse);
+    }
 }
 
-body {
-    font-family: var(--font-family-base);
-    font-weight: var(--font-weight-regular);
-    /* Fondo global con imagen para login y calendario */
-    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-        url("../../assets/img/backGround.png") center / cover fixed no-repeat;
-    color: var(--text-inverse);
+/*
+=======================
+FULLCALENDAR VARIABLES (requeridas por el plugin)
+=======================
+*/
+:root {
+    --fc-small-font-size: 0.85em;
+    --fc-page-bg-color: #fff;
+    --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
+    --fc-neutral-text-color: #808080;
+    --fc-border-color: #ddd;
 }
 
-@media (max-width: 768px), (max-height: 800px) {
-    #client-list::-webkit-scrollbar {
+/*
+=======================
+CUSTOM KEYFRAMES
+=======================
+*/
+@keyframes notif-enter {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse-delete {
+    0%,
+    100% {
+        box-shadow: 0 0 40px rgba(229, 57, 53, 0.6),
+            inset 0 0 60px rgba(0, 0, 0, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 60px rgba(229, 57, 53, 0.8),
+            inset 0 0 80px rgba(0, 0, 0, 0.4);
+        transform: scale(1.02);
+    }
+}
+
+/* Accesibilidad: desactivar animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0s !important;
+    }
+}
+
+/* Scrollbar utility */
+@utility scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
         display: none;
     }
-
-    #client-list {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-    }
-}
-
-.client-form {
-    background-color: var(--color-secundario);
-    border-radius: 0.5rem;
-    box-shadow: 1rem 1rem 1.5rem rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50vw;
-    height: 40vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-/* Overlay que oscurece la aplicación cuando se muestra el formulario */
-.client-overlay {
-    position: fixed;
-    inset: 0; /* top:0; right:0; bottom:0; left:0 */
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999; /* Debajo del modal (.client-form z-index:1000) */
-}
-
-/* Asegurar que el formulario interno mantenga su z-index por encima de la overlay */
-.client-overlay .client-form {
-    z-index: 1000;
 }

@@ -5,11 +5,9 @@ import { useEffect } from "react";
 const ProtectedRoute = ({ children }) => {
     const { user, loading, logout } = useAuth();
 
-    // Verificar si el token ha expirado al acceder a una ruta protegida
     useEffect(() => {
         if (user) {
             const userId = window.localStorage.getItem("loggedUser");
-            // getUserId ya verifica expiración internamente
             if (userId && !window.localStorage.getItem("loggedUser")) {
                 console.warn("Token expirado al acceder a ruta protegida");
                 logout(true);
@@ -18,7 +16,14 @@ const ProtectedRoute = ({ children }) => {
     }, [user, logout]);
 
     if (loading) {
-        return <div className="loading">Cargando...</div>;
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-surface-3 border-t-accent" />
+                    <span className="text-sm text-text-muted">Cargando...</span>
+                </div>
+            </div>
+        );
     }
 
     if (!user) {

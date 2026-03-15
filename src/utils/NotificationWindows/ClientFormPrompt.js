@@ -116,6 +116,7 @@ export async function promptAddClient() {
         confirmButtonText: "Agregar",
         cancelButtonText: "Cancelar",
         showCancelButton: true,
+        reverseButtons: true,
         focusConfirm: false,
         didOpen: () => {
             const popup = ThemedSwal.getPopup();
@@ -172,6 +173,7 @@ export async function promptEditClient(initial) {
         confirmButtonText: "Actualizar",
         cancelButtonText: "Cancelar",
         showCancelButton: true,
+        reverseButtons: true,
         focusConfirm: true,
         didOpen: () => {
             const popup = ThemedSwal.getPopup();
