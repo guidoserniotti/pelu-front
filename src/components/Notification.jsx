@@ -3,7 +3,7 @@ const Notification = ({ message }) => {
         return null;
 
     const itemClasses =
-        "animate-[notif-enter_260ms_ease-out_both] rounded-md border border-error-dark bg-error px-3 py-2.5 text-sm leading-snug text-error-text shadow-[0_8px_20px_rgba(229,57,53,0.5)]";
+        "animate-[notif-enter_260ms_ease-out_both] rounded-md border border-danger bg-danger px-3 py-2.5 text-sm leading-snug text-white shadow-[0_8px_20px_rgba(239,68,68,0.5)]";
 
     if (Array.isArray(message)) {
         return (

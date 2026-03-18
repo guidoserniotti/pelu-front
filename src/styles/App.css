@@ -9,39 +9,18 @@ DESIGN TOKENS (Tailwind v4 theme)
 =======================
 */
 @theme {
-    /* Colores - Superficies */
-    --color-surface-0: #0e0f12;
-    --color-surface-1: #15171b;
-    --color-surface-2: #1e2127;
-    --color-surface-3: #2a2f37;
-    --color-surface-contrast: #f7f8fa;
-    --color-surface-contrast-2: #ffffff;
+    /* Fondos (solo 2 niveles) */
+    --color-base: #18181b;
+    --color-surface: #27272a;
 
-    /* Colores - Texto */
-    --color-text-strong: #0e0f12;
-    --color-text-muted: #6b7280;
-    --color-text-inverse: #e8eaed;
+    /* Colores de acción */
+    --color-accent: #facc15;
+    --color-danger: #ef4444;
 
-    /* Colores - Acento */
-    --color-accent: #d4af37;
-    --color-accent-hover: #b89b31;
-
-    /* Colores - Error */
-    --color-error: #e53935;
-    --color-error-dark: #c62828;
-    --color-error-text: #ffffff;
-
-    /* Colores - Success */
-    --color-success: #00e676;
-    --color-success-dark: #00c853;
-
-    /* Colores - Info */
-    --color-info: #00b2ff;
-    --color-info-dark: #008ae6;
-
-    /* Colores - Bordes */
-    --color-border-light: rgba(0, 0, 0, 0.08);
-    --color-border-dark: rgba(255, 255, 255, 0.08);
+    /* Texto y bordes (opacidades de blanco) */
+    --color-content-primary: rgba(255, 255, 255, 0.87);
+    --color-content-secondary: rgba(255, 255, 255, 0.60);
+    --color-divider: rgba(255, 255, 255, 0.12);
 
     /* Tipografia */
     --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
@@ -87,7 +66,7 @@ GLOBAL BASE STYLES
             ),
             url("../../assets/img/backGround.png") center / cover fixed
                 no-repeat;
-        color: var(--color-text-inverse);
+        color: var(--color-content-primary);
     }
 }
 
@@ -123,12 +102,12 @@ CUSTOM KEYFRAMES
 @keyframes pulse-delete {
     0%,
     100% {
-        box-shadow: 0 0 40px rgba(229, 57, 53, 0.6),
+        box-shadow: 0 0 40px rgba(239, 68, 68, 0.6),
             inset 0 0 60px rgba(0, 0, 0, 0.3);
         transform: scale(1);
     }
     50% {
-        box-shadow: 0 0 60px rgba(229, 57, 53, 0.8),
+        box-shadow: 0 0 60px rgba(239, 68, 68, 0.8),
             inset 0 0 80px rgba(0, 0, 0, 0.4);
         transform: scale(1.02);
     }

@@ -1,8 +1,8 @@
 const variantStyles = {
     "btn-edit": "hover:bg-accent/20",
-    "btn-delete": "hover:bg-error/15",
+    "btn-delete": "hover:bg-danger/15",
     "btn-add": "hover:bg-accent/20",
-    "btn-logout": "hover:bg-error/15",
+    "btn-logout": "hover:bg-danger/15",
 };
 
 const ButtonClientsList = ({ text, functionOnClick, imgSource, className }) => {

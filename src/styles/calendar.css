@@ -6,35 +6,35 @@ Los tokens vienen del theme de Tailwind (App.css).
 =======================
 */
 .calendar-container {
-    background: var(--color-surface-2);
+    background: var(--color-surface);
     border-radius: var(--radius-lg);
     padding: 8px;
     box-shadow: var(--shadow-strong);
-    color: var(--color-text-inverse);
+    color: var(--color-content-primary);
 }
 
 /* Toolbar y titulos */
 .calendar-container .fc .fc-toolbar-title {
-    color: var(--color-text-inverse);
+    color: var(--color-content-primary);
 }
 .calendar-container .fc .fc-button-primary {
-    background: var(--color-surface-3);
-    border: 1px solid var(--color-border-dark);
+    background: var(--color-base);
+    border: 1px solid var(--color-divider);
 }
 .calendar-container .fc .fc-button-primary:hover {
     background: var(--color-accent);
     border-color: var(--color-accent);
-    color: var(--color-surface-0);
+    color: var(--color-base);
 }
 .calendar-container .fc .fc-button-primary:not(:disabled).fc-button-active,
 .calendar-container .fc .fc-button-primary:not(:disabled):active {
     background: var(--color-accent);
     border-color: var(--color-accent);
-    color: var(--color-surface-0);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+    color: var(--color-base);
+    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.25);
 }
 .calendar-container .fc .fc-button-primary:focus {
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.25);
 }
 .calendar-container .fc .fc-button-primary:disabled {
     opacity: 0.4;
@@ -44,17 +44,18 @@ Los tokens vienen del theme de Tailwind (App.css).
 .calendar-container .fc .fc-today-button:not(:disabled) {
     background: var(--color-accent);
     border-color: var(--color-accent);
-    color: var(--color-surface-0);
+    color: var(--color-base);
     font-weight: 600;
 }
 .calendar-container .fc .fc-today-button:not(:disabled):hover {
-    background: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    filter: brightness(0.9);
 }
 
 /* Dia actual resaltado */
 .calendar-container .fc .fc-day-today {
-    background: rgba(212, 175, 55, 0.06) !important;
+    background: rgba(250, 204, 21, 0.06) !important;
 }
 
 /* Now indicator */
@@ -68,20 +69,20 @@ Los tokens vienen del theme de Tailwind (App.css).
 /* Bordes y grillas */
 .calendar-container .fc-theme-standard td,
 .calendar-container .fc-theme-standard th {
-    border-color: var(--color-border-dark);
+    border-color: var(--color-divider);
 }
 .calendar-container .fc .fc-scrollgrid,
 .calendar-container .fc .fc-view-harness,
 .calendar-container .fc .fc-timegrid,
 .calendar-container .fc .fc-daygrid {
-    background: var(--color-surface-1);
+    background: var(--color-base);
 }
 
 /* Etiquetas de horas y columnas */
 .calendar-container .fc .fc-timegrid-axis-cushion,
 .calendar-container .fc .fc-timegrid-slot-label-cushion,
 .calendar-container .fc .fc-col-header-cell-cushion {
-    color: var(--color-text-inverse);
+    color: var(--color-content-primary);
 }
 
 /* Hover/selecciones suaves */
@@ -92,8 +93,17 @@ Los tokens vienen del theme de Tailwind (App.css).
 
 /* Eventos */
 .calendar-container .fc .fc-event {
+    background: rgba(250, 204, 21, 0.14);
+    border: 1px solid rgba(250, 204, 21, 0.30);
+    border-left: 3px solid var(--color-accent);
     border-radius: var(--radius-md);
-    border: 1px solid var(--color-border-dark);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    transition: background 0.15s, box-shadow 0.15s;
+}
+
+.calendar-container .fc .fc-event:hover {
+    background: rgba(250, 204, 21, 0.22);
+    box-shadow: 0 2px 8px rgba(250, 204, 21, 0.18);
 }
 
 /* Ocultar hora del evento */
@@ -106,12 +116,15 @@ Los tokens vienen del theme de Tailwind (App.css).
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 800;
+    font-weight: 600;
+    color: var(--color-content-primary);
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
 }
 
 .calendar-container .fc .fc-timegrid-event .fc-event-main,
 .calendar-container .fc .fc-daygrid-event .fc-event-main {
-    padding: 2px 8px;
+    padding: 3px 8px;
 }
 
 /* Evento personalizado */
@@ -130,7 +143,7 @@ Los tokens vienen del theme de Tailwind (App.css).
 }
 
 .calendar-container .fc-custom-time-divider {
-    color: var(--color-text-inverse);
+    color: var(--color-content-primary);
     opacity: 0.8;
 }
 

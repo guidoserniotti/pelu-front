@@ -21,9 +21,9 @@ Usa tokens del theme de Tailwind (App.css).
 ------------------------------
 */
 .swal-theme-popup {
-    background: var(--color-surface-2) !important;
-    color: var(--color-text-inverse) !important;
-    border: 1px solid var(--color-border-dark) !important;
+    background: var(--color-surface) !important;
+    color: var(--color-content-primary) !important;
+    border: 1px solid var(--color-divider) !important;
     box-shadow: var(--shadow-strong) !important;
     border-radius: var(--radius-lg) !important;
 }
@@ -31,11 +31,11 @@ Usa tokens del theme de Tailwind (App.css).
 .swal-theme-title {
     font-family: var(--font-title) !important;
     font-weight: 700 !important;
-    color: var(--color-text-inverse) !important;
+    color: var(--color-content-primary) !important;
 }
 .swal-theme-text {
     font-family: var(--font-sans) !important;
-    color: var(--color-text-inverse) !important;
+    color: var(--color-content-primary) !important;
     opacity: 0.9;
 }
 
@@ -54,28 +54,30 @@ Usa tokens del theme de Tailwind (App.css).
 
 .swal-theme-confirm {
     background-color: var(--color-accent) !important;
-    color: var(--color-surface-1) !important;
+    color: var(--color-base) !important;
 }
 .swal-theme-confirm:hover {
-    background-color: var(--color-accent-hover) !important;
+    background-color: var(--color-accent) !important;
+    filter: brightness(0.9);
 }
 
 .swal-theme-cancel {
-    background-color: var(--color-error) !important;
-    color: var(--color-error-text) !important;
+    background-color: var(--color-danger) !important;
+    color: #fff !important;
 }
 .swal-theme-cancel:hover {
-    background-color: var(--color-error-dark) !important;
+    background-color: var(--color-danger) !important;
+    filter: brightness(0.85);
 }
 
 /* Validacion */
 .swal-theme-validation {
-    background-color: var(--color-error) !important;
-    color: var(--color-error-text) !important;
-    border: 1px solid var(--color-error-dark) !important;
+    background-color: var(--color-danger) !important;
+    color: #fff !important;
+    border: 1px solid var(--color-danger) !important;
     border-radius: var(--radius-md) !important;
     padding: 10px 12px !important;
-    box-shadow: 0 8px 20px rgba(229, 57, 53, 0.5) !important;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5) !important;
     margin: 8px 0 0 0 !important;
     font-family: var(--font-sans) !important;
     font-weight: 1000 !important;
@@ -92,20 +94,19 @@ Usa tokens del theme de Tailwind (App.css).
 /* Inputs dentro de popup/form */
 .swal-theme-popup .swal2-input,
 .swal-theme-popup .swal2-textarea {
-    background: var(--color-surface-3) !important;
-    color: var(--color-text-inverse) !important;
-    border: 1px solid var(--color-border-dark) !important;
+    background: var(--color-base) !important;
+    color: var(--color-content-primary) !important;
+    border: 1px solid var(--color-divider) !important;
 }
 .swal-theme-popup .swal2-input::placeholder,
 .swal-theme-popup .swal2-textarea::placeholder {
-    color: var(--color-text-inverse) !important;
-    opacity: 0.6 !important;
+    color: var(--color-content-secondary) !important;
 }
 .swal-theme-popup .swal2-input:focus,
 .swal-theme-popup .swal2-textarea:focus {
     outline: none !important;
     border-color: var(--color-accent) !important;
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18) !important;
+    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.18) !important;
 }
 
 /*
@@ -145,7 +146,7 @@ SHIFT FORM
     margin-top: 16px;
     margin-bottom: 8px;
     font-weight: bold;
-    color: var(--color-text-inverse);
+    color: var(--color-content-primary);
 }
 
 .shift-form-label:first-child {
@@ -193,14 +194,14 @@ SHIFT FORM
 
 .shift-form-combobox-select option {
     padding: 8px 12px;
-    color: var(--color-text-inverse);
-    background: var(--color-surface-3);
+    color: var(--color-content-primary);
+    background: var(--color-base);
 }
 
 .shift-form-combobox-select option:checked,
 .shift-form-combobox-select option:hover {
     background: var(--color-accent);
-    color: var(--color-surface-0);
+    color: var(--color-base);
 }
 
 /* Duration +/- buttons */
@@ -217,9 +218,9 @@ SHIFT FORM
     justify-content: center;
     width: 48px;
     height: 44px;
-    background: var(--color-surface-3);
-    color: var(--color-text-inverse);
-    border: 1px solid var(--color-border-dark);
+    background: var(--color-base);
+    color: var(--color-content-primary);
+    border: 1px solid var(--color-divider);
     font-size: 1.3rem;
     font-weight: 700;
     cursor: pointer;
@@ -237,7 +238,7 @@ SHIFT FORM
 
 .shift-form-duration-btn:hover:not(:disabled) {
     background: var(--color-accent);
-    color: var(--color-surface-0);
+    color: var(--color-base);
     border-color: var(--color-accent);
 }
 
@@ -251,10 +252,10 @@ SHIFT FORM
     text-align: center;
     font-size: 1rem;
     font-weight: 600;
-    color: var(--color-text-inverse);
-    background: var(--color-surface-3);
-    border-top: 1px solid var(--color-border-dark);
-    border-bottom: 1px solid var(--color-border-dark);
+    color: var(--color-content-primary);
+    background: var(--color-base);
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
     height: 44px;
     line-height: 44px;
     user-select: none;
@@ -278,14 +279,14 @@ SHIFT FORM
     text-align: left;
 }
 .swal-footer-error-list li {
-    background: var(--color-error);
-    color: var(--color-error-text);
-    border: 1px solid var(--color-error-dark);
+    background: var(--color-danger);
+    color: #fff;
+    border: 1px solid var(--color-danger);
     border-radius: var(--radius-md);
     padding: 8px 10px;
     font-size: 0.85rem;
     line-height: 1.35;
-    box-shadow: 0 6px 16px rgba(229, 57, 53, 0.5);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
 }
 .swal-footer-error-list li + li {
     margin-top: 6px;
@@ -301,8 +302,8 @@ SHIFT FORM
     color: var(--color-accent) !important;
 }
 .swal2-icon.swal2-error {
-    border-color: var(--color-error) !important;
-    color: var(--color-error) !important;
+    border-color: var(--color-danger) !important;
+    color: var(--color-danger) !important;
 }
 
 /*
@@ -318,20 +319,20 @@ SHIFT FORM
 }
 
 .colored-toast.swal2-icon-success {
-    background-color: var(--color-success) !important;
-    border-color: var(--color-success-dark) !important;
+    background-color: #00e676 !important;
+    border-color: #00c853 !important;
     box-shadow: 0 10px 26px rgba(0, 230, 118, 0.45) !important;
 }
 
 .colored-toast.swal2-icon-error {
-    background-color: var(--color-error) !important;
-    border-color: var(--color-error-dark) !important;
-    box-shadow: 0 10px 26px rgba(229, 57, 53, 0.5) !important;
+    background-color: var(--color-danger) !important;
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 10px 26px rgba(239, 68, 68, 0.5) !important;
 }
 
 .colored-toast.swal2-icon-info {
-    background-color: var(--color-info) !important;
-    border-color: var(--color-info-dark) !important;
+    background-color: #00b2ff !important;
+    border-color: #008ae6 !important;
     box-shadow: 0 10px 26px rgba(0, 178, 255, 0.45) !important;
 }
 
@@ -343,8 +344,8 @@ SHIFT FORM
     -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.35) !important;
 }
 .colored-toast.swal2-icon-question {
-    background-color: var(--color-surface-3) !important;
-    border-color: var(--color-border-dark) !important;
+    background-color: var(--color-surface) !important;
+    border-color: var(--color-divider) !important;
 }
 
 /*
@@ -388,11 +389,11 @@ SHIFT FORM
 .shift-details-sidebar {
     text-align: left !important;
     padding: 20px !important;
-    background: var(--color-surface-1) !important;
+    background: var(--color-surface) !important;
 }
 
 .shift-details-sidebar .swal2-title {
-    color: var(--color-text-inverse) !important;
+    color: var(--color-content-primary) !important;
 }
 
 .shift-details-container {
@@ -418,7 +419,7 @@ SHIFT FORM
 
 .shift-detail-value {
     font-size: 1rem;
-    color: var(--color-text-inverse) !important;
+    color: var(--color-content-primary) !important;
     margin: 0;
     padding: 8px 12px;
     border-radius: 6px;
@@ -433,9 +434,9 @@ SHIFT FORM
 .shift-detail-badge {
     display: inline-block;
     padding: 6px 12px;
-    background: var(--color-error);
-    color: var(--color-error-text);
-    border: 1px solid var(--color-error-dark);
+    background: var(--color-danger);
+    color: #fff;
+    border: 1px solid var(--color-danger);
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: bold;
@@ -451,7 +452,7 @@ SHIFT FORM
 
 .shift-detail-value-small {
     font-size: 0.85rem;
-    color: var(--color-text-inverse) !important;
+    color: var(--color-content-primary) !important;
     opacity: 1;
     margin: 0;
     padding: 6px 12px;
@@ -480,7 +481,7 @@ SHIFT FORM
     padding: 10px 20px;
     flex: 1;
     background-color: var(--color-accent) !important;
-    color: var(--color-surface-1) !important;
+    color: var(--color-base) !important;
     border: 1px solid var(--color-accent);
     border-radius: var(--radius-md);
     font-family: var(--font-sans);
@@ -492,10 +493,9 @@ SHIFT FORM
 }
 
 .shift-btn-modify:hover {
-    background-color: var(--color-accent-hover) !important;
-    border-color: var(--color-accent-hover);
+    filter: brightness(0.9);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 4px 12px rgba(250, 204, 21, 0.4);
 }
 
 .shift-btn-modify:active {
@@ -510,9 +510,9 @@ SHIFT FORM
     gap: 8px;
     padding: 10px 20px;
     flex: 1;
-    background-color: var(--color-error) !important;
-    color: var(--color-error-text) !important;
-    border: 1px solid var(--color-error-dark);
+    background-color: var(--color-danger) !important;
+    color: #fff !important;
+    border: 1px solid var(--color-danger);
     border-radius: var(--radius-md);
     font-family: var(--font-sans);
     font-weight: 600;
@@ -523,9 +523,9 @@ SHIFT FORM
 }
 
 .shift-btn-delete:hover {
-    background-color: var(--color-error-dark) !important;
+    filter: brightness(0.85);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .shift-btn-delete:active {
@@ -561,7 +561,7 @@ SHIFT FORM
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(212, 175, 55, 0.12);
+    background: rgba(250, 204, 21, 0.12);
     color: var(--color-accent);
 }
 
@@ -572,8 +572,7 @@ SHIFT FORM
 
 .reminder-form-hint {
     font-size: 0.85rem;
-    color: var(--color-text-inverse);
-    opacity: 0.7;
+    color: var(--color-content-secondary);
     margin: 0;
     line-height: 1.4;
 }
@@ -594,8 +593,7 @@ SHIFT FORM
 .reminder-form-counter {
     align-self: flex-end;
     font-size: 0.75rem;
-    color: var(--color-text-inverse);
-    opacity: 0.5;
+    color: var(--color-content-secondary);
 }
 
 /*
@@ -617,9 +615,9 @@ SHIFT FORM
     justify-content: center;
     width: 52px;
     height: 48px;
-    background: var(--color-surface-3);
-    color: var(--color-text-inverse);
-    border: 1px solid var(--color-border-dark);
+    background: var(--color-base);
+    color: var(--color-content-primary);
+    border: 1px solid var(--color-divider);
     font-size: 1.4rem;
     font-weight: 700;
     cursor: pointer;
@@ -640,7 +638,7 @@ SHIFT FORM
 
 .antelacion-btn:hover:not(:disabled) {
     background: var(--color-accent);
-    color: var(--color-surface-0);
+    color: var(--color-base);
     border-color: var(--color-accent);
 }
 
@@ -658,10 +656,10 @@ SHIFT FORM
     text-align: center;
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--color-text-inverse);
-    background: var(--color-surface-3);
-    border-top: 1px solid var(--color-border-dark);
-    border-bottom: 1px solid var(--color-border-dark);
+    color: var(--color-content-primary);
+    background: var(--color-base);
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
     height: 48px;
     line-height: 48px;
     user-select: none;

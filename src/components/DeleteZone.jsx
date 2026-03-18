@@ -35,7 +35,7 @@ function DeleteZone({ isVisible }) {
         <div
             ref={deleteZoneRef}
             id="delete-zone"
-            className="absolute inset-0 z-10 flex animate-[pulse-delete_1.5s_ease-in-out_infinite] items-center justify-center rounded-lg border-2 border-dashed border-white/40 bg-gradient-to-br from-error/92 to-error-dark/95 shadow-[0_0_40px_rgba(229,57,53,0.6),inset_0_0_60px_rgba(0,0,0,0.3)]"
+            className="absolute inset-0 z-10 flex animate-[pulse-delete_1.5s_ease-in-out_infinite] items-center justify-center rounded-lg border-2 border-dashed border-white/40 bg-gradient-to-br from-danger/92 to-danger/95 shadow-[0_0_40px_rgba(239,68,68,0.6),inset_0_0_60px_rgba(0,0,0,0.3)]"
         >
             <div className="pointer-events-none text-center text-white">
                 <div className="mb-4 animate-bounce text-7xl drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]">

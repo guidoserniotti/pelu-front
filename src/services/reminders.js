@@ -17,9 +17,9 @@ const getAntelacion = async () => {
     return response.data;
 };
 
-const updateAntelacion = async (horas_antelacion) => {
+const updateAntelacion = async (antelacion) => {
     const response = await axios.put("/api/recordatorio/antelacion", {
-        horas_antelacion,
+        horas_antelacion: antelacion,
     });
     return response.data;
 };

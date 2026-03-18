@@ -38,7 +38,7 @@ function ClientList({ client, handleEditClientForm, handleDeleteClient, onAddCli
         return (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 py-8 text-center">
                 <div className="text-3xl opacity-40">👤</div>
-                <p className="text-sm text-text-muted">
+                <p className="text-sm text-content-secondary">
                     No hay clientes disponibles
                 </p>
                 {onAddClient && (
@@ -60,7 +60,7 @@ function ClientList({ client, handleEditClientForm, handleDeleteClient, onAddCli
         >
             {client.map((c) => (
                 <div
-                    className="group flex items-center justify-between rounded-md border-b border-border-dark px-1 py-2.5 transition-colors last:border-b-0 hover:bg-white/[0.04]"
+                    className="group flex items-center justify-between rounded-md border-b border-divider px-1 py-2.5 transition-colors last:border-b-0 hover:bg-white/[0.04]"
                     key={c.phoneNumber}
                 >
                     <div
@@ -68,10 +68,10 @@ function ClientList({ client, handleEditClientForm, handleDeleteClient, onAddCli
                         data-title={c.title}
                         data-client-id={c.id}
                     >
-                        <h3 className="m-0 mb-1 truncate text-[15px] font-semibold text-text-inverse max-md:text-[13px] max-sm:text-xs">
+                        <h3 className="m-0 mb-1 truncate text-[15px] font-semibold text-content-primary max-md:text-[13px] max-sm:text-xs">
                             {c.title}
                         </h3>
-                        <p className="m-0 text-[13px] text-text-muted max-md:text-[11px] max-sm:text-[10px]">
+                        <p className="m-0 text-[13px] text-content-secondary max-md:text-[11px] max-sm:text-[10px]">
                             {c.phoneNumber}
                         </p>
                     </div>

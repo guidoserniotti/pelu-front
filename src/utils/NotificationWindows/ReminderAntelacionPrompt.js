@@ -18,7 +18,7 @@ export async function promptEditAntelacion(currentHours) {
             display.textContent = `${value} ${value === 1 ? "hora" : "horas"}`;
         }
         if (btnMinus) btnMinus.disabled = value <= 1;
-        if (btnPlus) btnPlus.disabled = value >= 24;
+        if (btnPlus) btnPlus.disabled = value >= 72;
     };
 
     const result = await ThemedSwal.fire({
@@ -35,7 +35,7 @@ export async function promptEditAntelacion(currentHours) {
                 <div class="antelacion-control">
                     <button type="button" id="antelacion-minus" class="antelacion-btn antelacion-btn-minus" ${value <= 1 ? "disabled" : ""}>−</button>
                     <span id="antelacion-display" class="antelacion-display">${value} ${value === 1 ? "hora" : "horas"}</span>
-                    <button type="button" id="antelacion-plus" class="antelacion-btn antelacion-btn-plus" ${value >= 24 ? "disabled" : ""}>+</button>
+                    <button type="button" id="antelacion-plus" class="antelacion-btn antelacion-btn-plus" ${value >= 72 ? "disabled" : ""}>+</button>
                 </div>
             </div>
         `,
@@ -62,7 +62,7 @@ export async function promptEditAntelacion(currentHours) {
             btnPlus.addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                if (value < 24) {
+                if (value < 72) {
                     value++;
                     updateDisplay();
                 }

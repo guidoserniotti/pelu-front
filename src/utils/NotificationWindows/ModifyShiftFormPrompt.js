@@ -58,7 +58,7 @@ export const promptModifyShift = async (turnoData) => {
                     class="swal2-input shift-form-select"
                     value="${clienteNombre}"
                     disabled
-                    style="background-color: var(--color-surface-3); cursor: not-allowed; opacity: 0.7;"
+                    style="background-color: var(--color-base); cursor: not-allowed; opacity: 0.7;"
                 />
 
                 <label class="shift-form-label">Fecha/Hora Inicio:</label>

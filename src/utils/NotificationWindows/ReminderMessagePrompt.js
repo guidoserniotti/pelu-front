@@ -29,10 +29,10 @@ export async function promptEditReminderMessage(currentMessage) {
                     class="swal2-input reminder-form-textarea"
                     placeholder="Escribí el mensaje de recordatorio..."
                     rows="5"
-                    maxlength="200"
+                    maxlength="500"
                 >${escapedMessage}</textarea>
                 <div class="reminder-form-counter">
-                    <span id="reminder-char-count">${currentMessage.length}</span>/200 caracteres
+                    <span id="reminder-char-count">${currentMessage.length}</span>/500 caracteres
                 </div>
             </div>
         `,
@@ -55,16 +55,16 @@ export async function promptEditReminderMessage(currentMessage) {
         preConfirm: () => {
             const mensaje = textareaInput.value.trim();
 
-            if (mensaje.length < 2) {
+            if (mensaje.length < 10) {
                 ThemedSwal.showValidationMessage(
-                    "El mensaje debe tener al menos 2 caracteres"
+                    "El mensaje debe tener al menos 10 caracteres"
                 );
                 return false;
             }
 
-            if (mensaje.length > 200) {
+            if (mensaje.length > 500) {
                 ThemedSwal.showValidationMessage(
-                    "El mensaje no debe exceder los 200 caracteres"
+                    "El mensaje no debe exceder los 500 caracteres"
                 );
                 return false;
             }

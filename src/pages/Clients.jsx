@@ -24,12 +24,12 @@ const LoadingSkeleton = () => (
         {[...Array(6)].map((_, i) => (
             <div key={i} className="flex items-center gap-3 px-1">
                 <div className="flex-1 space-y-2">
-                    <div className="h-4 w-3/4 rounded bg-surface-3" />
-                    <div className="h-3 w-1/2 rounded bg-surface-3" />
+                    <div className="h-4 w-3/4 rounded bg-base" />
+                    <div className="h-3 w-1/2 rounded bg-base" />
                 </div>
                 <div className="flex gap-1">
-                    <div className="h-8 w-8 rounded-full bg-surface-3" />
-                    <div className="h-8 w-8 rounded-full bg-surface-3" />
+                    <div className="h-8 w-8 rounded-full bg-base" />
+                    <div className="h-8 w-8 rounded-full bg-base" />
                 </div>
             </div>
         ))}
@@ -226,13 +226,13 @@ const Clients = () => {
     return (
         <div className="grid h-screen grid-cols-[300px_1fr] gap-4 p-3 max-xl:grid-cols-[260px_1fr] max-xl:gap-3 max-xl:p-2.5 max-lg:grid-cols-[220px_1fr] max-lg:gap-2.5 max-lg:p-2 max-md:grid-cols-[200px_1fr] max-md:gap-2 max-md:p-1.5 max-sm:grid-cols-[160px_1fr] max-sm:gap-1.5 max-sm:p-1">
             {/* Panel lateral de clientes */}
-            <div className="relative flex min-h-0 flex-col rounded-lg border border-border-dark bg-surface-2 p-3 text-text-inverse shadow-strong max-md:p-2 max-sm:p-1.5">
+            <div className="relative flex min-h-0 flex-col rounded-lg border border-divider bg-surface p-3 text-content-primary shadow-strong max-md:p-2 max-sm:p-1.5">
                 {isDraggingEvent ? (
                     <DeleteZone isVisible={isDraggingEvent} />
                 ) : (
                     <div className="flex min-h-0 min-w-0 flex-1 flex-col">
                         {/* Header: Add + Logout */}
-                        <div className="sticky top-0 z-2 flex items-center justify-between gap-2 border-b border-border-dark bg-surface-2 pb-2">
+                        <div className="sticky top-0 z-2 flex items-center justify-between gap-2 border-b border-divider bg-surface pb-2">
                             <div className="flex items-center gap-1">
                                 <ButtonClientsList
                                     text={"Agregar Cliente"}
@@ -254,7 +254,7 @@ const Clients = () => {
                                         strokeWidth="2"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="h-6 w-6 text-text-inverse opacity-90 transition-opacity hover:opacity-100 max-md:h-5 max-md:w-5 max-sm:h-[18px] max-sm:w-[18px]"
+                                        className="h-6 w-6 text-content-primary opacity-90 transition-opacity hover:opacity-100 max-md:h-5 max-md:w-5 max-sm:h-[18px] max-sm:w-[18px]"
                                     >
                                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                                         <polyline points="22,6 12,13 2,6" />
@@ -274,7 +274,7 @@ const Clients = () => {
                                         strokeWidth="2"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="h-6 w-6 text-text-inverse opacity-90 transition-opacity hover:opacity-100 max-md:h-5 max-md:w-5 max-sm:h-[18px] max-sm:w-[18px]"
+                                        className="h-6 w-6 text-content-primary opacity-90 transition-opacity hover:opacity-100 max-md:h-5 max-md:w-5 max-sm:h-[18px] max-sm:w-[18px]"
                                     >
                                         <circle cx="12" cy="12" r="10" />
                                         <polyline points="12,6 12,12 16,14" />
@@ -291,7 +291,7 @@ const Clients = () => {
 
                         {/* Titulo + contador */}
                         <div className="my-2 flex items-center justify-center gap-2">
-                            <h2 className="text-center font-title font-bold text-text-inverse max-lg:text-lg max-md:text-base max-sm:text-sm">
+                            <h2 className="text-center font-title font-bold text-content-primary max-lg:text-lg max-md:text-base max-sm:text-sm">
                                 Clientes
                             </h2>
                             {!isLoadingData && (
@@ -308,12 +308,12 @@ const Clients = () => {
                                 value={filter}
                                 placeholder="Buscar cliente..."
                                 onChange={handleSearch}
-                                className="min-w-0 flex-1 rounded-md border border-border-dark bg-surface-3 px-2.5 py-2 text-sm text-text-inverse placeholder-text-inverse/60 transition-colors focus:border-accent focus:outline-none focus:ring-[3px] focus:ring-accent/18 max-lg:px-2 max-lg:py-1.5 max-lg:text-[13px] max-md:text-xs max-sm:p-1 max-sm:text-[11px]"
+                                className="min-w-0 flex-1 rounded-md border border-divider bg-base px-2.5 py-2 text-sm text-content-primary placeholder-content-secondary transition-colors focus:border-accent focus:outline-none focus:ring-[3px] focus:ring-accent/18 max-lg:px-2 max-lg:py-1.5 max-lg:text-[13px] max-md:text-xs max-sm:p-1 max-sm:text-[11px]"
                             />
                             <button
                                 type="button"
                                 onClick={toggleSortOrder}
-                                className="flex min-w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border-dark bg-surface-3 px-2 py-2 text-base text-text-inverse transition-colors hover:border-accent/30 hover:bg-accent/10 max-lg:min-w-8 max-lg:text-sm max-sm:min-w-6 max-sm:p-1 max-sm:text-[13px]"
+                                className="flex min-w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-divider bg-base px-2 py-2 text-base text-content-primary transition-colors hover:border-accent/30 hover:bg-accent/10 max-lg:min-w-8 max-lg:text-sm max-sm:min-w-6 max-sm:p-1 max-sm:text-[13px]"
                                 title={sortOrder === "asc" ? "A-Z (ascendente)" : "Z-A (descendente)"}
                             >
                                 {sortOrder === "asc" ? "↑" : "↓"}
