@@ -1,16 +1,43 @@
-# React + Vite
+# Thomas del Arco - Turnos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+App de gestión de turnos y clientes para peluquería. Construida con React 19 + Vite 7.
 
-Currently, two official plugins are available:
+## Stack
 
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** con SWC para Fast Refresh
+- **Vite 7** como bundler
+- **Tailwind CSS 4** para estilos
+- **FullCalendar** para el calendario de turnos
+- **React Router DOM** para navegación
+- **React Hook Form + Zod** para formularios y validación
+- **Axios** para llamadas a la API
+- **vite-plugin-pwa** para Progressive Web App
 
-## React Compiler
+## Scripts
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+```bash
+npm run dev       # Servidor de desarrollo
+npm run build     # Build de producción
+npm run preview   # Preview del build
+npm run lint      # Linter
+```
 
-## Expanding the ESLint configuration
+## PWA
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+La app es instalable como Progressive Web App. La configuración se encuentra en `vite.config.js` usando `vite-plugin-pwa`.
+
+**Características:**
+- Instalable en dispositivos (Android, iOS, desktop)
+- App shell cacheado para carga rápida
+- Página offline (`public/offline.html`) cuando no hay conexión
+- Auto-update del service worker (sin intervención del usuario)
+- Cache de Google Fonts
+
+**Iconos PWA:** se encuentran en `public/` y fueron generados a partir del logo en `assets/logos-thomi/`. Para regenerarlos:
+
+```bash
+convert "assets/logos-thomi/IDENTIDAD_Thomas del Arco_8 copia.png" -resize 192x192 public/pwa-192x192.png
+convert "assets/logos-thomi/IDENTIDAD_Thomas del Arco_8 copia.png" -resize 512x512 public/pwa-512x512.png
+```
+
+**Verificar PWA:** después de `npm run build && npm run preview`, abrir Chrome DevTools > Application para comprobar el manifest y el service worker.
