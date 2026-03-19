@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "../styles/clients.css";
 import clientsService from "../services/clients";
 import ButtonClientsList from "../components/ButtonClientsList";
 import ClientList from "../components/ClientList";
@@ -8,27 +7,46 @@ import DeleteZone from "../components/DeleteZone";
 import { createDynamicMessage } from "../utils/toastify/toastMessages";
 import { promiseToast, showToast } from "../utils/toastify/toastConfig";
 import { useAuth } from "../auth/AuthContext";
-// Reemplazamos formularios flotantes por SweetAlert2 temado
 import {
     promptAddClient,
     promptEditClient,
 } from "../utils/NotificationWindows/ClientFormPrompt";
+import { useReminderCombinedModal } from "../utils/hooks/useReminderCombinedModal.jsx";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 import windowLogOut from "../utils/NotificationWindows/ConfirmLogOut";
+import remindersService from "../services/reminders";
 import addClientImg from "../../assets/img/addClient.png";
 import logoutImg from "../../assets/img/logout.png";
+
+const LoadingSkeleton = () => (
+    <div className="flex animate-pulse flex-col gap-3 py-2">
+        {[...Array(6)].map((_, i) => (
+            <div key={i} className="flex items-center gap-3 px-1">
+                <div className="flex-1 space-y-2">
+                    <div className="h-4 w-3/4 rounded bg-base" />
+                    <div className="h-3 w-1/2 rounded bg-base" />
+                </div>
+                <div className="flex gap-1">
+                    <div className="h-8 w-8 rounded-full bg-base" />
+                    <div className="h-8 w-8 rounded-full bg-base" />
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
 const Clients = () => {
     const { logout, user } = useAuth();
-    // Estado para manejar la lista de clientes
     const [client, setClient] = useState([]);
     const [filter, setFilter] = useState("");
-    const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
+    const [sortOrder, setSortOrder] = useState("asc");
     const [isDraggingEvent, setIsDraggingEvent] = useState(false);
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [dataLoaded, setDataLoaded] = useState({
         clients: false,
         shifts: false,
     });
+    const openReminderModal = useReminderCombinedModal();
 
     useEffect(() => {
         const fetchClients = async () => {
@@ -36,15 +54,13 @@ const Clients = () => {
             try {
                 const clientsData = await clientsService.getClients();
                 const formattedClients = clientsData.listado_clientes.map(
-                    (client) => {
-                        return {
-                            id: client.id,
-                            title: client.nombre_completo,
-                            phoneNumber: client.telefono,
-                            editable: true,
-                            esta_eliminado: client.esta_eliminado,
-                        };
-                    }
+                    (c) => ({
+                        id: c.id,
+                        title: c.nombre_completo,
+                        phoneNumber: c.telefono,
+                        editable: true,
+                        esta_eliminado: c.esta_eliminado,
+                    })
                 );
                 setClient(formattedClients);
                 setIsLoadingData(false);
@@ -55,15 +71,15 @@ const Clients = () => {
             }
         };
         fetchClients();
-    }, []); // ← Solo se ejecuta al montar el componente
+    }, []);
 
-    // useEffect para mostrar bienvenida cuando todos los datos estén cargados
     useEffect(() => {
         if (dataLoaded.clients && dataLoaded.shifts) {
             const timer = setTimeout(() => {
+                const userName = user?.email?.split("@")[0] || "usuario";
                 showToast(
                     "success",
-                    `¡Bienvenido usuario! Datos cargados correctamente`,
+                    `Bienvenido, ${userName}! Datos cargados correctamente`,
                     {
                         autoClose: 3000,
                         toastId: "welcome-message",
@@ -76,7 +92,7 @@ const Clients = () => {
 
     const handleAddClient = async () => {
         const values = await promptAddClient();
-        if (!values) return; // cancelado
+        if (!values) return;
         try {
             const created = await promiseToast(
                 clientsService.createClient(values),
@@ -99,7 +115,7 @@ const Clients = () => {
 
     const handleEditClientForm = async (clientData) => {
         const values = await promptEditClient(clientData);
-        if (!values) return; // cancelado o sin cambios
+        if (!values) return;
         try {
             const updated = await promiseToast(
                 clientsService.updateClient(clientData.id, values),
@@ -120,8 +136,6 @@ const Clients = () => {
         }
     };
 
-    // Eliminado: handleSubmitEdit ya no es necesario con SweetAlert
-
     const handleDeleteClient = async (clientData) => {
         const confirmDelete = await windowDelete(clientData.title);
         if (!confirmDelete) return;
@@ -138,30 +152,72 @@ const Clients = () => {
         }
     };
 
+    const handleReminderSettings = async () => {
+        try {
+            const messageResponse = await remindersService.getMessage();
+            const currentMessage = messageResponse.data?.mensaje ?? messageResponse.mensaje ?? "";
+            
+            const antelacionResponse = await remindersService.getAntelacion();
+            const currentHours = antelacionResponse.data?.horas_antelacion ?? antelacionResponse.horas_antelacion ?? 1;
+
+            const result = await openReminderModal(currentMessage, currentHours);
+            if (!result) return;
+
+            const { message, hours } = result;
+            const messageChanged = message !== currentMessage;
+            const hoursChanged = hours !== currentHours;
+
+            const updates = [];
+
+            if (messageChanged) {
+                updates.push(
+                    remindersService.updateMessage(message)
+                        .then(() => ({ type: "message", success: true }))
+                        .catch((error) => ({ type: "message", success: false, error }))
+                );
+            }
+
+            if (hoursChanged) {
+                updates.push(
+                    remindersService.updateAntelacion(hours)
+                        .then(() => ({ type: "hours", success: true }))
+                        .catch((error) => ({ type: "hours", success: false, error }))
+                );
+            }
+
+            if (updates.length === 0) return;
+
+            const results = await Promise.all(updates);
+            const allSuccess = results.every((r) => r.success);
+
+            if (allSuccess) {
+                showToast("success", "Recordatorio actualizado correctamente");
+            } else {
+                const failedUpdates = results.filter((r) => !r.success).map((r) => r.type);
+                showToast("error", `Error al actualizar: ${failedUpdates.join(", ")}`);
+            }
+        } catch (error) {
+            console.error("Error con configuración de recordatorio:", error);
+            showToast("error", "Error al obtener configuración de recordatorio");
+        }
+    };
+
     const handleLogOut = async () => {
         const confirmLogout = await windowLogOut({
-            title: "¿Estás seguro de que deseas cerrar sesión?",
+            title: "¿Estas seguro de que deseas cerrar sesion?",
         });
         if (!confirmLogout) return;
-        // AuthProvider.logout already navigates to /login and passes the toast state
         logout();
     };
 
-    const toggleAddForm = () => {
-        // Ahora abre el prompt de creación
-        handleAddClient();
-    };
+    const activeClients = client.filter((c) => c.esta_eliminado === false);
 
-    // Filtrar clientes según el término de búsqueda
-    const filteredClients = client
-        .filter(
-            (c) =>
-                c.title.toLowerCase().includes(filter.toLowerCase()) &&
-                c.esta_eliminado === false
+    const filteredClients = activeClients
+        .filter((c) =>
+            c.title.toLowerCase().includes(filter.toLowerCase())
         )
-        .slice() // crear copia antes de ordenar
+        .slice()
         .sort((a, b) => {
-            // Ordenamiento sensible a acentos y mayúsculas
             const cmp = a.title.localeCompare(b.title, "es", {
                 sensitivity: "base",
                 ignorePunctuation: true,
@@ -172,53 +228,104 @@ const Clients = () => {
     const toggleSortOrder = () => {
         setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
     };
+
     const handleSearch = (e) => {
         setFilter(e.target.value);
     };
 
     return (
-        <div className="main-calendar-container">
-            <div className="client-container">
+        <div className="grid h-screen grid-cols-[300px_1fr] gap-4 p-3 max-xl:grid-cols-[260px_1fr] max-xl:gap-3 max-xl:p-2.5 max-lg:grid-cols-[220px_1fr] max-lg:gap-2.5 max-lg:p-2 max-md:grid-cols-[200px_1fr] max-md:gap-2 max-md:p-1.5 max-sm:grid-cols-[160px_1fr] max-sm:gap-1.5 max-sm:p-1">
+            {/* Panel lateral de clientes */}
+            <div className="relative flex min-h-0 flex-col rounded-lg border border-divider bg-surface p-3 text-content-primary shadow-strong max-md:p-2 max-sm:p-1.5">
                 {isDraggingEvent ? (
                     <DeleteZone isVisible={isDraggingEvent} />
                 ) : (
-                    <>
-                        <div className="client-header">
-                            <div className="client-header-actions">
+                    <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+                        {/* Header: Add + Logout */}
+                        <div className="sticky top-0 z-2 flex items-center justify-between gap-2 border-b border-divider bg-surface pb-2">
+                            <div className="flex items-center gap-1">
                                 <ButtonClientsList
                                     text={"Agregar Cliente"}
                                     imgSource={addClientImg}
-                                    functionOnClick={toggleAddForm}
+                                    functionOnClick={handleAddClient}
                                     className="btn-add"
                                 />
-                                <ButtonClientsList
-                                    text={"LogOut"}
-                                    imgSource={logoutImg}
-                                    functionOnClick={handleLogOut}
-                                    className="btn-logout"
-                                />
-                            </div>
-                            <h2>Clientes</h2>
-                            <div className="client-search">
-                                <input
-                                    type="text"
-                                    value={filter}
-                                    placeholder="Buscar cliente..."
-                                    onChange={handleSearch}
-                                />
-                                <button type="button" onClick={toggleSortOrder}>
-                                    {sortOrder === "asc" ? "↑" : "↓"}
+                                <button
+                                    onClick={handleReminderSettings}
+                                    className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-transparent transition-all duration-200 hover:bg-accent/20 active:scale-95 max-lg:h-10 max-lg:w-10 max-md:h-9 max-md:w-9 max-sm:h-8 max-sm:w-8"
+                                    aria-label="Configurar Recordatorio"
+                                    title="Configurar Recordatorio"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="h-6 w-6 text-content-primary opacity-90 transition-opacity hover:opacity-100 max-md:h-5 max-md:w-5 max-sm:h-[18px] max-sm:w-[18px]"
+                                    >
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M12 6v6l4 2" />
+                                    </svg>
                                 </button>
                             </div>
+                            <ButtonClientsList
+                                text={"Cerrar Sesion"}
+                                imgSource={logoutImg}
+                                functionOnClick={handleLogOut}
+                                className="btn-logout"
+                            />
+                        </div>
+
+                        {/* Titulo + contador */}
+                        <div className="my-2 flex items-center justify-center gap-2">
+                            <h2 className="text-center font-title font-bold text-content-primary max-lg:text-lg max-md:text-base max-sm:text-sm">
+                                Clientes
+                            </h2>
+                            {!isLoadingData && (
+                                <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-semibold text-accent">
+                                    {activeClients.length}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Busqueda + Sort */}
+                        <div className="mb-3 flex w-full min-w-0 gap-2 max-sm:mb-2 max-sm:gap-1">
+                            <input
+                                type="text"
+                                value={filter}
+                                placeholder="Buscar cliente..."
+                                onChange={handleSearch}
+                                className="min-w-0 flex-1 rounded-md border border-divider bg-base px-2.5 py-2 text-sm text-content-primary placeholder-content-secondary transition-colors focus:border-accent focus:outline-none focus:ring-[3px] focus:ring-accent/18 max-lg:px-2 max-lg:py-1.5 max-lg:text-[13px] max-md:text-xs max-sm:p-1 max-sm:text-[11px]"
+                            />
+                            <button
+                                type="button"
+                                onClick={toggleSortOrder}
+                                className="flex min-w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-divider bg-base px-2 py-2 text-base text-content-primary transition-colors hover:border-accent/30 hover:bg-accent/10 max-lg:min-w-8 max-lg:text-sm max-sm:min-w-6 max-sm:p-1 max-sm:text-[13px]"
+                                title={sortOrder === "asc" ? "A-Z (ascendente)" : "Z-A (descendente)"}
+                            >
+                                {sortOrder === "asc" ? "↑" : "↓"}
+                            </button>
+                        </div>
+
+                        {/* Lista de clientes o skeleton */}
+                        {isLoadingData ? (
+                            <LoadingSkeleton />
+                        ) : (
                             <ClientList
                                 client={filteredClients}
                                 handleEditClientForm={handleEditClientForm}
                                 handleDeleteClient={handleDeleteClient}
+                                onAddClient={handleAddClient}
                             />
-                        </div>
-                    </>
+                        )}
+                    </div>
                 )}
             </div>
+
+            {/* Calendario */}
             <div>
                 <Calendar
                     clientList={client}

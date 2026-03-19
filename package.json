@@ -17,6 +17,7 @@
         "@fullcalendar/react": "^6.1.19",
         "@fullcalendar/timegrid": "^6.1.19",
         "@hookform/resolvers": "^5.2.2",
+        "@tailwindcss/vite": "^4.2.1",
         "axios": "^1.12.2",
         "fullcalendar": "^6.1.19",
         "jwt-decode": "^4.0.0",
@@ -27,6 +28,7 @@
         "react-toastify": "^11.0.5",
         "sweetalert2": "^11.26.3",
         "sweetalert2-react-content": "^5.1.0",
+        "tailwindcss": "^4.2.1",
         "zod": "^4.1.13"
     },
     "devDependencies": {
@@ -39,6 +41,7 @@
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-react-refresh": "^0.4.20",
         "globals": "^16.4.0",
-        "vite": "^7.1.7"
+        "vite": "^7.1.7",
+        "vite-plugin-pwa": "^1.2.0"
     }
 }
