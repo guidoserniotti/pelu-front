@@ -11,8 +11,7 @@ import {
     promptAddClient,
     promptEditClient,
 } from "../utils/NotificationWindows/ClientFormPrompt";
-import { promptEditReminderMessage } from "../utils/NotificationWindows/ReminderMessagePrompt";
-import { promptEditAntelacion } from "../utils/NotificationWindows/ReminderAntelacionPrompt";
+import { useReminderCombinedModal } from "../utils/hooks/useReminderCombinedModal.jsx";
 import windowDelete from "../utils/NotificationWindows/ConfirmDelete";
 import windowLogOut from "../utils/NotificationWindows/ConfirmLogOut";
 import remindersService from "../services/reminders";
@@ -47,6 +46,7 @@ const Clients = () => {
         clients: false,
         shifts: false,
     });
+    const openReminderModal = useReminderCombinedModal();
 
     useEffect(() => {
         const fetchClients = async () => {
@@ -152,43 +152,53 @@ const Clients = () => {
         }
     };
 
-    const handleReminderMessage = async () => {
+    const handleReminderSettings = async () => {
         try {
-            const response = await remindersService.getMessage();
-            const currentMessage = response.data?.mensaje ?? response.mensaje ?? "";
-            const newMessage = await promptEditReminderMessage(currentMessage);
-            if (!newMessage) return;
-            await promiseToast(
-                remindersService.updateMessage(newMessage),
-                {
-                    pending: "Actualizando mensaje de recordatorio...",
-                    success: "Mensaje de recordatorio actualizado",
-                    error: "Error al actualizar el mensaje",
-                }
-            );
-        } catch (error) {
-            console.error("Error con mensaje de recordatorio:", error);
-            showToast("error", "Error al obtener el mensaje de recordatorio");
-        }
-    };
+            const messageResponse = await remindersService.getMessage();
+            const currentMessage = messageResponse.data?.mensaje ?? messageResponse.mensaje ?? "";
+            
+            const antelacionResponse = await remindersService.getAntelacion();
+            const currentHours = antelacionResponse.data?.horas_antelacion ?? antelacionResponse.horas_antelacion ?? 1;
 
-    const handleReminderAntelacion = async () => {
-        try {
-            const response = await remindersService.getAntelacion();
-            const currentHours = response.data?.horas_antelacion ?? response.horas_antelacion ?? 1;
-            const newHours = await promptEditAntelacion(currentHours);
-            if (!newHours) return;
-            await promiseToast(
-                remindersService.updateAntelacion(newHours),
-                {
-                    pending: "Actualizando antelación...",
-                    success: "Antelación actualizada",
-                    error: "Error al actualizar la antelación",
-                }
-            );
+            const result = await openReminderModal(currentMessage, currentHours);
+            if (!result) return;
+
+            const { message, hours } = result;
+            const messageChanged = message !== currentMessage;
+            const hoursChanged = hours !== currentHours;
+
+            const updates = [];
+
+            if (messageChanged) {
+                updates.push(
+                    remindersService.updateMessage(message)
+                        .then(() => ({ type: "message", success: true }))
+                        .catch((error) => ({ type: "message", success: false, error }))
+                );
+            }
+
+            if (hoursChanged) {
+                updates.push(
+                    remindersService.updateAntelacion(hours)
+                        .then(() => ({ type: "hours", success: true }))
+                        .catch((error) => ({ type: "hours", success: false, error }))
+                );
+            }
+
+            if (updates.length === 0) return;
+
+            const results = await Promise.all(updates);
+            const allSuccess = results.every((r) => r.success);
+
+            if (allSuccess) {
+                showToast("success", "Recordatorio actualizado correctamente");
+            } else {
+                const failedUpdates = results.filter((r) => !r.success).map((r) => r.type);
+                showToast("error", `Error al actualizar: ${failedUpdates.join(", ")}`);
+            }
         } catch (error) {
-            console.error("Error con antelación de recordatorio:", error);
-            showToast("error", "Error al obtener la antelación");
+            console.error("Error con configuración de recordatorio:", error);
+            showToast("error", "Error al obtener configuración de recordatorio");
         }
     };
 
@@ -241,30 +251,10 @@ const Clients = () => {
                                     className="btn-add"
                                 />
                                 <button
-                                    onClick={handleReminderMessage}
+                                    onClick={handleReminderSettings}
                                     className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-transparent transition-all duration-200 hover:bg-accent/20 active:scale-95 max-lg:h-10 max-lg:w-10 max-md:h-9 max-md:w-9 max-sm:h-8 max-sm:w-8"
-                                    aria-label="Mensaje de Recordatorio"
-                                    title="Mensaje de Recordatorio"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="h-6 w-6 text-content-primary opacity-90 transition-opacity hover:opacity-100 max-md:h-5 max-md:w-5 max-sm:h-[18px] max-sm:w-[18px]"
-                                    >
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                                        <polyline points="22,6 12,13 2,6" />
-                                    </svg>
-                                </button>
-                                <button
-                                    onClick={handleReminderAntelacion}
-                                    className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-transparent transition-all duration-200 hover:bg-accent/20 active:scale-95 max-lg:h-10 max-lg:w-10 max-md:h-9 max-md:w-9 max-sm:h-8 max-sm:w-8"
-                                    aria-label="Antelación de Recordatorio"
-                                    title="Antelación de Recordatorio"
+                                    aria-label="Configurar Recordatorio"
+                                    title="Configurar Recordatorio"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -277,7 +267,7 @@ const Clients = () => {
                                         className="h-6 w-6 text-content-primary opacity-90 transition-opacity hover:opacity-100 max-md:h-5 max-md:w-5 max-sm:h-[18px] max-sm:w-[18px]"
                                     >
                                         <circle cx="12" cy="12" r="10" />
-                                        <polyline points="12,6 12,12 16,14" />
+                                        <path d="M12 6v6l4 2" />
                                     </svg>
                                 </button>
                             </div>
