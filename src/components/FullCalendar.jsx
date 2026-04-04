@@ -52,6 +52,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                 title: turno.cliente.nombre_completo,
                 start: turno.fecha_hora_inicio_turno,
                 end: turno.fecha_hora_fin_turno,
+                backgroundColor: turno.service_color || "#378006",
+
                 extendedProps: {
                     turnoId: turno.id,
                     nro_turno: turno.nro_turno,
@@ -59,6 +61,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                     es_sobreturno: turno.es_sobreturno,
                     telefono: turno.cliente.telefono,
                     tomadoPor: turno.tomadoPor.nombre_completo,
+                    service_color: turno.service_color,
                 },
                 editable: true,
             }));
@@ -170,7 +173,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                         turnoData.fecha_hora_fin,
                         turnoData.observaciones || "",
                         turnoData.cliente_id,
-                        false
+                        turnoData.es_sobreturno || false,
+                        turnoData.service_color || "#378006"
                     ),
                     createDynamicMessage.shiftCreate(cliente)
                 );
@@ -223,7 +227,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                         turnoData.fecha_hora_fin,
                         turnoData.observaciones || "",
                         turnoData.cliente_id,
-                        false
+                        turnoData.es_sobreturno || false,
+                        turnoData.service_color || turnoData.servicio?.color || "#378006"
                     ),
                     createDynamicMessage.shiftCreate(turnoData.cliente_nombre)
                 );
