@@ -1,5 +1,5 @@
 import ThemedSwal from "../swalTheme";
-
+import {SERVICE_OPTIONS, getServiceByValue} from "./serviceOptions";
 const MIN_DURATION = 15;
 const MAX_DURATION = 240;
 const STEP = 15;
@@ -86,6 +86,12 @@ export const promptCreateShift = async (
                     value="${formatDateTimeLocal(startDate)}"
                 />
 
+                <select id='swal-servicio' class= 'swal2-input shift-form-select'>
+                    ${SERVICE_OPTIONS.map(
+                        (servicio)=>`<option value='${servicio.value}'>${servicio.label}</option>`
+                    ).join('')}
+                </select>
+
                 <label class="shift-form-label">Duración:</label>
                 <div class="shift-form-duration">
                     <button type="button" id="swal-dur-minus" class="shift-form-duration-btn" aria-label="Reducir duración">−</button>
@@ -116,6 +122,7 @@ export const promptCreateShift = async (
             const durDisplay = document.getElementById("swal-dur-display");
             const btnMinus = document.getElementById("swal-dur-minus");
             const btnPlus = document.getElementById("swal-dur-plus");
+            const servicioInput=document.getElementById('swal-servicio')
 
             // --- Combobox: filtro sobre el select ---
             const allOptions = Array.from(selectEl.options).slice(1); // sin el placeholder
@@ -215,6 +222,8 @@ export const promptCreateShift = async (
 
             fechaInicioInput.addEventListener("change", validate);
             fechaInicioInput.addEventListener("input", validate);
+            servicioInput.addEventListener('change',validate);
+            servicioInput.addEventListener('input', validate);
             validate();
         },
         preConfirm: () => {
@@ -222,9 +231,22 @@ export const promptCreateShift = async (
             const fechaInicio = document.getElementById("swal-fecha-inicio").value;
             const duracion = parseInt(document.getElementById("swal-duracion").value, 10);
             const observaciones = document.getElementById("swal-observaciones").value;
-
+            const servicioKey=document.getElementById('swal-servicio').value;
             if (!clienteId) {
                 ThemedSwal.showValidationMessage("Debe seleccionar un cliente");
+                return false;
+            }
+            if(!servicioKey){
+                ThemedSwal.showValidationMessage('Debe seleccionar un servicio');
+                return false;
+            }
+
+            const servicio = getServiceByValue(servicioKey);
+
+            if(!servicio){
+                ThemedSwal.showValidationMessage(
+                    'Debe seleccionar un servicio válido'
+                )
                 return false;
             }
 
@@ -250,9 +272,16 @@ export const promptCreateShift = async (
             return {
                 cliente_id: clienteId,
                 cliente_nombre: clienteSearch,
+                servicio: {
+                    key: servicioKey,
+                    label: servicio.label,
+                    color: servicio.color
+                },
+                service_color: servicio.color,
                 fecha_hora_inicio: fechaInicioDate.toISOString(),
                 fecha_hora_fin: fechaFinDate.toISOString(),
                 observaciones: observaciones.trim() || null,
+                
             };
         },
     });
