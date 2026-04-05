@@ -86,6 +86,7 @@ export const promptCreateShift = async (
                     value="${formatDateTimeLocal(startDate)}"
                 />
 
+                <label class="shift-form-label">Servicio:</label>
                 <select id='swal-servicio' class= 'swal2-input shift-form-select'>
                     ${SERVICE_OPTIONS.map(
                         (servicio)=>`<option value='${servicio.value}'>${servicio.label}</option>`
