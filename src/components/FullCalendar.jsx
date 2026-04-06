@@ -176,7 +176,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                         turnoData.es_sobreturno || false,
                         turnoData.service_color || "#378006"
                     ),
-                    createDynamicMessage.shiftCreate(cliente)
+                    createDynamicMessage.shiftCreate(cliente.nombre_completo||clienteTitle)
                 );
 
                 info.event.remove();
@@ -350,6 +350,8 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                 shiftsService.editarTurno(turnoId, {
                     fecha_hora_inicio_turno: fechaInicioISO,
                     fecha_hora_fin_turno: fechaFinISO,
+                    service_color:
+                        info.event.extendedProps.service_color || "#378006",
                     observaciones:
                         info.event.extendedProps.observaciones || null,
                 }),
