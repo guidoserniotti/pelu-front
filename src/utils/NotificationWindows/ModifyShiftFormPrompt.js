@@ -1,5 +1,9 @@
 import ThemedSwal from "../swalTheme";
-
+import {
+    SERVICE_OPTIONS,
+    getServiceByColor,
+    getServiceByValue,
+} from "./serviceOptions";
 const MIN_DURATION = 15;
 const MAX_DURATION = 240;
 const STEP = 15;
@@ -23,8 +27,14 @@ const formatDuration = (minutes) => {
  * @returns {Promise<Object|null>} - Datos actualizados del turno o null si se cancela
  */
 export const promptModifyShift = async (turnoData) => {
-    const { turnoId, clienteNombre, startDate, endDate, observaciones } =
-        turnoData;
+    const {
+        turnoId,
+        clienteNombre,
+        startDate,
+        endDate,
+        observaciones,
+        service_color,
+    } = turnoData;
 
     const formatDateTimeLocal = (date) => {
         const year = date.getFullYear();
@@ -37,6 +47,13 @@ export const promptModifyShift = async (turnoData) => {
 
     const originalStartStr = formatDateTimeLocal(startDate);
     const originalObservaciones = observaciones || "";
+    const originalServiceColor = service_color || "#378006";
+    const originalService = getServiceByColor(originalServiceColor);
+    const originalServiceValue = originalService?.value;
+    const serviceOptionsHtml =
+        !originalService
+            ? `<option value="__current_service__" selected>Servicio actual</option>`
+            : "";
 
     // Calcular duración inicial en minutos, redondeada al step más cercano
     const rawDuration = Math.round(
@@ -76,6 +93,18 @@ export const promptModifyShift = async (turnoData) => {
                     <button type="button" id="swal-dur-plus" class="shift-form-duration-btn" aria-label="Aumentar duración">+</button>
                 </div>
                 <input type="hidden" id="swal-duracion" value="${initialDuration}" />
+                
+                <label class="shift-form-label">Servicio:</label>
+                <select id="swal-servicio" class="swal2-input shift-form-select">
+                    ${serviceOptionsHtml}${SERVICE_OPTIONS.map(
+                        (servicio) =>
+                            `<option value='${servicio.value}' ${
+                                servicio.value === originalServiceValue
+                                    ? "selected"
+                                    : ""
+                            }>${servicio.label}</option>`
+                    ).join("")}
+                </select>
 
                 <label class="shift-form-label">Observaciones (opcional):</label>
                 <textarea
@@ -98,6 +127,7 @@ export const promptModifyShift = async (turnoData) => {
             const btnMinus = document.getElementById("swal-dur-minus");
             const btnPlus = document.getElementById("swal-dur-plus");
             const observacionesInput = document.getElementById("swal-observaciones");
+            const servicioInput = document.getElementById("swal-servicio");
 
             // --- Duración con +/- ---
             const updateDuration = (delta) => {
@@ -128,6 +158,11 @@ export const promptModifyShift = async (turnoData) => {
                 const fechaInicioStr = fechaInicioInput.value;
                 const currentDuration = parseInt(durInput.value, 10);
                 const observacionesActuales = observacionesInput.value.trim();
+                const currentServiceColor =
+                    servicioInput.value === "__current_service__"
+                        ? originalServiceColor
+                        : getServiceByValue(servicioInput.value)?.color ||
+                          originalServiceColor;
 
                 if (!fechaInicioStr) {
                     setButton(false);
@@ -145,7 +180,8 @@ export const promptModifyShift = async (turnoData) => {
                 const noHayCambios =
                     fechaInicioStr === originalStartStr &&
                     currentDuration === initialDuration &&
-                    observacionesActuales === originalObservaciones;
+                    observacionesActuales === originalObservaciones &&
+                    currentServiceColor === originalServiceColor;
 
                 setButton(!noHayCambios);
             };
@@ -154,6 +190,7 @@ export const promptModifyShift = async (turnoData) => {
             fechaInicioInput.addEventListener("input", validate);
             observacionesInput.addEventListener("input", validate);
             observacionesInput.addEventListener("change", validate);
+            servicioInput.addEventListener("change", validate);
 
             validate();
         },
@@ -161,9 +198,20 @@ export const promptModifyShift = async (turnoData) => {
             const fechaInicio = document.getElementById("swal-fecha-inicio").value;
             const duracion = parseInt(document.getElementById("swal-duracion").value, 10);
             const observaciones = document.getElementById("swal-observaciones").value;
+            const servicioValue = document.getElementById("swal-servicio").value;
+
+            const servicio =
+                servicioValue === "__current_service__"
+                    ? originalServiceColor
+                    : getServiceByValue(servicioValue)?.color;
 
             if (!fechaInicio) {
                 ThemedSwal.showValidationMessage("Debe ingresar la fecha/hora de inicio");
+                return false;
+            }
+
+            if (!servicio) {
+                ThemedSwal.showValidationMessage("Debe seleccionar un servicio válido");
                 return false;
             }
 
@@ -183,6 +231,7 @@ export const promptModifyShift = async (turnoData) => {
                 turno_id: turnoId,
                 fecha_hora_inicio_turno: fechaInicioDate.toISOString(),
                 fecha_hora_fin_turno: fechaFinDate.toISOString(),
+                service_color: servicio,
                 observaciones: observaciones.trim() || null,
             };
         },

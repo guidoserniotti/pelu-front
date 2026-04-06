@@ -87,7 +87,7 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
                         ? `
                     <div class="shift-detail-item shift-service-item">
                         <label class="shift-detail-label">Servicio:</label>
-                        <p class="shift-detail-value shift-service-value" style="color: ${service.color}">${service.label}</p>
+                        <p class="shift-detail-value shift-service-value">${service.label}</p>
                     </div>
                     `
                         : ""
@@ -171,6 +171,7 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
                         startDate: new Date(start),
                         endDate: new Date(end),
                         observaciones: extendedProps.observaciones || "",
+                        service_color: extendedProps.service_color,
                     };
 
                     const updatedData = await promptModifyShift(
@@ -187,6 +188,8 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
                                             updatedData.fecha_hora_inicio_turno,
                                         fecha_hora_fin_turno:
                                             updatedData.fecha_hora_fin_turno,
+                                        service_color:
+                                            updatedData.service_color,
                                         observaciones:
                                             updatedData.observaciones,
                                     }

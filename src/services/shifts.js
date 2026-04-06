@@ -9,7 +9,7 @@ const registrarTurno = async (
     observaciones,
     id_cliente,
     esSobreturno = false,
-    serviceColor
+    serviceColor = "#378006"
 ) => {
     const usuario_id = authService.getUserId();
 
