@@ -41,7 +41,7 @@ export const SERVICE_OPTIONS = [
     },
     {
         value: "deudores",
-        label: "Deudores",
+        label: "Deuda",
         color: "#e53935",
     },
 ];
