@@ -5,6 +5,8 @@ import { promiseToast } from "../toastify/toastConfig";
 import { createDynamicMessage } from "../toastify/toastMessages";
 import { promptModifyShift } from "./ModifyShiftFormPrompt";
 import AlertError from "./AlertError";
+import {getServiceByColor} from './serviceOptions';
+
 /**
  * Muestra un sidebar lateral izquierdo con los detalles del turno
  * @param {Object} turnoInfo - Información del turno
@@ -17,7 +19,7 @@ import AlertError from "./AlertError";
  */
 export const showShiftDetails = async (turnoInfo, onDelete = null) => {
     const { title, start, end, extendedProps } = turnoInfo;
-
+    const service = getServiceByColor(extendedProps?.service_color);
     // Formatear fechas para mostrar
     const formatDateTime = (date) => {
         const d = new Date(date);
@@ -77,6 +79,17 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
                         <p class="shift-detail-value shift-detail-observations">${extendedProps.observaciones}</p>
                     </div>
                 `
+                        : ""
+                }
+
+                ${
+                    service
+                        ? `
+                    <div class="shift-detail-item shift-service-item">
+                        <label class="shift-detail-label">Servicio:</label>
+                        <p class="shift-detail-value shift-service-value">${service.label}</p>
+                    </div>
+                    `
                         : ""
                 }
 
@@ -158,6 +171,7 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
                         startDate: new Date(start),
                         endDate: new Date(end),
                         observaciones: extendedProps.observaciones || "",
+                        service_color: extendedProps.service_color,
                     };
 
                     const updatedData = await promptModifyShift(
@@ -174,6 +188,8 @@ export const showShiftDetails = async (turnoInfo, onDelete = null) => {
                                             updatedData.fecha_hora_inicio_turno,
                                         fecha_hora_fin_turno:
                                             updatedData.fecha_hora_fin_turno,
+                                        service_color:
+                                            updatedData.service_color,
                                         observaciones:
                                             updatedData.observaciones,
                                     }

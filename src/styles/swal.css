@@ -1,18 +1,16 @@
-@import url("./variables.css");
-
 /*
 ==================================================
 SWAL THEME STYLES
-==================================================
-Estructura ordenada por secciones para facilitar mantenimiento.
-1) POPUPS & FORMS (base, títulos, botones, inputs, validación)
-2) ICONS (warning, error, etc.)
-3) TOAST (estilos específicos del modo toast)
-4) ANIMATIONS (show/hide + keyframes)
+Usa tokens del theme de Tailwind (App.css).
+1) POPUPS & FORMS
+2) ICONS
+3) TOAST
+4) ANIMATIONS
+5) SHIFT DETAILS SIDEBAR
+6) BLURRED BACKDROP
 ==================================================
 */
 
-/* Aseguramos que los contenedores de SweetAlert2 estén siempre por encima */
 .swal2-container {
     z-index: 10000 !important;
 }
@@ -23,21 +21,21 @@ Estructura ordenada por secciones para facilitar mantenimiento.
 ------------------------------
 */
 .swal-theme-popup {
-    background: var(--surface-2) !important;
-    color: var(--text-inverse) !important;
-    border: 1px solid var(--border-muted-dark) !important;
+    background: var(--color-surface) !important;
+    color: var(--color-content-primary) !important;
+    border: 1px solid var(--color-divider) !important;
     box-shadow: var(--shadow-strong) !important;
-    border-radius: 12px !important;
+    border-radius: var(--radius-lg) !important;
 }
 
 .swal-theme-title {
-    font-family: var(--font-family-title) !important;
-    font-weight: var(--font-weight-bold) !important;
-    color: var(--text-inverse) !important;
+    font-family: var(--font-title) !important;
+    font-weight: 700 !important;
+    color: var(--color-content-primary) !important;
 }
 .swal-theme-text {
-    font-family: var(--font-family-base) !important;
-    color: var(--text-inverse) !important;
+    font-family: var(--font-sans) !important;
+    color: var(--color-content-primary) !important;
     opacity: 0.9;
 }
 
@@ -48,44 +46,46 @@ Estructura ordenada por secciones para facilitar mantenimiento.
 .swal-theme-confirm,
 .swal-theme-cancel {
     border: none !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-md) !important;
     padding: 10px 16px !important;
-    font-family: var(--font-family-base) !important;
-    font-weight: var(--font-weight-medium) !important;
+    font-family: var(--font-sans) !important;
+    font-weight: 600 !important;
 }
 
 .swal-theme-confirm {
-    background-color: var(--login-accent) !important;
-    color: var(--surface-1) !important;
+    background-color: var(--color-accent) !important;
+    color: var(--color-base) !important;
 }
 .swal-theme-confirm:hover {
-    background-color: #b89b31 !important;
+    background-color: var(--color-accent) !important;
+    filter: brightness(0.9);
 }
 
 .swal-theme-cancel {
-    background-color: var(--error-bg) !important;
-    color: var(--error-text) !important;
+    background-color: var(--color-danger) !important;
+    color: #fff !important;
 }
 .swal-theme-cancel:hover {
-    background-color: #c62828 !important;
+    background-color: var(--color-danger) !important;
+    filter: brightness(0.85);
 }
 
-/* Validación (mensajes de error en formularios) */
+/* Validacion */
 .swal-theme-validation {
-    background-color: var(--error-bg) !important;
-    color: var(--error-text) !important;
-    border: 1px solid var(--error-border) !important;
-    border-radius: 8px !important;
+    background-color: var(--color-danger) !important;
+    color: #fff !important;
+    border: 1px solid var(--color-danger) !important;
+    border-radius: var(--radius-md) !important;
     padding: 10px 12px !important;
-    box-shadow: 0 8px 20px var(--error-shadow) !important;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5) !important;
     margin: 8px 0 0 0 !important;
-    font-family: var(--font-family-base) !important;
+    font-family: var(--font-sans) !important;
     font-weight: 1000 !important;
     animation: swalThemeFadeIn 180ms ease-out both;
     font-size: 1.125rem !important;
     -webkit-text-stroke: 0.01px #000 !important;
-    text-shadow: -0.8px -0.8px 0 #000, 0.8px -0.8px 0 #000, -0.8px 0.8px 0 #000,
-        0.8px 0.8px 0 #000, 0px 0px 0.8px #000 !important;
+    text-shadow: -0.8px -0.8px 0 #000, 0.8px -0.8px 0 #000,
+        -0.8px 0.8px 0 #000, 0.8px 0.8px 0 #000, 0px 0px 0.8px #000 !important;
 }
 .swal-theme-validation::before {
     display: none !important;
@@ -94,25 +94,24 @@ Estructura ordenada por secciones para facilitar mantenimiento.
 /* Inputs dentro de popup/form */
 .swal-theme-popup .swal2-input,
 .swal-theme-popup .swal2-textarea {
-    background: var(--surface-3) !important;
-    color: var(--text-inverse) !important;
-    border: 1px solid var(--border-muted-dark) !important;
+    background: var(--color-base) !important;
+    color: var(--color-content-primary) !important;
+    border: 1px solid var(--color-divider) !important;
 }
 .swal-theme-popup .swal2-input::placeholder,
 .swal-theme-popup .swal2-textarea::placeholder {
-    color: var(--text-inverse) !important;
-    opacity: 0.6 !important;
+    color: var(--color-content-secondary) !important;
 }
 .swal-theme-popup .swal2-input:focus,
 .swal-theme-popup .swal2-textarea:focus {
     outline: none !important;
-    border-color: var(--login-accent) !important;
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18) !important;
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.18) !important;
 }
 
 /*
 ------------------------------
-CLIENT FORM (Agregar/Editar Cliente)
+CLIENT FORM
 ------------------------------
 */
 .client-form-input {
@@ -131,7 +130,7 @@ CLIENT FORM (Agregar/Editar Cliente)
 
 /*
 ------------------------------
-SHIFT FORM (Crear Turno)
+SHIFT FORM
 ------------------------------
 */
 .shift-form-container {
@@ -147,7 +146,7 @@ SHIFT FORM (Crear Turno)
     margin-top: 16px;
     margin-bottom: 8px;
     font-weight: bold;
-    color: var(--text-inverse);
+    color: var(--color-content-primary);
 }
 
 .shift-form-label:first-child {
@@ -169,7 +168,100 @@ SHIFT FORM (Crear Turno)
     resize: vertical;
 }
 
-/* Contenido de error (AlertError) */
+/* Combobox: input + select filtrable */
+.shift-form-combobox-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.shift-form-combobox-input {
+    border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+}
+
+.shift-form-combobox-select {
+    border-radius: 0 0 var(--radius-md) var(--radius-md) !important;
+    margin-top: 0 !important;
+    cursor: pointer;
+    transition: max-height 0.2s ease;
+}
+
+.shift-form-combobox-select.shift-form-combobox-open {
+    border-radius: 0 0 var(--radius-md) var(--radius-md) !important;
+}
+
+.shift-form-combobox-select option {
+    padding: 8px 12px;
+    color: var(--color-content-primary);
+    background: var(--color-base);
+}
+
+.shift-form-combobox-select option:checked,
+.shift-form-combobox-select option:hover {
+    background: var(--color-accent);
+    color: var(--color-base);
+}
+
+/* Duration +/- buttons */
+.shift-form-duration {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+}
+
+.shift-form-duration-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 44px;
+    background: var(--color-base);
+    color: var(--color-content-primary);
+    border: 1px solid var(--color-divider);
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.shift-form-duration-btn:first-child {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.shift-form-duration-btn:last-child {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.shift-form-duration-btn:hover:not(:disabled) {
+    background: var(--color-accent);
+    color: var(--color-base);
+    border-color: var(--color-accent);
+}
+
+.shift-form-duration-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.shift-form-duration-display {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-content-primary);
+    background: var(--color-base);
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+    height: 44px;
+    line-height: 44px;
+    user-select: none;
+}
+
+/* Error content */
 .swal-error-msg {
     margin: 0 0 6px 0;
     font-size: 0.95rem;
@@ -187,14 +279,14 @@ SHIFT FORM (Crear Turno)
     text-align: left;
 }
 .swal-footer-error-list li {
-    background: var(--error-bg);
-    color: var(--error-text);
-    border: 1px solid var(--error-border);
-    border-radius: 8px;
+    background: var(--color-danger);
+    color: #fff;
+    border: 1px solid var(--color-danger);
+    border-radius: var(--radius-md);
     padding: 8px 10px;
     font-size: 0.85rem;
     line-height: 1.35;
-    box-shadow: 0 6px 16px var(--error-shadow);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
 }
 .swal-footer-error-list li + li {
     margin-top: 6px;
@@ -206,12 +298,12 @@ SHIFT FORM (Crear Turno)
 ------------------------------
 */
 .swal2-icon.swal2-warning {
-    border-color: var(--login-accent) !important;
-    color: var(--login-accent) !important;
+    border-color: var(--color-accent) !important;
+    color: var(--color-accent) !important;
 }
 .swal2-icon.swal2-error {
-    border-color: var(--error-bg) !important;
-    color: var(--error-bg) !important;
+    border-color: var(--color-danger) !important;
+    color: var(--color-danger) !important;
 }
 
 /*
@@ -219,7 +311,6 @@ SHIFT FORM (Crear Turno)
 3) TOAST
 ------------------------------
 */
-/* Base del toast */
 .colored-toast {
     border-radius: 10px !important;
     border: 1px solid transparent !important;
@@ -227,28 +318,24 @@ SHIFT FORM (Crear Turno)
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35) !important;
 }
 
-/* Success neon */
 .colored-toast.swal2-icon-success {
-    background-color: var(--success-bg) !important;
-    border-color: var(--success-border) !important;
-    box-shadow: 0 10px 26px var(--success-shadow) !important;
+    background-color: #00e676 !important;
+    border-color: #00c853 !important;
+    box-shadow: 0 10px 26px rgba(0, 230, 118, 0.45) !important;
 }
 
-/* Error neon */
 .colored-toast.swal2-icon-error {
-    background-color: var(--error-bg) !important;
-    border-color: var(--error-border) !important;
-    box-shadow: 0 10px 26px var(--error-shadow) !important;
+    background-color: var(--color-danger) !important;
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 10px 26px rgba(239, 68, 68, 0.5) !important;
 }
 
-/* Info neon */
 .colored-toast.swal2-icon-info {
-    background-color: var(--info-bg) !important;
-    border-color: var(--info-border) !important;
-    box-shadow: 0 10px 26px var(--info-shadow) !important;
+    background-color: #00b2ff !important;
+    border-color: #008ae6 !important;
+    box-shadow: 0 10px 26px rgba(0, 178, 255, 0.45) !important;
 }
 
-/* Texto con leve contraste para legibilidad */
 .colored-toast .swal2-title,
 .colored-toast .swal2-html-container,
 .colored-toast .swal2-close {
@@ -257,16 +344,8 @@ SHIFT FORM (Crear Turno)
     -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.35) !important;
 }
 .colored-toast.swal2-icon-question {
-    background-color: #87adbd !important;
-}
-.colored-toast .swal2-title {
-    color: white;
-}
-.colored-toast .swal2-close {
-    color: white;
-}
-.colored-toast .swal2-html-container {
-    color: white;
+    background-color: var(--color-surface) !important;
+    border-color: var(--color-divider) !important;
 }
 
 /*
@@ -310,11 +389,11 @@ SHIFT FORM (Crear Turno)
 .shift-details-sidebar {
     text-align: left !important;
     padding: 20px !important;
-    background: var(--surface-1) !important;
+    background: var(--color-surface) !important;
 }
 
 .shift-details-sidebar .swal2-title {
-    color: var(--text-inverse) !important;
+    color: var(--color-content-primary) !important;
 }
 
 .shift-details-container {
@@ -332,7 +411,7 @@ SHIFT FORM (Crear Turno)
 .shift-detail-label {
     font-size: 0.85rem;
     font-weight: bold;
-    color: var(--login-accent) !important;
+    color: var(--color-accent) !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 0;
@@ -340,7 +419,7 @@ SHIFT FORM (Crear Turno)
 
 .shift-detail-value {
     font-size: 1rem;
-    color: var(--text-inverse) !important;
+    color: var(--color-content-primary) !important;
     margin: 0;
     padding: 8px 12px;
     border-radius: 6px;
@@ -355,9 +434,9 @@ SHIFT FORM (Crear Turno)
 .shift-detail-badge {
     display: inline-block;
     padding: 6px 12px;
-    background: var(--error-bg);
-    color: var(--error-text);
-    border: 1px solid var(--error-border);
+    background: var(--color-danger);
+    color: #fff;
+    border: 1px solid var(--color-danger);
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: bold;
@@ -366,14 +445,14 @@ SHIFT FORM (Crear Turno)
 .shift-detail-label-small {
     font-size: 0.75rem;
     font-weight: normal;
-    color: var(--login-accent) !important;
+    color: var(--color-accent) !important;
     opacity: 0.8;
     margin: 0;
 }
 
 .shift-detail-value-small {
     font-size: 0.85rem;
-    color: var(--text-inverse) !important;
+    color: var(--color-content-primary) !important;
     opacity: 1;
     margin: 0;
     padding: 6px 12px;
@@ -381,7 +460,6 @@ SHIFT FORM (Crear Turno)
     border-radius: 6px;
 }
 
-/* Estilos para el footer con botón de eliminar */
 .shift-details-sidebar .swal2-footer {
     padding: 16px 0 0 0;
     margin-top: 8px;
@@ -394,7 +472,7 @@ SHIFT FORM (Crear Turno)
     width: 100%;
 }
 
-/* Botón Modificar (acento dorado) */
+/* Boton Modificar */
 .shift-btn-modify {
     display: flex;
     align-items: center;
@@ -402,12 +480,12 @@ SHIFT FORM (Crear Turno)
     gap: 8px;
     padding: 10px 20px;
     flex: 1;
-    background-color: var(--login-accent) !important;
-    color: var(--surface-1) !important;
-    border: 1px solid var(--login-accent);
-    border-radius: 8px;
-    font-family: var(--font-family-base);
-    font-weight: var(--font-weight-medium);
+    background-color: var(--color-accent) !important;
+    color: var(--color-base) !important;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-weight: 600;
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -415,17 +493,16 @@ SHIFT FORM (Crear Turno)
 }
 
 .shift-btn-modify:hover {
-    background-color: #e0c050 !important;
-    border-color: #e0c050;
+    filter: brightness(0.9);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 4px 12px rgba(250, 204, 21, 0.4);
 }
 
 .shift-btn-modify:active {
     transform: scale(0.98);
 }
 
-/* Botón Eliminar (rojo) */
+/* Boton Eliminar */
 .shift-btn-delete {
     display: flex;
     align-items: center;
@@ -433,15 +510,12 @@ SHIFT FORM (Crear Turno)
     gap: 8px;
     padding: 10px 20px;
     flex: 1;
-    background-color: var(
-        --swal2-deny-button-background-color,
-        var(--error-bg)
-    ) !important;
-    color: var(--swal2-deny-button-color, var(--error-text)) !important;
-    border: 1px solid var(--error-border);
-    border-radius: 8px;
-    font-family: var(--font-family-base);
-    font-weight: var(--font-weight-medium);
+    background-color: var(--color-danger) !important;
+    color: #fff !important;
+    border: 1px solid var(--color-danger);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-weight: 600;
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -449,9 +523,9 @@ SHIFT FORM (Crear Turno)
 }
 
 .shift-btn-delete:hover {
-    background-color: #c62828 !important;
+    filter: brightness(0.85);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .shift-btn-delete:active {
@@ -469,7 +543,262 @@ SHIFT FORM (Crear Turno)
 
 /*
 ------------------------------
-6) BLURRED BACKDROP (TODOS LOS MODALES)
+6) REMINDER FORM
+------------------------------
+*/
+.reminder-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+}
+
+.reminder-form-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(250, 204, 21, 0.12);
+    color: var(--color-accent);
+}
+
+.reminder-form-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.reminder-form-hint {
+    font-size: 0.85rem;
+    color: var(--color-content-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/*
+Placeholders Reference
+*/
+.reminder-placeholders-reference {
+    background: rgba(250, 204, 21, 0.08);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    margin: 8px 0;
+}
+
+.placeholder-title {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+}
+
+.placeholder-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.placeholder-list li {
+    font-size: 0.8rem;
+    color: var(--color-content-primary);
+    margin: 0;
+}
+
+.placeholder-list code {
+    background: var(--color-base);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.reminder-form-textarea {
+    width: 100% !important;
+    min-height: 120px !important;
+    resize: none !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    border-radius: var(--radius-md) !important;
+    padding: 12px !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+
+.reminder-form-counter {
+    align-self: flex-end;
+    font-size: 0.75rem;
+    color: var(--color-content-secondary);
+}
+
+/*
+------------------------------
+7) ANTELACION CONTROL
+------------------------------
+*/
+.antelacion-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.antelacion-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 48px;
+    background: var(--color-base);
+    color: var(--color-content-primary);
+    border: 1px solid var(--color-divider);
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.antelacion-btn-minus {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    border-right: none;
+}
+
+.antelacion-btn-plus {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    border-left: none;
+}
+
+.antelacion-btn:hover:not(:disabled) {
+    background: var(--color-accent);
+    color: var(--color-base);
+    border-color: var(--color-accent);
+}
+
+.antelacion-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.antelacion-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.antelacion-display {
+    flex: 1;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-content-primary);
+    background: var(--color-base);
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+    height: 48px;
+    line-height: 48px;
+    user-select: none;
+}
+
+/*
+------------------------------
+8) REMINDER COMBINED PROMPT
+------------------------------
+*/
+.reminder-combined-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    max-height: 65vh;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.reminder-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reminder-section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-content-primary);
+    margin: 0;
+    padding: 0 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-accent);
+}
+
+.reminder-preview {
+    padding: 12px;
+    background: var(--color-base);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.preview-label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.preview-text {
+    font-size: 0.9rem;
+    color: var(--color-content-primary);
+    margin: 0;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.reminder-divider {
+    border: none;
+    border-top: 1px solid var(--color-divider);
+    margin: 0;
+}
+
+.reminder-errors {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--color-danger);
+    border-radius: var(--radius-md);
+}
+
+.error-message {
+    font-size: 0.85rem;
+    color: var(--color-danger);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/*
+------------------------------
+9) BLURRED BACKDROP
 ------------------------------
 */
 body.swal2-shown > [aria-hidden="true"] {

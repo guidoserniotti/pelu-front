@@ -14,19 +14,17 @@ import confirmModify from "../utils/NotificationWindows/ConfirmModify";
 import AlertError from "../utils/NotificationWindows/AlertError";
 import { promiseToast, showValidation } from "../utils/toastify/toastConfig";
 import { createDynamicMessage } from "../utils/toastify/toastMessages";
+
 const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
     const [currentView, setCurrentView] = useState("timeGridWeek");
     const calendarRef = useRef(null);
     const draggedEventRef = useRef(null);
     const hasLoadedOnce = useRef(false);
 
-    // Filtrar clientes activos del prop recibido
     const clientes = clientList.filter((client) => !client.esta_eliminado);
 
-    // Función para cargar turnos del backend
     const loadShifts = useCallback(async (fetchInfo) => {
         try {
-            // Calcular rango: 1 mes antes de hoy hasta 11 meses después (1 año total)
             const today = new Date();
             const oneMonthAgo = new Date(today);
             oneMonthAgo.setMonth(today.getMonth() - 1);
@@ -34,7 +32,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
             const elevenMonthsLater = new Date(today);
             elevenMonthsLater.setMonth(today.getMonth() + 11);
 
-            // Formatear fechas a YYYY-MM-DD
             const formatDate = (date) => {
                 const year = date.getFullYear();
                 const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -50,12 +47,13 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                 fecha_fin
             );
 
-            // Convertir turnos del backend al formato de FullCalendar
             const formattedEvents = response.listado_turnos.map((turno) => ({
                 id: turno.id,
                 title: turno.cliente.nombre_completo,
                 start: turno.fecha_hora_inicio_turno,
                 end: turno.fecha_hora_fin_turno,
+                backgroundColor: turno.service_color || "#378006",
+
                 extendedProps: {
                     turnoId: turno.id,
                     nro_turno: turno.nro_turno,
@@ -63,11 +61,11 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                     es_sobreturno: turno.es_sobreturno,
                     telefono: turno.cliente.telefono,
                     tomadoPor: turno.tomadoPor.nombre_completo,
+                    service_color: turno.service_color,
                 },
                 editable: true,
             }));
 
-            // Notificar que los turnos se cargaron (solo la primera vez)
             if (!hasLoadedOnce.current && onShiftsLoaded) {
                 hasLoadedOnce.current = true;
                 onShiftsLoaded();
@@ -85,7 +83,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         }
     }, []);
 
-    // Nombres de meses y días capitalizados
     const monthNames = [
         "Enero",
         "Febrero",
@@ -98,7 +95,7 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         "Septiembre",
         "Octubre",
         "Noviembre",
-        "🎄Diciembre🎄",
+        "Diciembre",
     ];
 
     const shortMonthNames = [
@@ -120,24 +117,22 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         "Domingo",
         "Lunes",
         "Martes",
-        "Miércoles",
+        "Miercoles",
         "Jueves",
         "Viernes",
-        "Sábado",
+        "Sabado",
     ];
 
-    // Locale español personalizado
     const customEsLocale = {
         ...esLocale,
         buttonText: {
             today: "Hoy",
             month: "Mes",
             week: "Semana",
-            day: "Día",
+            day: "Dia",
         },
     };
 
-    // Manejar cuando se suelta un cliente (drag & drop)
     const handleEventReceive = async (info) => {
         const clienteTitle = info.event.title;
         const clienteId = info.event.id;
@@ -145,18 +140,14 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         const endDate = info.event.end;
         const now = new Date();
 
-        // Validar que la fecha de inicio no sea anterior a la hora actual
-        // SOLO en vistas timeGrid (semana/día), no en vista mensual
         if (currentView !== "dayGridMonth" && startDate < now) {
             showValidation("FECHA_PASADA");
             info.revert();
             return;
         }
 
-        // Buscar el cliente por ID (más confiable que por título)
         let cliente = clientes.find((c) => c.id === clienteId);
 
-        // Si no se encuentra por ID, intentar buscar por título como fallback
         if (!cliente) {
             cliente = clientes.find((c) => c.title === clienteTitle);
         }
@@ -167,7 +158,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
             return;
         }
 
-        // Mostrar formulario para confirmar/editar el turno
         const turnoData = await promptCreateShift(
             clientes,
             startDate,
@@ -183,52 +173,50 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                         turnoData.fecha_hora_fin,
                         turnoData.observaciones || "",
                         turnoData.cliente_id,
-                        false
+                        turnoData.es_sobreturno || false,
+                        turnoData.service_color || "#378006"
                     ),
-                    createDynamicMessage.shiftCreate(cliente)
+                    createDynamicMessage.shiftCreate(cliente.nombre_completo||clienteTitle)
                 );
 
-                // Eliminar el evento temporal del drag & drop
                 info.event.remove();
 
-                // Recargar turnos desde el backend
                 if (calendarRef.current) {
                     const calendarApi = calendarRef.current.getApi();
                     calendarApi.refetchEvents();
                 }
             } catch (error) {
                 console.error("Error al crear turno:", error);
-                // Revertir el evento si falla
                 info.revert();
             }
         } else {
-            // Usuario canceló, revertir el evento
             info.revert();
         }
     };
 
-    // Manejar selección de rango de fechas (crear turno sin arrastrar)
     const handleSelect = async (selectInfo) => {
+        // En vista mes, el click navega al dia (manejado por handleDateClick)
+        if (currentView === "dayGridMonth") {
+            selectInfo.view.calendar.unselect();
+            return;
+        }
+
         const startDate = selectInfo.start;
         const endDate = selectInfo.end;
         const now = new Date();
 
-        // Verificar que la fecha de inicio no sea anterior a la hora actual
-        // SOLO en vistas timeGrid (semana/día), no en vista mensual
-        if (currentView !== "dayGridMonth" && startDate < now) {
+        if (startDate < now) {
             showValidation("FECHA_PASADA");
             selectInfo.view.calendar.unselect();
             return;
         }
 
-        // Verificar que haya clientes cargados
         if (clientes.length === 0) {
             showValidation("NO_CLIENTES");
             selectInfo.view.calendar.unselect();
             return;
         }
 
-        // Mostrar formulario para crear turno
         const turnoData = await promptCreateShift(clientes, startDate, endDate);
 
         if (turnoData) {
@@ -239,12 +227,12 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                         turnoData.fecha_hora_fin,
                         turnoData.observaciones || "",
                         turnoData.cliente_id,
-                        false
+                        turnoData.es_sobreturno || false,
+                        turnoData.service_color || turnoData.servicio?.color || "#378006"
                     ),
                     createDynamicMessage.shiftCreate(turnoData.cliente_nombre)
                 );
 
-                // Recargar turnos desde el backend
                 if (calendarRef.current) {
                     const calendarApi = calendarRef.current.getApi();
                     calendarApi.refetchEvents();
@@ -254,44 +242,38 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
             }
         }
 
-        // Limpiar selección
         selectInfo.view.calendar.unselect();
     };
 
-    // Manejar clic en fecha/hora (validación adicional)
     const handleDateClick = (info) => {
-        // El evento 'select' se encargará de abrir el formulario y validar
-        // No necesitamos validar aquí para evitar notificaciones duplicadas
+        if (currentView === "dayGridMonth" && calendarRef.current) {
+            const calendarApi = calendarRef.current.getApi();
+            calendarApi.changeView("timeGridDay", info.date);
+        }
     };
 
-    // Manejar inicio de arrastre de evento
     const handleEventDragStart = (info) => {
         draggedEventRef.current = info.event;
         setIsDraggingEvent(true);
     };
 
-    // Manejar fin de arrastre de evento
     const handleEventDragStop = async (info) => {
         setIsDraggingEvent(false);
 
-        // Verificar si el evento fue soltado sobre la zona de eliminación
         const deleteZone = document.getElementById("delete-zone");
         if (deleteZone) {
             const rect = deleteZone.getBoundingClientRect();
 
-            // Soportar tanto eventos de mouse como touch
             let mouseX, mouseY;
 
             if (
                 info.jsEvent.type === "touchend" &&
                 info.jsEvent.changedTouches
             ) {
-                // Evento táctil
                 const touch = info.jsEvent.changedTouches[0];
                 mouseX = touch.clientX;
                 mouseY = touch.clientY;
             } else {
-                // Evento de mouse
                 mouseX = info.jsEvent.clientX;
                 mouseY = info.jsEvent.clientY;
             }
@@ -309,17 +291,14 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                 if (!confirmDelete) return;
 
                 try {
-                    // Eliminar del backend
                     await promiseToast(
                         shiftsService.eliminarTurno(turnoId),
                         createDynamicMessage.turnoDeleted(turnoTitle)
                     );
 
-                    // Remover el evento del calendario
                     info.event.remove();
                 } catch (error) {
                     console.error("Error eliminando turno:", error);
-                    // Revertir el cambio visual si hubo error
                     info.revert();
                 }
             }
@@ -328,7 +307,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         draggedEventRef.current = null;
     };
 
-    // Manejar clic en evento (mostrar detalles)
     const handleEventClick = (info) => {
         showShiftDetails(
             {
@@ -337,7 +315,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                 end: info.event.end,
                 extendedProps: info.event.extendedProps,
             },
-            // Callback para refrescar el calendario después de eliminar
             () => {
                 if (calendarRef.current) {
                     const calendarApi = calendarRef.current.getApi();
@@ -347,12 +324,10 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         );
     };
 
-    // Manejar cambios en eventos (mover, redimensionar)
     const handleEventChange = async (info) => {
         const turnoId = info.event.id;
         const now = new Date();
 
-        // Validar que la nueva fecha no sea pasada (solo en vistas timeGrid)
         if (currentView !== "dayGridMonth" && info.event.start < now) {
             showValidation("TURNO_MOVER_PASADO");
             info.revert();
@@ -366,17 +341,17 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         }
 
         try {
-            // Formatear fechas a ISO
             const fechaInicioISO = info.event.start.toISOString();
             const fechaFinISO = info.event.end
                 ? info.event.end.toISOString()
                 : fechaInicioISO;
 
-            // Usar promiseToast para gestionar los estados de la promesa
             await promiseToast(
                 shiftsService.editarTurno(turnoId, {
                     fecha_hora_inicio_turno: fechaInicioISO,
                     fecha_hora_fin_turno: fechaFinISO,
+                    service_color:
+                        info.event.extendedProps.service_color || "#378006",
                     observaciones:
                         info.event.extendedProps.observaciones || null,
                 }),
@@ -388,11 +363,9 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
         }
     };
 
-    // Manejar redimensionamiento de eventos
     const handleEventResize = async (info) => {
         const now = new Date();
 
-        // Validar que las nuevas fechas no sean pasadas (solo en vistas timeGrid)
         if (currentView !== "dayGridMonth") {
             if (
                 info.event.start < now ||
@@ -403,9 +376,6 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                 return;
             }
         }
-
-        // El handleEventChange se encargará de guardar los cambios
-        // Este handler es para validaciones adicionales antes del cambio
     };
 
     return (
@@ -486,12 +456,14 @@ const Calendar = ({ clientList = [], setIsDraggingEvent, onShiftsLoaded }) => {
                     minute: "2-digit",
                     hour12: false,
                 }}
+                slotDuration="00:15:00"
                 slotMinTime="06:00:00"
                 slotMaxTime="22:00:00"
                 expandRows={true}
                 events={loadShifts}
                 editable={true}
                 dayMaxEvents={true}
+                slotEventOverlap={false}
                 eventLongPressDelay={300}
                 longPressDelay={300}
                 eventDragStart={handleEventDragStart}

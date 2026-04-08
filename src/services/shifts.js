@@ -8,7 +8,8 @@ const registrarTurno = async (
     final,
     observaciones,
     id_cliente,
-    esSobreturno = false
+    esSobreturno = false,
+    serviceColor = "#378006"
 ) => {
     const usuario_id = authService.getUserId();
 
@@ -24,6 +25,7 @@ const registrarTurno = async (
         cliente_id: id_cliente,
         usuario_id: usuario_id,
         es_sobreturno: esSobreturno,
+        service_color: serviceColor,
     };
 
     // Solo incluir observaciones si no está vacío y tiene al menos 4 caracteres
