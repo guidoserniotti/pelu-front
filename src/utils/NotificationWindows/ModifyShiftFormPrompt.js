@@ -171,10 +171,10 @@ export const promptModifyShift = async (turnoData) => {
 
                 const fechaInicio = new Date(fechaInicioStr);
 
-                if (fechaInicio < now) {
+               /*  if (fechaInicio < now) {
                     setButton(false);
                     return;
-                }
+                } */
 
                 // Detectar si hubo cambios
                 const noHayCambios =
@@ -218,12 +218,12 @@ export const promptModifyShift = async (turnoData) => {
             const fechaInicioDate = new Date(fechaInicio);
             const now = new Date();
 
-            if (fechaInicioDate < now) {
+       /*      if (fechaInicioDate < now) {
                 ThemedSwal.showValidationMessage(
                     "La fecha de inicio no puede ser anterior a la fecha actual"
                 );
                 return false;
-            }
+            } */
 
             const fechaFinDate = new Date(fechaInicioDate.getTime() + duracion * 60000);
 
